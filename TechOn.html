@@ -19,9 +19,78 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#C8D0D8;border-radius:99px}
 ::-webkit-scrollbar-thumb:hover{background:#8898AA}
+/* ── Responsive Grids ── */
+.rg-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rg-4g10{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rg-4g16{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.rg-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rg-dash{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
+.rg-detail{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;align-items:start}
+.rg-detail2{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}
+.rg-detail3{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+@media(max-width:960px){
+  .rg-4,.rg-4g10,.rg-4g16{grid-template-columns:repeat(2,1fr)}
+  .rg-3{grid-template-columns:repeat(2,1fr)}
+  .rg-dash{grid-template-columns:1fr}
+  .rg-detail,.rg-detail2,.rg-detail3{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+  .rg-4,.rg-4g10,.rg-4g16,.rg-3{grid-template-columns:1fr}
+}
+/* ── Mobile Sidebar ── */
+.app-sidebar{transition:transform .25s ease}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:48;cursor:pointer}
+.mob-ham{display:none!important}
+@media(max-width:768px){
+  .app-sidebar{position:fixed!important;left:0;top:0;height:100vh;z-index:50;transform:translateX(-100%)}
+  .app-sidebar.open{transform:translateX(0)!important}
+  .mob-overlay.open{display:block}
+  .mob-ham{display:flex!important}
+  .topbar-company{display:none!important}
+}
+/* ── Mobile Content ── */
+@media(max-width:768px){
+  .mob-pad{padding:14px!important}
+  .mob-header{flex-wrap:wrap;gap:8px!important}
+  .mob-hide{display:none!important}
+}
 #loading{display:flex;align-items:center;justify-content:center;height:100vh;background:#F3F3F3;flex-direction:column;gap:12px}
 .spin{width:36px;height:36px;border:3px solid #E8ECEF;border-top-color:#534AB7;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* ── Module Header ── */
+.mod-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+@media(max-width:768px){
+  .mod-header{flex-direction:column;align-items:stretch}
+  .mod-header>*:last-child{width:100%!important;box-sizing:border-box}
+  .mod-header button{justify-content:center}
+  .mod-header select{text-align:center}
+}
+/* ── Order Hero Card ── */
+.ord-hero{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.ord-hero-left{flex:1;min-width:0}
+.ord-hero-left h2{font-size:20px;margin:0;font-weight:700;color:#1A1A1A;white-space:nowrap}
+.ord-hero-right{text-align:right;flex-shrink:0;margin-left:24px}
+.ord-hero-right .ord-total{font-size:26px;font-weight:700;color:#1A1A1A;line-height:1;margin:0 0 2px}
+@media(max-width:540px){
+  .ord-hero{flex-direction:column;gap:10px}
+  .ord-hero-left h2{font-size:16px;white-space:normal;word-break:break-word}
+  .ord-hero-right{text-align:left;margin-left:0}
+  .ord-hero-right .ord-total{font-size:22px}
+}
+/* ── Card Action Rows ── */
+.card-btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px;gap:8px;flex-wrap:wrap}
+.card-dates{display:flex;gap:16px;flex-wrap:wrap}
+@media(max-width:768px){
+  .card-foot .card-btns{margin-left:auto}
+  .card-btns .btn-approve{font-size:11px!important;padding:5px 10px!important}
+  .card-foot{gap:6px}
+  .card-dates span{font-size:11px!important}
+}
+@media(max-width:480px){
+  .card-foot{flex-direction:column;align-items:flex-start}
+  .card-foot .card-btns{width:100%;justify-content:flex-end}
+}
 </style>
 </head>
 <body>
@@ -1120,7 +1189,7 @@ function DashboardModule({ onNavigate=()=>{}, onNavigateToOrder=()=>{} }) {
             <span style={{color:'#DC2626',fontWeight:600}}>⚠ 2 яаралтай баримт хүлээж байна</span>
           </p>
         </div>
-        <div style={{display:'flex',gap:8,alignItems:'center'}}>
+        <div className="mob-hide" style={{display:'flex',gap:8,alignItems:'center'}}>
           <input type="date" defaultValue="2026-01-01"
             style={{padding:'7px 10px',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',color:'#555555',background:'#fff',cursor:'pointer'}}/>
           <span style={{fontSize:13,color:'#C8D0D8'}}>—</span>
@@ -1130,7 +1199,7 @@ function DashboardModule({ onNavigate=()=>{}, onNavigateToOrder=()=>{} }) {
       </div>
 
       {/* KPI Cards */}
-      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12}}>
+      <div className="rg-4">
         {kpis.map(k=>(
           <div key={k.label} style={{background:k.urgent?'#FFFAF9':'#F8F8F8',border:`0.5px solid ${k.urgent?'#F0C0B0':'#E8E8E8'}`,borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -1155,7 +1224,7 @@ function DashboardModule({ onNavigate=()=>{}, onNavigateToOrder=()=>{} }) {
       </div>
 
       {/* Chart + Pending */}
-      <div style={{display:'grid',gridTemplateColumns:'1.3fr 1fr',gap:14}}>
+      <div className="rg-dash">
 
         {/* Stacked bar chart */}
         <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'18px 22px',boxShadow:'none'}}>
@@ -1202,7 +1271,7 @@ function DashboardModule({ onNavigate=()=>{}, onNavigateToOrder=()=>{} }) {
             </div>
           </div>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10}}>
+        <div className="rg-4g10">
           {renewalItems.map((r,i)=>(
             <div key={i} onClick={()=>r.orderId&&onNavigateToOrder(r.orderId)} style={{border:`1px solid ${r.daysLeft<=14?'#FECACA':r.daysLeft<=30?'#FDE68A':'#E8ECEF'}`,borderRadius:8,padding:'14px 16px',background:r.daysLeft<=14?'#FFF9F9':r.daysLeft<=30?'#FFFDF0':'#FAFBFC',cursor:r.orderId?'pointer':'default',transition:'opacity .1s'}} onMouseEnter={e=>{if(r.orderId)e.currentTarget.style.opacity='.85';}} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10}}>
@@ -1622,7 +1691,7 @@ function ServiceModule({ onNavigate=()=>{} }) {
 
       {/* GRID view */}
       {view==="grid" && (
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
+        <div className="rg-3" >
           {list.map(s=>{
             const cc = catColors[s.category]||{bg:"#F4F6F8",icon:"#667788"};
             const inCart = cart.some(c=>c.id===s.id);
@@ -1858,23 +1927,23 @@ function OrderModule({ onNavigate=()=>{}, jumpOrderId=null, onJumpDone=()=>{} })
 
         {/* Hero header card */}
         <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:14,padding:'20px 24px',boxShadow:'none'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:16}}>
-            <div>
-              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:6}}>
-                <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>{o.id}</h2>
+          <div className="ord-hero">
+            <div className="ord-hero-left">
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6,flexWrap:'wrap'}}>
+                <h2>{o.id}</h2>
                 <SBadge s={o.status}/>
               </div>
               <p style={{margin:'0 0 3px',fontSize:15,fontWeight:700,color:'#1E293B'}}>{o.service}</p>
               {o.subtitle && <p style={{margin:0,fontSize:12,color:'#94A3B8'}}>{o.subtitle}</p>}
             </div>
-            <div style={{textAlign:'right',flexShrink:0,marginLeft:24}}>
+            <div className="ord-hero-right">
               <p style={{margin:'0 0 2px',fontSize:11,color:'#94A3B8',fontWeight:600,textTransform:'uppercase',letterSpacing:.4}}>Нийт дүн</p>
-              <p style={{margin:'0 0 2px',fontSize:26,fontWeight:700,color:'#1A1A1A',lineHeight:1}}>{fmt(o.amount)}</p>
+              <p className="ord-total">{fmt(o.amount)}</p>
               <p style={{margin:0,fontSize:11,color:'#94A3B8'}}>НӨАТ орсон {fmt(o.amount*1.1)}</p>
             </div>
           </div>
           {/* Info pills */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,paddingTop:16,borderTop:'1px solid #F1F5F9'}}>
+          <div className="rg-4g10" style={{paddingTop:16,borderTop:'1px solid #F1F5F9'}}>
             {[
               {label:"Чиглэл",value:o.chiglel,icon:"tag"},
               {label:"Захиалсан огноо",value:o.date,icon:"calendar3"},
@@ -1893,7 +1962,7 @@ function OrderModule({ onNavigate=()=>{}, jumpOrderId=null, onJumpDone=()=>{} })
         </div>
 
         {/* Two-column layout */}
-        <div style={{display:'grid',gridTemplateColumns:'1.6fr 1fr',gap:14,alignItems:'start'}}>
+        <div className="rg-detail">
           {/* LEFT column */}
           <div style={{display:'flex',flexDirection:'column',gap:14}}>
 
@@ -2077,7 +2146,7 @@ function OrderModule({ onNavigate=()=>{}, jumpOrderId=null, onJumpDone=()=>{} })
   return (
     <div style={{display:'flex',flexDirection:'column',gap:18}}>
       {/* Header */}
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+      <div className="mod-header" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
         <div>
           <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Захиалгын удирдлага</h2>
           <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Нийт {orders.length} захиалга · {orders.filter(o=>o.status==="Идэвхтэй").length} идэвхтэй</p>
@@ -2304,7 +2373,7 @@ function ReportModule() {
           </button>
         </div>
         {/* Summary cards */}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
+        <div className="rg-3" >
           {[
             {label:"Нийт төлөх өглөг",value:fmt(totalDebt||reportData.reduce((s,r)=>s+r.total,0)),sub:"Батлагдсан нийт дүн",bg:'#fff',vc:'#0F172A',icon:"arrow-up-right",iconBg:"#EEEDFE",iconC:"#534AB7"},
             {label:"Төлөгдсөн дүн",value:fmt(totalPaid),sub:"Амжилттай төлөгдсөн",bg:'#fff',vc:'#059669',icon:"check-circle-fill",iconBg:"#D1FAE5",iconC:"#059669"},
@@ -2390,7 +2459,7 @@ function ReportModule() {
           </button>
         </div>
         {/* Summary cards */}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
+        <div className="rg-3" >
           {[
             {label:"Нийт тикетийн тоо",value:String(perfSummary.tickets||268),sub:`${filteredPerf[0]?.period||"2026-02-р сар"} сарын дүн`,icon:"ticket-detailed",iconBg:"#EEEDFE",iconC:"#534AB7",vc:'#0F172A'},
             {label:"Шийдвэрлэлтийн хувь",value:`${perfSummary.resolvedPct||96.3}%`,sub:`Зорилт: 95%`,icon:"check-circle-fill",iconBg:"#D1FAE5",iconC:"#059669",vc:'#059669'},
@@ -2621,7 +2690,7 @@ function ContractModule() {
         </div>
 
         {/* Two-col layout */}
-        <div style={{display:'grid',gridTemplateColumns:'1.5fr 1fr',gap:14,alignItems:'start'}}>
+        <div className="rg-detail2">
           {/* Left col */}
           <div style={{display:'flex',flexDirection:'column',gap:14}}>
 
@@ -2796,7 +2865,7 @@ function ContractModule() {
                     style={{padding:'9px 16px',fontSize:13,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
                       background:'#4F46E5',color:'#fff',border:'none',borderRadius:8,cursor:'pointer',
                       display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
-                    <Ic n="check2-circle" s={14} style={{color:'#fff'}}/> Зөвшөөрч байна — Баталгаажуулах
+                    <Ic n="check2-circle" s={14} style={{color:'#fff'}}/> Баталгаажуулах
                   </button>
                   <button onClick={()=>setRej(true)}
                     style={{padding:'9px 16px',fontSize:13,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
@@ -2851,7 +2920,7 @@ function ContractModule() {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:16}}>
       {/* Header */}
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <div className="mod-header" style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <div>
           <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Гэрээний удирдлага</h2>
           <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Мастер болон нэмэлт гэрээний удирдлага, цахим гарын үсэг</p>
@@ -2915,14 +2984,14 @@ function ContractModule() {
               )}
 
               {/* Bottom action row */}
-              <div style={{display:'flex',gap:8,alignItems:'center'}} onClick={e=>e.stopPropagation()}>
+              <div className="card-btns" style={{display:'flex',gap:8,alignItems:'center'}} onClick={e=>e.stopPropagation()}>
                 <Btn variant="ghost" icon="file-earmark-pdf" size="sm">PDF татах</Btn>
                 {isPending && <>
                   <button onClick={()=>{setSelC(c);setSign(true);}}
                     style={{padding:'6px 14px',fontSize:12,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
                       background:'#4F46E5',color:'#fff',border:'none',borderRadius:7,cursor:'pointer',
                       display:'flex',alignItems:'center',gap:5}}>
-                    <Ic n="check2-circle" s={13} style={{color:'#fff'}}/> Зөвшөөрч байна — Баталгаажуулах
+                    <Ic n="check2-circle" s={13} style={{color:'#fff'}}/> Баталгаажуулах
                   </button>
                   <button onClick={()=>{setSelC(c);setRej(true);}}
                     style={{padding:'6px 14px',fontSize:12,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
@@ -3105,14 +3174,14 @@ function BillingModule() {
               </div>
             </div>
           )}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,paddingTop:12,borderTop:'0.5px solid #EBEBEB'}}>
+          <div className="rg-4g16" style={{paddingTop:12,borderTop:'0.5px solid #EBEBEB'}}>
             <InfoPill label="Хугацаа" value={inv.period}/>
             <InfoPill label="Үүссэн огноо" value={inv.issueDate}/>
             <InfoPill label="Эцсийн хугацаа" value={inv.dueDate}/>
             {inv.paidDate?<InfoPill label="Төлсөн огноо" value={inv.paidDate}/>:<InfoPill label="Өнөөдрийн байдлаар" value="2026/03/18"/>}
           </div>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 320px',gap:18,alignItems:'start'}}>
+        <div className="rg-detail3" >
           {/* Left */}
           <div style={{display:'flex',flexDirection:'column',gap:16}}>
             {/* Invoice breakdown */}
@@ -3267,14 +3336,14 @@ function BillingModule() {
               <p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>НӨАТ орсон</p>
             </div>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,paddingTop:12,borderTop:'0.5px solid #EBEBEB'}}>
+          <div className="rg-4g16" style={{paddingTop:12,borderTop:'0.5px solid #EBEBEB'}}>
             <InfoPill label="Хугацаа" value={act.period}/>
             <InfoPill label="Актын огноо" value={act.actDate}/>
             <InfoPill label="Захиалагч" value={act.client}/>
             <InfoPill label="Гүйцэтгэгч" value={act.provider}/>
           </div>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 320px',gap:18,alignItems:'start'}}>
+        <div className="rg-detail3" >
           {/* Left */}
           <div style={{display:'flex',flexDirection:'column',gap:16}}>
             {/* Services */}
@@ -3400,7 +3469,7 @@ function BillingModule() {
         </div>
       </div>
       {/* Summary cards */}
-      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
+      <div className="rg-3" >
         {[
           {bg:'#FEF3C7',border:'#FDE68A',label:'Батлах хүлээж буй акт',value:pendingActs,sub:`ACT-2026-003`,vc:'#92400E',lc:'#B45309',icon:'file-earmark-check'},
           {bg:'#FEE2E2',border:'#FECACA',label:'Хугацаа хэтэрсэн',value:overdueInvTotal>0?fmt(overdueInvTotal):'₮0',sub:overdueInvTotal>0?`+${fmt(invList.filter(i=>i.overdue).reduce((s,i)=>s+i.penaltyAmount,0))} алданги`:'Алданги байхгүй',vc:'#991B1B',lc:'#B91C1C',icon:'exclamation-triangle-fill'},
@@ -3464,13 +3533,13 @@ function BillingModule() {
                   <span style={{fontSize:12,color:'#B91C1C'}}>Төлбөрийн хугацаа {inv.overdueDays} хоноогоор хэтэрсэн. Алданги хоног тутамд 0.3%-аар тооцогдож байна.</span>
                 </div>
               )}
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
-                <div style={{display:'flex',gap:16}}>
+              <div className="card-foot" style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
+                <div className="card-dates" style={{display:'flex',gap:16}}>
                   <span style={{fontSize:12,color:'#999999'}}>Үүссэн: <span style={{color:'#555555',fontWeight:500}}>{inv.issueDate}</span></span>
                   <span style={{fontSize:12,color:'#999999'}}>Эцсийн хугацаа: <span style={{color:inv.overdue?'#DC2626':'#445566',fontWeight:500}}>{inv.dueDate}</span></span>
                   {inv.paidDate&&<span style={{fontSize:12,color:'#999999'}}>Төлсөн: <span style={{color:'#3B6D11',fontWeight:500}}>{inv.paidDate}</span></span>}
                 </div>
-                <div style={{display:'flex',gap:8}} onClick={e=>e.stopPropagation()}>
+                <div className="card-btns" style={{display:'flex',gap:8}} onClick={e=>e.stopPropagation()}>
                   <button onClick={e=>{e.stopPropagation();const a=actList.find(x=>x.id===inv.linkedAct);if(a){setSelAct(a);setPage("act-detail");}}} style={{padding:'6px 14px',borderRadius:7,border:'0.5px solid #E8E8E8',background:'#fff',cursor:'pointer',fontSize:12,fontWeight:600,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',color:'#555555',display:'flex',alignItems:'center',gap:5}}>
                     <Ic n="file-earmark-check" s={12}/>Акт үзэх
                   </button>
@@ -3514,13 +3583,13 @@ function BillingModule() {
                   <p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>НӨАТ орсон</p>
                 </div>
               </div>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
+              <div className="card-foot" style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
                 <div style={{display:'flex',gap:16}}>
                   <span style={{fontSize:12,color:'#999999'}}>Хугацаа: <span style={{color:'#555555',fontWeight:500}}>{act.period}</span></span>
                   <span style={{fontSize:12,color:'#999999'}}>Актын огноо: <span style={{color:'#555555',fontWeight:500}}>{act.actDate}</span></span>
                   <span style={{fontSize:12,color:'#999999'}}>{act.services.length} үйлчилгээ</span>
                 </div>
-                <div style={{display:'flex',gap:8}} onClick={e=>e.stopPropagation()}>
+                <div className="card-btns" style={{display:'flex',gap:8}} onClick={e=>e.stopPropagation()}>
                   {act.status==="Акт хүлээгдэж буй"&&(<>
                     <button onClick={e=>{e.stopPropagation();approveAct(act.id);}} style={{padding:'6px 14px',borderRadius:7,border:'none',background:'#059669',cursor:'pointer',fontSize:12,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',color:'#fff',display:'flex',alignItems:'center',gap:5}}>
                       <Ic n="check-circle-fill" s={12}/>Зөвшөөрөх
@@ -3810,7 +3879,7 @@ function UserModule() {
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:18}}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+      <div className="mod-header" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
         <div>
           <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Хэрэглэгчид</h2>
           <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Subscription системд нэвтрэх ажилтнуудыг удирдах, эрх хуваарилах</p>
@@ -4042,7 +4111,7 @@ function AuditLogModule() {
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:18}}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+      <div className="mod-header" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
         <div>
           <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Лог бүртгэл</h2>
           <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Системд хийгдсэн бүх үйлдлийн аудит бүртгэл</p>
@@ -4256,7 +4325,7 @@ function TicketDashboardModule({setTModule}) {
         </div>
         <Btn icon="plus-lg" onClick={()=>setTModule("t-new")}>Тикет үүсгэх</Btn>
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14}}>
+      <div className="rg-4" >
         {kpis.map(k=>(
           <div key={k.label} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'16px 18px',boxShadow:'0 1px 3px rgba(0,0,0,.04)',display:'flex',gap:14,alignItems:'center'}}>
             <div style={{width:42,height:42,background:k.iconBg,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -4270,7 +4339,7 @@ function TicketDashboardModule({setTModule}) {
           </div>
         ))}
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1.3fr 1fr',gap:14}}>
+      <div className="rg-dash">
         <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
             <p style={{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Идэвхтэй тикетүүд</p>
@@ -4639,6 +4708,7 @@ function App() {
   const [sys, setSys]         = useState("subscription"); // "subscription" | "ticket"
   const [portal, setPortal]   = useState("client"); // "client" | "vendor" | "admin"
   const [portalOpen, setPortalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [active, setActive]   = useState("dashboard");
   const [tModule, setTModule] = useState("t-dashboard");
   const [notifOpen, setNotif] = useState(false);
@@ -4688,9 +4758,11 @@ function App() {
 
   return (
     <div style={{display:'flex',height:'100vh',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',overflow:'hidden',background:'#F0F2F5'}}>
+      {/* Mobile overlay */}
+      <div className={`mob-overlay${sidebarOpen?' open':''}`} onClick={()=>setSidebarOpen(false)}/>
 
       {/* ── Sidebar ── */}
-      <aside style={{width:224,background:'#FFFFFF',borderRight:'0.5px solid #E8E8E8',display:'flex',flexDirection:'column',flexShrink:0}}>
+      <aside className={`app-sidebar${sidebarOpen?' open':''}`} style={{width:224,background:'#FFFFFF',borderRight:'0.5px solid #E8E8E8',display:'flex',flexDirection:'column',flexShrink:0}}>
         {/* Logo */}
         <div style={{padding:'16px 14px 12px',borderBottom:'0.5px solid #E8E8E8'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -4728,7 +4800,7 @@ function App() {
                 const activeColor = sys==="subscription" ? '#3C3489' : '#5B21B6';
                 const activeBg    = sys==="subscription" ? '#EEEDFE' : '#EDE9FE';
                 return (
-                  <button key={item.key} onClick={()=>setActiveKey(item.key)} style={{width:'100%',display:'flex',alignItems:'center',gap:9,padding:'7px 10px 7px 8px',borderRadius:6,border:'none',borderLeft:on?'2px solid #534AB7':'2px solid transparent',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',fontSize:13,fontWeight:on?600:400,background:on?activeBg:'transparent',color:on?activeColor:'#555555',textAlign:'left',marginBottom:1,transition:'all .12s'}}
+                  <button key={item.key} onClick={()=>{setActiveKey(item.key);setSidebarOpen(false);}} style={{width:'100%',display:'flex',alignItems:'center',gap:9,padding:'7px 10px 7px 8px',borderRadius:6,border:'none',borderLeft:on?'2px solid #534AB7':'2px solid transparent',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',fontSize:13,fontWeight:on?600:400,background:on?activeBg:'transparent',color:on?activeColor:'#555555',textAlign:'left',marginBottom:1,transition:'all .12s'}}
                     onMouseEnter={e=>{if(!on){e.currentTarget.style.background='#F5F5F5';e.currentTarget.style.color='#1A1A1A';}}}
                     onMouseLeave={e=>{if(!on){e.currentTarget.style.background='transparent';e.currentTarget.style.color='#555555';}}}>
                     <Ic n={item.icon} s={15}/>
@@ -4760,15 +4832,14 @@ function App() {
       {/* ── Main ── */}
       <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
         {/* Topbar */}
-        <header style={{background:'#fff',borderBottom:'0.5px solid #E8E8E8',padding:'0 24px',height:52,display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0}}>
+        <header style={{background:'#fff',borderBottom:'0.5px solid #E8E8E8',padding:'0 16px',height:52,display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0}}>
           <div style={{display:'flex',alignItems:'center',gap:6,fontSize:13}}>
-            <span style={{color:'#999999',fontWeight:600,fontSize:12}}>ТАВАН БОГД НУРА</span>
-            <Ic n="chevron-right" s={11} style={{color:'#C8D0D8'}}/>
-            <span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:69,background:curPortal.bg,color:curPortal.color,display:'flex',alignItems:'center',gap:5}}>
-              <Ic n={curPortal.icon} s={11}/>
-              {curPortal.label}
-            </span>
-            <Ic n="chevron-right" s={11} style={{color:'#C8D0D8'}}/>
+            <button className="mob-ham" onClick={()=>setSidebarOpen(!sidebarOpen)} style={{display:'none',alignItems:'center',justifyContent:'center',width:34,height:34,background:'none',border:'none',cursor:'pointer',borderRadius:6,color:'#555555',marginRight:4,flexShrink:0}} onMouseEnter={e=>e.currentTarget.style.background='#F5F5F5'} onMouseLeave={e=>e.currentTarget.style.background='none'}>
+              <Ic n={sidebarOpen?"x-lg":"list"} s={18}/>
+            </button>
+            <span className="mob-hide" style={{color:'#999999',fontWeight:600,fontSize:12}}>ТАВАН БОГД НУРА</span>
+            <Ic className="mob-hide" n="chevron-right" s={11} style={{color:'#C8D0D8'}}/>
+            
             <span style={{color:'#1A1A1A',fontWeight:700,fontSize:13}}>{curLabel}</span>
           </div>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -4779,7 +4850,7 @@ function App() {
                 <div style={{width:20,height:20,borderRadius:5,background:curPortal.color+'22',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
                   <Ic n={curPortal.icon} s={11} style={{color:curPortal.color}}/>
                 </div>
-                <span style={{fontSize:12,fontWeight:700,color:curPortal.color,whiteSpace:'nowrap'}}>{curPortal.label}</span>
+                <span className="mob-hide" style={{fontSize:12,fontWeight:700,color:curPortal.color,whiteSpace:'nowrap'}}>{curPortal.label}</span>
                 <Ic n={portalOpen?"chevron-up":"chevron-down"} s={10} style={{color:curPortal.color+'99'}}/>
               </button>
               {portalOpen&&(
@@ -4834,7 +4905,7 @@ function App() {
         </header>
 
         {/* Content */}
-        <main style={{flex:1,overflowY:'auto',padding:24}}>
+        <main className="mob-pad" style={{flex:1,overflowY:'auto',padding:24}}>
           {renderModule()}
         </main>
       </div>
