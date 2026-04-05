@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+<script>const _cw=console.warn;console.warn=function(){if(arguments[0]&&typeof arguments[0]==='string'&&arguments[0].includes('cdn.tailwindcss.com'))return;_cw.apply(console,arguments);};</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -1091,10 +1092,35 @@ function DashboardModule({ onNavigate=()=>{}, onNavigateToOrder=()=>{} }) {
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* IT Дэмжлэг + Захиалга KPI */}
+      <div className="rg-4" style={{gap:10}}>
+        {[
+          {label:"Нээлттэй тикет",value:TICKETS.filter(t=>t.status==="Нээлттэй").length,icon:"exclamation-circle",iconBg:"#EEEDFE",iconColor:"#3C3489",sub:"Инженер хүлээж байна",subColor:"#3C3489",navTo:"t-list"},
+          {label:"Явж байна",value:TICKETS.filter(t=>t.status==="Явж байна").length,icon:"arrow-repeat",iconBg:"#FEF3C7",iconColor:"#D97706",sub:"Идэвхтэй ажиллаж байна",subColor:"#92400E",navTo:"t-list"},
+          {label:"Баталгаажуулах",value:TICKETS.filter(t=>t.status==="Шийдэгдсэн").length,icon:"check-circle",iconBg:"#D1FAE5",iconColor:"#059669",sub:"Шийдэгдсэн — баталгаажуулна уу",subColor:"#065F46",navTo:"t-list"},
+          {label:"Хаагдсан",value:TICKETS.filter(t=>t.status==="Хаагдсан").length,icon:"lock",iconBg:"#F4F6F8",iconColor:"#666666",sub:"Амжилттай шийдэгдсэн",subColor:"#667788",navTo:"t-list"},
+        ].map(k=>(
+          <div key={k.label} onClick={()=>onNavigate(k.navTo)} style={{background:k.isAI?'#FDFCFF':'#FFFFFF',border:`0.5px solid ${k.isAI?'#EDE9FE':'#EBEBEB'}`,borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10,cursor:'pointer',transition:'all .12s'}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor=k.isAI?'#C4B5FD':'#AFA9EC';e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,.06)';}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor=k.isAI?'#E9E4FD':'#E8E8E8';e.currentTarget.style.boxShadow='none';}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <p style={{margin:0,fontSize:11,color:'#999999',fontWeight:500,letterSpacing:.2,lineHeight:1.4}}>{k.label}</p>
+              <div style={{width:28,height:28,borderRadius:6,background:k.iconBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <Ic n={k.icon} s={13} style={{color:k.iconColor}}/>
+              </div>
+            </div>
+            <div>
+              <p style={{margin:'0 0 3px',fontSize:22,fontWeight:600,color:'#1A1A1A',lineHeight:1}}>{k.value}</p>
+              <p style={{margin:0,fontSize:11,color:k.subColor,fontWeight:500}}>{k.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Subscription KPI Cards */}
       <div className="rg-4">
         {kpis.map(k=>(
-          <div key={k.label} style={{background:k.urgent?'#FFFAF9':'#F8F8F8',border:`0.5px solid ${k.urgent?'#F0C0B0':'#E8E8E8'}`,borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10}}>
+          <div key={k.label} style={{background:k.urgent?'#FFFAF9':'#FFFFFF',border:`0.5px solid ${k.urgent?'#F0C0B0':'#EBEBEB'}`,borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <p style={{margin:0,fontSize:11,color:'#999999',fontWeight:500,letterSpacing:.2,lineHeight:1.4}}>{k.label}</p>
               <div style={{width:28,height:28,borderRadius:6,background:k.iconBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -2508,7 +2534,7 @@ function ContractModule() {
 
   const openDetail = (c) => { setSelC(c); setPage("detail"); setAlertDismissed(false); };
 
-  const statusOpts = ["all","Идэвхтэй","Хугацаа дуусах дөхсөн","Батлах хүлээгдэж буй","Хугацаа дууссан","Цуцлагдсан"];
+  const statusOpts = ["all","Идэвхтэй","Хугацаа дуусах дөхсөн","Батлах хүлээгдэж буй","Имэйл илгээсэн","Хугацаа дууссан","Цуцлагдсан"];
 
   const cBadge = (status) => {
     const map = {
@@ -2517,6 +2543,7 @@ function ContractModule() {
       "Батлах хүлээгдэж буй":  {bg:"#EDE9FE",color:"#5B21B6"},
       "Хугацаа дууссан":       {bg:"#F4F6F8",color:"#666666"},
       "Цуцлагдсан":            {bg:"#FEE2E2",color:"#991B1B"},
+      "Имэйл илгээсэн":       {bg:"#FFF7ED",color:"#9A3412"},
     };
     const s = map[status]||{bg:"#F4F6F8",color:"#666666"};
     return <span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:69,background:s.bg,color:s.color,whiteSpace:'nowrap'}}>{status}</span>;
@@ -2528,6 +2555,7 @@ function ContractModule() {
     if(status==="Идэвхтэй") return "#10B981";
     if(status==="Хугацаа дууссан") return "#C8D0D8";
     if(status==="Цуцлагдсан") return "#EF4444";
+    if(status==="Имэйл илгээсэн") return "#F97316";
     return "#E8ECEF";
   };
 
@@ -2636,7 +2664,7 @@ function ContractModule() {
 
       // ── Алхам 2: Гарын үсэг зурах ────────────────────────
       if(signStep==="signing") return (
-        <Modal title="Odoo Sign — Гарын үсэг зурах" onClose={closeSignModal} width={520}>
+        <Modal title="Гэрээ баталгаажуулах" onClose={closeSignModal} width={520}>
           <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14,padding:'8px 12px',
             background:'#F0F4FF',border:'0.5px solid #C7D2FE',borderRadius:8}}>
             <Ic n="shield-lock-fill" s={14} style={{color:'#4F46E5'}}/>
@@ -2984,22 +3012,49 @@ function ContractModule() {
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 <Btn icon="file-earmark-pdf" variant="ghost" full>PDF татах (Odoo Document)</Btn>
                 {isPending && <>
+                  <p style={{margin:'4px 0 0',fontSize:11,fontWeight:700,color:'#999999',textTransform:'uppercase',letterSpacing:.4}}>Баталгаажуулалт илгээх</p>
                   <button onClick={startOdooSign}
                     style={{padding:'10px 16px',fontSize:13,fontWeight:700,
                       fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
                       background:'#4F46E5',color:'#fff',border:'none',borderRadius:8,cursor:'pointer',
                       display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
                     <Ic n="pen" s={14} style={{color:'#fff'}}/>
-                    Odoo Sign — Гарын үсэг зурах
+                    Гэрээ баталгаажуулах
                   </button>
                   <div style={{background:'#F5F3FF',borderRadius:8,padding:'8px 12px',display:'flex',gap:6,alignItems:'flex-start'}}>
                     <Ic n="info-circle" s={12} style={{color:'#6366F1',flexShrink:0,marginTop:1}}/>
                     <p style={{margin:0,fontSize:11,color:'#4F46E5',lineHeight:1.5}}>
-                      Гарын үсэг зурснаар Odoo ERP v19-д баталгаажиж, гэрээ автоматаар архивлагдана. Цаасан гэрээ шаардлагагүй.
+                      Odoo ERP ашигладаг компанид зориулсан. Гарын үсэг зурснаар Odoo-д баталгаажна.
+                    </p>
+                  </div>
+                  <div style={{position:'relative',textAlign:'center',margin:'4px 0'}}>
+                    <div style={{position:'absolute',left:0,right:0,top:'50%',height:1,background:'#E8E8E8'}}/>
+                    <span style={{position:'relative',fontSize:10,color:'#C8D0D8',background:'#fff',padding:'0 10px'}}>эсвэл</span>
+                  </div>
+                  <button onClick={()=>{
+                    const updated = {...selC, status:"Имэйл илгээсэн",
+                      timeline:[...selC.timeline.filter(s=>s.done),
+                        {label:"Имэйлээр баталгаажуулалт илгээсэн",datetime:"2026/03/18 11:00",actor:"Систем (TechOn)",done:true},
+                        {label:"Охин компани хүлээн авсан",datetime:"",actor:"Хүлээж байна...",done:false},
+                      ]};
+                    setList(p=>p.map(c2=>c2.id===selC.id?updated:c2));
+                    setSelC(updated);
+                  }}
+                    style={{padding:'10px 16px',fontSize:13,fontWeight:700,
+                      fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
+                      background:'#F97316',color:'#fff',border:'none',borderRadius:8,cursor:'pointer',
+                      display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
+                    <Ic n="envelope" s={14} style={{color:'#fff'}}/>
+                    Email — Баталгаажуулалт илгээх
+                  </button>
+                  <div style={{background:'#FFF7ED',borderRadius:8,padding:'8px 12px',display:'flex',gap:6,alignItems:'flex-start'}}>
+                    <Ic n="info-circle" s={12} style={{color:'#EA580C',flexShrink:0,marginTop:1}}/>
+                    <p style={{margin:0,fontSize:11,color:'#9A3412',lineHeight:1.5}}>
+                      Odoo ERP-гүй компанид зориулсан. PDF + approval link имэйлээр илгээнэ. 7 хоногт сануулга, 14 хоногт цуцлагдана.
                     </p>
                   </div>
                   <button onClick={()=>setRej(true)}
-                    style={{padding:'9px 16px',fontSize:13,fontWeight:700,
+                    style={{padding:'9px 16px',fontSize:13,fontWeight:700,marginTop:4,
                       fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
                       background:'#fff',color:'#EF4444',border:'0.5px solid #FECACA',borderRadius:8,cursor:'pointer'}}>
                     Татгалзах
@@ -3138,7 +3193,7 @@ function ContractModule() {
                       fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
                       background:'#4F46E5',color:'#fff',border:'none',borderRadius:7,cursor:'pointer',
                       display:'flex',alignItems:'center',gap:5}}>
-                    <Ic n="pen" s={12} style={{color:'#fff'}}/> Odoo Sign — Гарын үсэг зурах
+                    <Ic n="pen" s={12} style={{color:'#fff'}}/> Гэрээ баталгаажуулах
                   </button>
                 )}
                 {isExpiring && (
@@ -3183,7 +3238,7 @@ function ContractModule() {
 
 // ── MODULE 6: Billing ─────────────────────────────────────────
 function BillingModule() {
-  const [tab, setTab]         = useState("invoices");
+  const [tab, setTab]         = useState("acts");
   const [page, setPage]       = useState("list");
   const [selInv, setSelInv]   = useState(null);
   const [selAct, setSelAct]   = useState(null);
@@ -3607,33 +3662,37 @@ function BillingModule() {
       {/* Summary cards */}
       <div className="rg-3" >
         {[
-          {bg:'#FEF3C7',border:'#FDE68A',label:'Батлах хүлээж буй акт',value:pendingActs,sub:`ACT-2026-003`,vc:'#92400E',lc:'#B45309',icon:'file-earmark-check'},
-          {bg:'#FEE2E2',border:'#FECACA',label:'Хугацаа хэтэрсэн',value:overdueInvTotal>0?fmt(overdueInvTotal):'₮0',sub:overdueInvTotal>0?`+${fmt(invList.filter(i=>i.overdue).reduce((s,i)=>s+i.penaltyAmount,0))} алданги`:'Алданги байхгүй',vc:'#991B1B',lc:'#B91C1C',icon:'exclamation-triangle-fill'},
-          {bg:'#D1FAE5',border:'#A7F3D0',label:'Нийт төлөгдсөн',value:fmt(paidTotal),sub:'1-р сарын нэхэмжлэх',vc:'#065F46',lc:'#047857',icon:'check-circle-fill'},
-        ].map(({bg,border,label,value,sub,vc,lc,icon})=>(
-          <div key={label} style={{background:bg,border:`1px solid ${border}`,borderRadius:8,padding:16,display:'flex',gap:12,alignItems:'flex-start'}}>
-            <div style={{width:36,height:36,borderRadius:6,background:'rgba(255,255,255,.5)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><Ic n={icon} s={16} style={{color:vc}}/></div>
+          {label:'Батлах хүлээж буй акт',value:pendingActs,sub:`ACT-2026-003`,icon:'file-earmark-check',iconBg:'#FEF3C7',iconColor:'#D97706',subColor:'#92400E'},
+          {label:'Хугацаа хэтэрсэн',value:overdueInvTotal>0?fmt(overdueInvTotal):'₮0',sub:overdueInvTotal>0?`+${fmt(invList.filter(i=>i.overdue).reduce((s,i)=>s+i.penaltyAmount,0))} алданги`:'Алданги байхгүй',icon:'exclamation-triangle-fill',iconBg:'#FEE2E2',iconColor:'#DC2626',subColor:'#B91C1C'},
+          {label:'Нийт төлөгдсөн',value:fmt(paidTotal),sub:'1-р сарын нэхэмжлэх',icon:'check-circle-fill',iconBg:'#D1FAE5',iconColor:'#059669',subColor:'#047857'},
+        ].map(k=>(
+          <div key={k.label} style={{background:'#FFFFFF',border:'0.5px solid #EBEBEB',borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <p style={{margin:0,fontSize:11,color:'#999999',fontWeight:500,letterSpacing:.2,lineHeight:1.4}}>{k.label}</p>
+              <div style={{width:28,height:28,borderRadius:6,background:k.iconBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <Ic n={k.icon} s={13} style={{color:k.iconColor}}/>
+              </div>
+            </div>
             <div>
-              <p style={{margin:'0 0 4px',fontSize:11,fontWeight:700,color:lc,textTransform:'uppercase',letterSpacing:.4}}>{label}</p>
-              <p style={{margin:'0 0 3px',fontSize:22,fontWeight:700,color:vc}}>{value}</p>
-              <p style={{margin:0,fontSize:11,color:lc}}>{sub}</p>
+              <p style={{margin:'0 0 3px',fontSize:22,fontWeight:600,color:'#1A1A1A',lineHeight:1}}>{k.value}</p>
+              <p style={{margin:0,fontSize:11,color:k.subColor,fontWeight:500}}>{k.sub}</p>
             </div>
           </div>
         ))}
       </div>
       {/* Tabs */}
       <div style={{display:'flex',gap:0,borderBottom:'2px solid #E8ECEF'}}>
-        {[["invoices","Нэхэмжлэхүүд"],["acts","Актууд"]].map(([k,l])=>(
+        {[["acts","Актууд"],["invoices","Нэхэмжлэхүүд"]].map(([k,l])=>(
           <button key={k} onClick={()=>{setTab(k);setSF("Бүх статус");setCF("Бүх ангилал");}} style={{padding:'10px 20px',fontSize:13,fontWeight:600,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'transparent',color:tab===k?'#534AB7':'#667788',borderBottom:tab===k?'2px solid #534AB7':'2px solid transparent',marginBottom:-2}}>{l}{k==="acts"&&pendingActs>0&&<span style={{marginLeft:6,background:'#EF4444',color:'#fff',fontSize:10,fontWeight:700,padding:'1px 6px',borderRadius:69}}>{pendingActs}</span>}</button>
         ))}
       </div>
       {/* Filters */}
       <div style={{display:'flex',gap:10,alignItems:'center'}}>
-        <select value={statusFilter} onChange={e=>setSF(e.target.value)} style={{padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+        <select value={statusFilter} onChange={e=>setSF(e.target.value)} style={{padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #EBEBEB',borderRadius:8,outline:'none',color:statusFilter==="Бүх статус"?'#999999':'#1A1A1A',cursor:'pointer'}}>
           {tab==="invoices"?(<><option>Бүх статус</option><option>Хүлэгдэж буй</option><option>Төлөгдсөн</option><option>Цуцлагдсан</option></>):(<><option>Бүх статус</option><option>Акт хүлээгдэж буй</option><option>Баталгаажсан</option><option>Маргаантай</option></>)}
         </select>
         {tab==="invoices"&&(
-          <select value={catFilter} onChange={e=>setCF(e.target.value)} style={{padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+          <select value={catFilter} onChange={e=>setCF(e.target.value)} style={{padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #EBEBEB',borderRadius:8,outline:'none',color:catFilter==="Бүх ангилал"?'#999999':'#1A1A1A',cursor:'pointer'}}>
             <option>Бүх ангилал</option><option>Хэвийн</option><option>Хугацаа хэтэрсэн</option>
           </select>
         )}
@@ -4459,7 +4518,7 @@ function TicketDashboardModule({setTModule}) {
             {resolved>0&&<span style={{color:'#3B6D11',fontWeight:600}}>{resolved} тикет баталгаажуулалт хүлээж байна</span>}
           </p>
         </div>
-        <Btn icon="plus-lg" onClick={()=>setTModule("t-new")}>Тикет үүсгэх</Btn>
+        <Btn icon="plus-lg" onClick={()=>setTModule("t-list")}>Тикет үүсгэх</Btn>
       </div>
       <div className="rg-4" >
         {kpis.map(k=>(
@@ -4548,7 +4607,7 @@ function NewTicketModule({setTModule}) {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:20,maxWidth:680}}>
       <div style={{display:'flex',alignItems:'center',gap:12}}>
-        <button onClick={()=>setTModule("t-dashboard")} style={{background:'none',border:'none',cursor:'pointer',color:'#999999',display:'flex',padding:0}}><Ic n="arrow-left" s={16}/></button>
+        <button onClick={()=>setTModule("dashboard")} style={{background:'none',border:'none',cursor:'pointer',color:'#999999',display:'flex',padding:0}}><Ic n="arrow-left" s={16}/></button>
         <div>
           <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тикет үүсгэх</h2>
           <p style={{margin:'3px 0 0',fontSize:13,color:'#666666'}}>AI таны тайлбараас ангилал, эрэмбийг автоматаар тодорхойлно</p>
@@ -4622,7 +4681,7 @@ function NewTicketModule({setTModule}) {
           <strong>BR-01:</strong> Тикет илгээсний дараа AI агуулгыг шинжлэн зохих инженерт ≤3 секундэд хуваарилна.
         </div>
         <div style={{display:'flex',gap:10}}>
-          <Btn variant="ghost" onClick={()=>setTModule("t-dashboard")} full>Болих</Btn>
+          <Btn variant="ghost" onClick={()=>setTModule("dashboard")} full>Болих</Btn>
           <Btn onClick={submit} full icon="send">Тикет илгээх</Btn>
         </div>
       </div>
@@ -4636,9 +4695,38 @@ function MyTicketsModule() {
   const [q, setQ]           = useState("");
   const [sel, setSel]       = useState(null);
   const [tList, setTList]   = useState(TICKETS);
+  const [showNew, setShowNew] = useState(false);
+  const [catFilter, setCatFilter] = useState("");
+  const [priFilter, setPriFilter] = useState("");
+  const [assignFilter, setAssignFilter] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
 
   const tabs = ["Бүгд","Нээлттэй","Явж байна","Шийдэгдсэн","Хаагдсан"];
-  const list = tList.filter(t=>(filter==="Бүгд"||t.status===filter)&&(!q||t.title.toLowerCase().includes(q.toLowerCase())||t.id.toLowerCase().includes(q.toLowerCase())));
+  const categories = [...new Set(tList.map(t=>t.category))];
+  const priorities = ["Critical","High","Medium","Low"];
+  const engineers = [...new Set(tList.filter(t=>t.assigned).map(t=>t.assigned))];
+
+  const list = tList.filter(t=>{
+    if(filter!=="Бүгд"&&t.status!==filter) return false;
+    if(q&&!t.title.toLowerCase().includes(q.toLowerCase())&&!t.id.toLowerCase().includes(q.toLowerCase())) return false;
+    if(catFilter&&t.category!==catFilter) return false;
+    if(priFilter&&t.priority!==priFilter) return false;
+    if(assignFilter){
+      if(assignFilter==="unassigned"&&t.assigned) return false;
+      if(assignFilter!=="unassigned"&&t.assigned!==assignFilter) return false;
+    }
+    if(dateFrom){
+      const created = t.created.replace(/\//g,"-").slice(0,10);
+      if(created<dateFrom) return false;
+    }
+    if(dateTo){
+      const created = t.created.replace(/\//g,"-").slice(0,10);
+      if(created>dateTo) return false;
+    }
+    return true;
+  });
 
   const confirm = () => {
     setTList(p=>p.map(t=>t.id===sel.id?{...t,status:"Хаагдсан",resolved:true}:t));
@@ -4652,28 +4740,274 @@ function MyTicketsModule() {
   const counts = {};
   tabs.forEach(tab=>{ counts[tab] = tab==="Бүгд" ? tList.length : tList.filter(t=>t.status===tab).length; });
 
+  const hasFilters = catFilter||priFilter||assignFilter||dateFrom||dateTo;
+  const clearFilters = ()=>{ setCatFilter(""); setPriFilter(""); setAssignFilter(""); setDateFrom(""); setDateTo(""); };
+
+  // ── Inline new ticket form ──
+  const [desc, setDesc] = useState("");
+  const [ai, setAi]     = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [manTitle, setManTitle] = useState("");
+  const [manCat, setManCat] = useState("");
+  const [manPri, setManPri] = useState("");
+
+  const aiSuggest = () => {
+    if(desc.length<10) return;
+    setLoading(true); setAi(null);
+    setTimeout(()=>{
+      const d = desc.toLowerCase();
+      const cat = d.includes("vpn")||d.includes("сүлжээ")||d.includes("интернэт") ? "Сүлжээний үйлчилгээ"
+        : d.includes("outlook")||d.includes("имэйл")||d.includes("excel") ? "Үйл ажиллагааны систем"
+        : d.includes("нууц үг")||d.includes("эрх") ? "МАБ"
+        : "Компьютер удирдлага";
+      const pri = d.includes("яаралтай")||d.includes("унасан")||d.includes("тасарч") ? "Critical"
+        : d.includes("нэвтрэх")||d.includes("ажиллахгүй") ? "High" : "Medium";
+      setAi({cat, pri, subcat: cat==="Сүлжээний үйлчилгээ"?"Network":"General IT"});
+      setLoading(false);
+    }, 1200);
+  };
+
+  const submitTicket = () => {
+    const newT = {
+      id:"TKT-2026-"+(43+Math.floor(Math.random()*100)),
+      title:manTitle||"Шинэ тикет",
+      category:ai?.cat||manCat||"Компьютер удирдлага",
+      catCode:"IT2601",subcat:ai?.subcat||"General IT",
+      priority:ai?.pri||manPri||"Medium",
+      status:"Нээлттэй",
+      created:new Date().toISOString().slice(0,10).replace(/-/g,"/")+" "+new Date().toTimeString().slice(0,5),
+      sla:new Date(Date.now()+3*86400000).toISOString().slice(0,10).replace(/-/g,"/")+" 18:00",
+      assigned:null,
+      service:"IT Support",
+      desc:desc,
+      resolved:false,
+    };
+    setTList(p=>[newT,...p]);
+    setDone(true);
+    setTimeout(()=>{ setDone(false); setShowNew(false); setDesc(""); setAi(null); setManTitle(""); setManCat(""); setManPri(""); }, 1500);
+  };
+
   return (
-    <div style={{display:'flex',flexDirection:'column',gap:18}}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-        <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Миний тикетүүд</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Бүх тикетийн жагсаалт ба статус</p></div>
+    <div style={{display:'flex',flexDirection:'column',gap:16}}>
+      {/* Header */}
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:10}}>
+        <div>
+          <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>{showNew?"Тикет үүсгэх":"Тикет"}</h2>
+          <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>{showNew?"Шинэ хүсэлт бүртгэх":`Нийт ${tList.length} тикет · ${counts["Нээлттэй"]||0} нээлттэй`}</p>
+        </div>
+        {showNew?(
+          <div style={{display:'flex',gap:8}}>
+            <button onClick={()=>setShowNew(false)} style={{padding:'8px 18px',background:'#fff',color:'#555555',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>Болих</button>
+            <button onClick={submitTicket} disabled={!manTitle.trim()} style={{padding:'8px 22px',background:manTitle.trim()?'#534AB7':'#E8ECEF',color:manTitle.trim()?'#fff':'#C8D0D8',border:'none',borderRadius:8,fontSize:13,fontWeight:700,cursor:manTitle.trim()?'pointer':'not-allowed',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>Үүсгэх</button>
+          </div>
+        ):(
+          <Btn icon="plus-lg" onClick={()=>setShowNew(true)}>Шинэ тикет</Btn>
+        )}
       </div>
 
-      <div style={{position:'relative'}}>
-        <Ic n="search" s={13} style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'#999999',pointerEvents:'none'}}/>
-        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Тикет хайх (TKT-2026-... эсвэл гарчгаар)"
-          style={{width:'100%',paddingLeft:36,paddingRight:12,paddingTop:9,paddingBottom:9,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}
-          onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
+      {/* Inline new ticket */}
+      {showNew&&(
+        <div style={{display:'flex',flexDirection:'column',gap:16}}>
+          {done?(
+            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:300,gap:16}}>
+              <div style={{width:56,height:56,background:'#D1FAE5',borderRadius:69,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n="check-lg" s={24} style={{color:'#059669'}}/></div>
+              <h3 style={{margin:0,fontSize:18,fontWeight:700,color:'#1A1A1A'}}>Тикет амжилттай бүртгэгдлээ!</h3>
+              <p style={{margin:0,fontSize:13,color:'#666666'}}>AI инженерт автоматаар хуваарилж байна...</p>
+            </div>
+          ):(
+            <div className="rg-detail3">
+              {/* Left column — form */}
+              <div style={{display:'flex',flexDirection:'column',gap:16}}>
+                {/* Хүсэлтийн мэдээлэл */}
+                <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:16}}>
+                    <Ic n="ticket-detailed" s={16} style={{color:'#534AB7'}}/>
+                    <span style={{fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Хүсэлтийн мэдээлэл</span>
+                    <span style={{fontSize:11,color:'#999999'}}>· Төрөл, гарчиг</span>
+                  </div>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14}}>
+                    <div>
+                      <label style={{fontSize:12,fontWeight:700,color:'#555555',display:'block',marginBottom:6}}>Тикет төрөл <span style={{color:'#DC2626'}}>●</span></label>
+                      <select value={ai?.cat||manCat} onChange={e=>setManCat(e.target.value)} style={{width:'100%',padding:'10px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:manCat||ai?.cat?'#1A1A1A':'#999999'}}>
+                        <option value="">--сонгох--</option>
+                        {["Компьютер удирдлага","Үйл ажиллагааны систем","Сүлжээний үйлчилгээ","МАБ","Дата менежмент","Интернэт үйлчилгээ"].map(c=><option key={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{fontSize:12,fontWeight:700,color:'#555555',display:'block',marginBottom:6}}>Тикет дэд төрөл</label>
+                      <select style={{width:'100%',padding:'10px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#999999'}}>
+                        <option value="">--сонгох--</option>
+                        <option>Email & Comm</option><option>Network</option><option>Hardware</option><option>Security</option><option>Storage</option><option>User Access</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div style={{marginBottom:14}}>
+                    <label style={{fontSize:12,fontWeight:700,color:'#555555',display:'block',marginBottom:6}}>Тикетийн товч тайлбар <span style={{color:'#DC2626'}}>●</span></label>
+                    <input value={manTitle} onChange={e=>setManTitle(e.target.value)} placeholder="Хүсэлтийн гарчиг оруулна уу"
+                      style={{width:'100%',padding:'10px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}
+                      onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
+                  </div>
+                </div>
+
+                {/* Дэлгэрэнгүй тайлбар */}
+                <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+                    <Ic n="text-paragraph" s={16} style={{color:'#534AB7'}}/>
+                    <span style={{fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Дэлгэрэнгүй тайлбар</span>
+                  </div>
+                  <textarea rows={8} value={desc} onChange={e=>setDesc(e.target.value)}
+                    placeholder="Асуудлаа дэлгэрэнгүй бичнэ үү..."
+                    style={{width:'100%',padding:'12px 14px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',resize:'vertical',color:'#1A1A1A',boxSizing:'border-box',lineHeight:1.7}}
+                    onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
+                  {desc.length>=10&&(
+                    <button onClick={aiSuggest} disabled={loading} style={{marginTop:8,padding:'7px 14px',background:'#7C3AED',color:'#fff',border:'none',borderRadius:8,cursor:'pointer',fontSize:12,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:5}}>
+                      {loading?<><div style={{width:10,height:10,border:'2px solid #fff5',borderTopColor:'#fff',borderRadius:69,animation:'spin .6s linear infinite'}}/> AI шинжилж байна...</>:<><Ic n="stars" s={12}/>AI-аар ангилал, эрэмбэ тодорхойлох</>}
+                    </button>
+                  )}
+                </div>
+
+                {/* Эрэмбэ — зүүн талд */}
+                <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+                    <Ic n="flag" s={16} style={{color:'#534AB7'}}/>
+                    <span style={{fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Эрэмбэ</span>
+                  </div>
+                  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+                    {[{v:"Critical",l:"Маш яаралтай",c:"#DC2626"},{v:"High",l:"Яаралтай",c:"#D97706"},{v:"Medium",l:"Дунд",c:"#534AB7"},{v:"Low",l:"Бага",c:"#059669"}].map(p=>(
+                      <button key={p.v} onClick={()=>setManPri(p.v)} style={{padding:'8px 16px',borderRadius:69,fontSize:12,fontWeight:600,border:`1.5px solid ${(ai?.pri||manPri)===p.v?p.c:'#E8E8E8'}`,background:(ai?.pri||manPri)===p.v?p.c+'18':'#fff',color:(ai?.pri||manPri)===p.v?p.c:'#667788',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:6,transition:'all .12s'}}>
+                        <span style={{width:7,height:7,borderRadius:69,background:p.c}}/>{p.l}
+                      </button>
+                    ))}
+                  </div>
+                  {ai&&<p style={{margin:'10px 0 0',fontSize:11,color:'#7C3AED',fontWeight:600}}>AI санал: {PRIORITY_META[ai.pri]?.label}</p>}
+                </div>
+              </div>
+
+              {/* Right column — sidebar cards */}
+              <div style={{display:'flex',flexDirection:'column',gap:12}}>
+                {/* Бөглөлт */}
+                <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'16px 18px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:10}}>
+                    <div style={{width:38,height:38,borderRadius:69,background:`conic-gradient(#534AB7 ${(manTitle?1:0)*20+(manCat||ai?.cat?1:0)*20+(desc?1:0)*20+(manPri||ai?.pri?1:0)*20}%,#E8ECEF 0)`,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <div style={{width:28,height:28,borderRadius:69,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#534AB7'}}>{(manTitle?1:0)*20+(manCat||ai?.cat?1:0)*20+(desc?1:0)*20+(manPri||ai?.pri?1:0)*20}%</div>
+                    </div>
+                    <div>
+                      <p style={{margin:0,fontSize:10,color:'#999999',fontWeight:700,textTransform:'uppercase',letterSpacing:.4}}>Бөглөлт</p>
+                      <p style={{margin:0,fontSize:13,fontWeight:700,color:'#1A1A1A'}}>{[manTitle,manCat||ai?.cat,desc,manPri||ai?.pri].filter(Boolean).length} / 5 талбар</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Холбоо барих */}
+                <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'16px 18px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:12}}>
+                    <Ic n="telephone" s={14} style={{color:'#534AB7'}}/>
+                    <span style={{fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Холбоо барих</span>
+                  </div>
+                  <label style={{fontSize:11,fontWeight:600,color:'#555555',display:'block',marginBottom:4}}>Утасны дугаар <span style={{color:'#DC2626'}}>●</span></label>
+                  <input defaultValue="75007777" style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}/>
+                </div>
+
+                {/* Хавсаргах файл */}
+                <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'16px 18px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+                    <div style={{display:'flex',alignItems:'center',gap:6}}>
+                      <Ic n="paperclip" s={14} style={{color:'#534AB7'}}/>
+                      <span style={{fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Хавсаргах файл</span>
+                    </div>
+                  </div>
+                  <div style={{border:'2px dashed #E8ECEF',borderRadius:8,padding:'18px 14px',textAlign:'center',cursor:'pointer',transition:'border-color .12s'}}
+                    onMouseEnter={e=>e.currentTarget.style.borderColor='#AFA9EC'} onMouseLeave={e=>e.currentTarget.style.borderColor='#E8ECEF'}>
+                    <Ic n="cloud-upload" s={20} style={{color:'#AFA9EC',marginBottom:4}}/>
+                    <p style={{margin:0,fontSize:12,color:'#999999'}}>Файл сонгох</p>
+                    <p style={{margin:'2px 0 0',fontSize:10,color:'#C8D0D8'}}>- Зураг, PDF, баримт бичиг</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {!showNew&&(<>
+      {/* Search + Filter toggle */}
+      <div style={{display:'flex',gap:8,alignItems:'center'}}>
+        <div style={{position:'relative',flex:1,minWidth:200}}>
+          <Ic n="search" s={13} style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'#999999',pointerEvents:'none'}}/>
+          <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Тикет хайх (ID, гарчиг)..."
+            style={{width:'100%',paddingLeft:36,paddingRight:12,paddingTop:8,paddingBottom:8,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}
+            onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
+        </div>
+        <button onClick={()=>setShowFilters(!showFilters)} style={{padding:'8px 12px',fontSize:12,fontWeight:600,color:showFilters||hasFilters?'#534AB7':'#667788',background:showFilters||hasFilters?'#EEEDFE':'#fff',border:`0.5px solid ${showFilters||hasFilters?'#AFA9EC':'#E8E8E8'}`,borderRadius:8,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:5,transition:'all .12s'}}>
+          <Ic n="funnel" s={12}/>Шүүлтүүр{hasFilters?" ·":""}
+          {hasFilters&&<span style={{minWidth:16,height:16,background:'#534AB7',color:'#fff',borderRadius:69,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700}}>{[catFilter,priFilter,assignFilter,dateFrom,dateTo].filter(Boolean).length}</span>}
+        </button>
+        {hasFilters&&<button onClick={clearFilters} style={{padding:'7px 10px',fontSize:11,fontWeight:600,color:'#DC2626',background:'#FEF2F2',border:'0.5px solid #FECACA',borderRadius:8,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:3}}><Ic n="x-lg" s={10}/>Цэвэрлэх</button>}
       </div>
 
-      <div style={{display:'flex',gap:4,background:'#F5F5F5',padding:4,borderRadius:8,width:'fit-content',flexWrap:'wrap'}}>
-        {tabs.map(tab=>(
-          <button key={tab} onClick={()=>setFilter(tab)} style={{padding:'6px 14px',borderRadius:8,fontSize:12,fontWeight:600,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:filter===tab?'#fff':'transparent',color:filter===tab?'#534AB7':'#667788',boxShadow:filter===tab?'0 1px 3px rgba(0,0,0,.06)':undefined,transition:'all .12s',display:'flex',alignItems:'center',gap:6}}>
-            {tab}
-            {counts[tab]>0&&<span style={{minWidth:18,height:18,background:filter===tab?'#EEEDFE':'#E8ECEF',color:filter===tab?'#3C3489':'#667788',borderRadius:69,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,padding:'0 4px'}}>{counts[tab]}</span>}
-          </button>
-        ))}
-      </div>
+      {/* Filter panel */}
+      {showFilters&&(
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'14px 16px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}}>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:10}}>
+            <div>
+              <label style={{fontSize:10,fontWeight:700,color:'#999999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}}>Статус</label>
+              <select value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:filter!=="Бүгд"?'#1A1A1A':'#999999'}}>
+                {tabs.map(t=><option key={t}>{t}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{fontSize:10,fontWeight:700,color:'#999999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}}>Эрэмбэ</label>
+              <select value={priFilter} onChange={e=>setPriFilter(e.target.value)} style={{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:priFilter?'#1A1A1A':'#999999'}}>
+                <option value="">Бүгд</option>
+                {priorities.map(p=><option key={p} value={p}>{PRIORITY_META[p]?.label||p}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{fontSize:10,fontWeight:700,color:'#999999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}}>Хариуцагч</label>
+              <select value={assignFilter} onChange={e=>setAssignFilter(e.target.value)} style={{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:assignFilter?'#1A1A1A':'#999999'}}>
+                <option value="">Бүгд</option>
+                <option value="unassigned">Хуваарилаагүй</option>
+                {engineers.map(e=><option key={e}>{e}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{fontSize:10,fontWeight:700,color:'#999999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}}>Ангилал</label>
+              <select value={catFilter} onChange={e=>setCatFilter(e.target.value)} style={{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:catFilter?'#1A1A1A':'#999999'}}>
+                <option value="">Бүгд</option>
+                {categories.map(c=><option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{fontSize:10,fontWeight:700,color:'#999999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}}>Огноо</label>
+              <div style={{display:'flex',gap:4,alignItems:'center'}}>
+                <input type="date" value={dateFrom} onChange={e=>setDateFrom(e.target.value)}
+                  style={{flex:1,padding:'6px 6px',fontSize:11,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:dateFrom?'#1A1A1A':'#999999'}}/>
+                <span style={{fontSize:10,color:'#C8D0D8'}}>—</span>
+                <input type="date" value={dateTo} onChange={e=>setDateTo(e.target.value)}
+                  style={{flex:1,padding:'6px 6px',fontSize:11,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:dateTo?'#1A1A1A':'#999999'}}/>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
+      {/* Status tabs (quick filter) */}
+      {!showFilters&&(
+        <div style={{display:'flex',gap:4,background:'#F5F5F5',padding:4,borderRadius:8,width:'fit-content',flexWrap:'wrap'}}>
+          {tabs.map(tab=>(
+            <button key={tab} onClick={()=>setFilter(tab)} style={{padding:'6px 14px',borderRadius:8,fontSize:12,fontWeight:600,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:filter===tab?'#fff':'transparent',color:filter===tab?'#534AB7':'#667788',boxShadow:filter===tab?'0 1px 3px rgba(0,0,0,.06)':undefined,transition:'all .12s',display:'flex',alignItems:'center',gap:6}}>
+              {tab}
+              {counts[tab]>0&&<span style={{minWidth:18,height:18,background:filter===tab?'#EEEDFE':'#E8ECEF',color:filter===tab?'#3C3489':'#667788',borderRadius:69,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,padding:'0 4px'}}>{counts[tab]}</span>}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Results count */}
+      <p style={{margin:0,fontSize:12,color:'#999999'}}>{list.length} тикет {hasFilters?"(шүүлтүүртэй)":""}</p>
+
+      {/* Ticket list */}
       <div style={{display:'flex',flexDirection:'column',gap:8}}>
         {list.map(t=>(
           <div key={t.id} onClick={()=>setSel(t)} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'14px 18px',cursor:'pointer',transition:'all .15s',boxShadow:'0 1px 3px rgba(0,0,0,.04)',display:'flex',alignItems:'center',gap:16}}
@@ -4698,6 +5032,7 @@ function MyTicketsModule() {
         {list.length===0&&<div style={{textAlign:'center',padding:40,color:'#999999',fontSize:13}}>Тикет олдсонгүй</div>}
       </div>
 
+      </>)}
       {sel&&<TicketDetailModal ticket={sel} onClose={()=>setSel(null)} onConfirm={confirm} onReopen={reopen}/>}
     </div>
   );
@@ -4712,11 +5047,11 @@ function KnowledgeBaseModule() {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:20}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-        <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Мэдлэгийн сан</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Гарын авлага болон асуудал шийдэх зааварчилгаа</p></div>
+        <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тусламж</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Гарын авлага, зааварчилгаа болон түгээмэл асуултууд</p></div>
       </div>
       <div style={{position:'relative',maxWidth:520}}>
         <Ic n="search" s={14} style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'#999999',pointerEvents:'none'}}/>
-        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Гарын авлага хайх..."
+        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Тусламж хайх..."
           style={{width:'100%',paddingLeft:36,paddingRight:12,paddingTop:10,paddingBottom:10,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}
           onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
       </div>
@@ -4785,6 +5120,361 @@ function TicketNotifsModule() {
   );
 }
 
+// ── HELPON AI CHATBOT ──────────────────────────────────────────
+function HelpOnChatbotModule({setTModule}) {
+  const [msgs, setMsgs] = useState([
+    {role:"bot",text:"Сайн байна уу! Би HelpON AI туслах. Танд юугаар туслах вэ?",time:"Одоо",suggestions:["VPN холбогдохгүй байна","Имэйл нээгдэхгүй","Принтер ажиллахгүй","Нууц үг сэргээх"]},
+  ]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const chatRef = React.useRef(null);
+
+  React.useEffect(()=>{
+    if(chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  },[msgs,typing]);
+
+  const KB_RESPONSES = {
+    "vpn":{answer:"VPN холболтын асуудлыг шийдэхийн тулд:\n\n1. VPN клиент програмаа дахин ачааллана уу\n2. Интернэт холболтоо шалгана уу\n3. VPN серверийн хаягийг шалгана уу: vpn.tavanbogd.com\n4. Firewall тохиргоог шалгана уу\n\nХэрэв асуудал арилахгүй бол тикет үүсгэнэ үү.",article:"VPN суулгах болон тохируулах заавар",deflect:true},
+    "имэйл":{answer:"Outlook/имэйлийн асуудлыг шийдэхийн тулд:\n\n1. Outlook програмаа хааж дахин нээнэ үү\n2. Интернэт холболтоо шалгана уу\n3. Нууц үгээ шинэчилж үзнэ үү\n4. Outlook → File → Account Settings → Repair хийнэ үү\n\nАсуудал хэвээр бол тикет үүсгэнэ үү.",article:"Outlook тохиргоо хийх алхам алхамаар",deflect:true},
+    "принтер":{answer:"Принтерийн асуудлыг шийдэхийн тулд:\n\n1. Принтер асаалттай, USB/сүлжээнд холбогдсон эсэхийг шалгана уу\n2. Control Panel → Devices and Printers → принтерээ олно уу\n3. Принтерийн жолоочийг дахин суулгана уу\n4. Print spooler service-ийг дахин ачааллана уу",article:"Принтерийн жолооч суулгах заавар",deflect:true},
+    "нууц үг":{answer:"Нууц үг сэргээхийн тулд:\n\n1. Нэвтрэх хуудсан дээр 'Нууц үг мартсан' товчийг дарна уу\n2. Бүртгэлтэй имэйл хаягаа оруулна уу\n3. Имэйлд ирсэн холбоосоор шинэ нууц үг тохируулна уу\n\nХэрэв бүртгэлтэй имэйл рүү хандах боломжгүй бол тикет үүсгэнэ үү.",article:"Нууц үгээ яаж сэргээх вэ?",deflect:true},
+  };
+
+  const findResponse = (text) => {
+    const lower = text.toLowerCase();
+    if(lower.includes("vpn")||lower.includes("холбогд")) return KB_RESPONSES["vpn"];
+    if(lower.includes("outlook")||lower.includes("имэйл")||lower.includes("email")||lower.includes("нээгдэх")) return KB_RESPONSES["имэйл"];
+    if(lower.includes("принтер")||lower.includes("printer")||lower.includes("хэвлэ")) return KB_RESPONSES["принтер"];
+    if(lower.includes("нууц")||lower.includes("password")||lower.includes("сэргээ")||lower.includes("эрх")) return KB_RESPONSES["нууц үг"];
+    return null;
+  };
+
+  const detectIntent = (text) => {
+    const lower = text.toLowerCase();
+    if(lower.includes("яаралтай")||lower.includes("унасан")||lower.includes("тасарсан")||lower.includes("бүгд")) return {intent:"ticket_create",priority:"Critical",confidence:0.95};
+    if(lower.includes("ажиллахгүй")||lower.includes("алдаа")||lower.includes("error")) return {intent:"ticket_create",priority:"High",confidence:0.88};
+    if(lower.includes("хэрхэн")||lower.includes("яаж")||lower.includes("заавар")||lower.includes("тохиргоо")) return {intent:"info_request",confidence:0.92};
+    return {intent:"general",confidence:0.75};
+  };
+
+  const send = (text) => {
+    const msg = text||input;
+    if(!msg.trim()) return;
+    setMsgs(p=>[...p,{role:"user",text:msg,time:"Одоо"}]);
+    setInput("");
+    setTyping(true);
+
+    setTimeout(()=>{
+      const kb = findResponse(msg);
+      const intent = detectIntent(msg);
+
+      if(kb && kb.deflect) {
+        setMsgs(p=>[...p,{
+          role:"bot",
+          text:kb.answer,
+          time:"Одоо",
+          article:kb.article,
+          intent:intent,
+          askCreate:true,
+        }]);
+      } else {
+        const cat = msg.toLowerCase().includes("сүлжээ")||msg.toLowerCase().includes("vpn")?"Сүлжээний үйлчилгээ"
+          :msg.toLowerCase().includes("outlook")||msg.toLowerCase().includes("имэйл")?"Үйл ажиллагааны систем"
+          :"Компьютер удирдлага";
+        setMsgs(p=>[...p,{
+          role:"bot",
+          text:"Таны асуудлыг ойлголоо. Мэдлэгийн сангаас яг тохирох зааварчилгаа олдсонгүй.\n\nТикет үүсгэж IT инженерт хандах уу?",
+          time:"Одоо",
+          intent:intent,
+          autoFill:{category:cat,priority:intent.priority||"Medium",confidence:intent.confidence},
+          askCreate:true,
+        }]);
+      }
+      setTyping(false);
+    }, 1500);
+  };
+
+  const createTicket = (msg) => {
+    setMsgs(p=>[...p,{role:"bot",text:"Тикет үүсгэх хуудас руу шилжүүлж байна...\n\nAI таны тайлбараас ангилал болон эрэмбийг автоматаар тодорхойлно.",time:"Одоо",isRedirect:true}]);
+    setTimeout(()=>setTModule("t-list"), 1200);
+  };
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',height:'calc(100vh - 120px)',maxWidth:680,margin:'0 auto'}}>
+      <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
+        <div style={{width:42,height:42,background:'linear-gradient(135deg,#7C3AED,#534AB7)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+          <Ic n="stars" s={20} style={{color:'#fff'}}/>
+        </div>
+        <div>
+          <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>HelpON AI</h2>
+          <p style={{margin:'2px 0 0',fontSize:12,color:'#059669',fontWeight:600}}>
+            <span style={{width:6,height:6,borderRadius:69,background:'#059669',display:'inline-block',marginRight:4}}/>
+            Онлайн — хариу хугацаа ~2 секунд
+          </p>
+        </div>
+      </div>
+
+      <div ref={chatRef} style={{flex:1,overflowY:'auto',display:'flex',flexDirection:'column',gap:12,paddingBottom:12}}>
+        {msgs.map((m,i) => (
+          <div key={i} style={{display:'flex',justifyContent:m.role==='user'?'flex-end':'flex-start',gap:8}}>
+            {m.role==='bot'&&<div style={{width:28,height:28,background:'#EEEDFE',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:2}}><Ic n="stars" s={13} style={{color:'#534AB7'}}/></div>}
+            <div style={{maxWidth:'80%',background:m.role==='user'?'#534AB7':'#fff',color:m.role==='user'?'#fff':'#1A1A1A',padding:'12px 16px',borderRadius:m.role==='user'?'16px 16px 4px 16px':'16px 16px 16px 4px',fontSize:13,lineHeight:1.6,border:m.role==='bot'?'0.5px solid #E8E8E8':'none',boxShadow:'0 1px 3px rgba(0,0,0,.04)',whiteSpace:'pre-line'}}>
+              {m.text}
+              {m.article&&(
+                <div style={{marginTop:10,padding:'8px 12px',background:'#F5F3FF',border:'0.5px solid #E9E4FD',borderRadius:8,cursor:'pointer'}} onClick={()=>setTModule("t-kb")}>
+                  <p style={{margin:0,fontSize:11,color:'#7C3AED',fontWeight:700}}>Холбогдох нийтлэл</p>
+                  <p style={{margin:'2px 0 0',fontSize:12,color:'#3C3489',fontWeight:600}}>{m.article}</p>
+                </div>
+              )}
+              {m.intent&&m.intent.intent!=="general"&&(
+                <div style={{marginTop:8,display:'flex',gap:6,flexWrap:'wrap'}}>
+                  {m.autoFill&&(
+                    <span style={{fontSize:10,background:'#EEEDFE',color:'#3C3489',padding:'2px 8px',borderRadius:69}}>AI: {m.autoFill.category} · {m.autoFill.priority} · {Math.round(m.autoFill.confidence*100)}%</span>
+                  )}
+                </div>
+              )}
+              {m.askCreate&&(
+                <div style={{marginTop:10,display:'flex',gap:6}}>
+                  <button onClick={()=>createTicket(m)} style={{padding:'6px 14px',background:'#534AB7',color:'#fff',border:'none',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:4}}>
+                    <Ic n="plus-circle" s={12}/> Тикет үүсгэх
+                  </button>
+                  <button onClick={()=>setMsgs(p=>[...p,{role:"bot",text:"За, өөр асуултад хариулахад бэлэн!",time:"Одоо"}])} style={{padding:'6px 14px',background:'#F5F5F5',color:'#555555',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>
+                    Хэрэггүй
+                  </button>
+                </div>
+              )}
+              {m.suggestions&&(
+                <div style={{marginTop:10,display:'flex',gap:6,flexWrap:'wrap'}}>
+                  {m.suggestions.map(s=>(
+                    <button key={s} onClick={()=>send(s)} style={{padding:'5px 12px',background:'#F5F3FF',color:'#534AB7',border:'0.5px solid #E9E4FD',borderRadius:69,fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',transition:'all .12s'}}
+                      onMouseEnter={e=>{e.currentTarget.style.background='#EEEDFE';}} onMouseLeave={e=>{e.currentTarget.style.background='#F5F3FF';}}>
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <p style={{margin:'6px 0 0',fontSize:10,color:m.role==='user'?'rgba(255,255,255,.6)':'#999999'}}>{m.time}</p>
+            </div>
+          </div>
+        ))}
+        {typing&&(
+          <div style={{display:'flex',gap:8,alignItems:'flex-start'}}>
+            <div style={{width:28,height:28,background:'#EEEDFE',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><Ic n="stars" s={13} style={{color:'#534AB7'}}/></div>
+            <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:'16px 16px 16px 4px',padding:'12px 20px',display:'flex',gap:4}}>
+              <span style={{width:6,height:6,background:'#AFA9EC',borderRadius:69,animation:'spin .8s ease-in-out infinite'}}/>
+              <span style={{width:6,height:6,background:'#AFA9EC',borderRadius:69,animation:'spin .8s ease-in-out infinite .15s'}}/>
+              <span style={{width:6,height:6,background:'#AFA9EC',borderRadius:69,animation:'spin .8s ease-in-out infinite .3s'}}/>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div style={{display:'flex',gap:8,padding:'12px 0 0',borderTop:'0.5px solid #E8E8E8'}}>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}}}
+          placeholder="Асуудлаа бичнэ үү..."
+          style={{flex:1,padding:'10px 16px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:12,outline:'none',color:'#1A1A1A'}}
+          onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
+        <button onClick={()=>send()} disabled={!input.trim()} style={{width:40,height:40,background:input.trim()?'#534AB7':'#E8ECEF',border:'none',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',cursor:input.trim()?'pointer':'not-allowed',transition:'all .15s',flexShrink:0}}>
+          <Ic n="send" s={16} style={{color:input.trim()?'#fff':'#C8D0D8'}}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── AGENT DASHBOARD (Платформ Админ) ──────────────────────────
+function AgentDashboardModule() {
+  const agents = [
+    {name:"Д. Мөнхбат",avatar:"ДМ",open:2,inprog:1,resolved:1,avgTime:"2ц 15мин",csat:4.6,color:"#534AB7"},
+    {name:"Б. Амарбаясгалан",avatar:"БА",open:1,inprog:1,resolved:2,avgTime:"1ц 45мин",csat:4.8,color:"#059669"},
+    {name:"Г. Батболд",avatar:"ГБ",open:1,inprog:1,resolved:0,avgTime:"3ц 20мин",csat:4.2,color:"#D97706"},
+  ];
+  const slaData = [
+    {label:"SLA Response",value:"94%",target:"95%",ok:false,icon:"clock",iconBg:"#FEF3C7",iconColor:"#D97706"},
+    {label:"SLA Resolution",value:"89%",target:"90%",ok:false,icon:"check-circle",iconBg:"#FEE2E2",iconColor:"#DC2626"},
+    {label:"Дундаж шийдвэрлэх",value:"2.4ц",target:"4ц",ok:true,icon:"speedometer2",iconBg:"#D1FAE5",iconColor:"#059669"},
+    {label:"Нийт тикет (энэ сар)",value:"47",target:"—",ok:true,icon:"ticket-detailed",iconBg:"#EEEDFE",iconColor:"#534AB7"},
+  ];
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Agent Dashboard</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>IT инженерүүдийн ачаалал, SLA, гүйцэтгэл</p></div>
+      <div className="rg-4">
+        {slaData.map(k=>(
+          <div key={k.label} style={{background:'#fff',border:'0.5px solid #EBEBEB',borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <p style={{margin:0,fontSize:11,color:'#999999',fontWeight:500}}>{k.label}</p>
+              <div style={{width:28,height:28,borderRadius:6,background:k.iconBg,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={k.icon} s={13} style={{color:k.iconColor}}/></div>
+            </div>
+            <div>
+              <p style={{margin:'0 0 3px',fontSize:22,fontWeight:600,color:k.ok?'#1A1A1A':'#DC2626',lineHeight:1}}>{k.value}</p>
+              <p style={{margin:0,fontSize:11,color:k.ok?'#059669':'#DC2626',fontWeight:500}}>Зорилт: {k.target}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px'}}>
+        <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Инженерүүдийн ачаалал</p>
+        <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          {agents.map(a=>(
+            <div key={a.name} style={{display:'flex',alignItems:'center',gap:14,padding:'12px 14px',background:'#FAFAFA',borderRadius:8,border:'0.5px solid #EBEBEB'}}>
+              <div style={{width:36,height:36,borderRadius:69,background:a.color+'22',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,color:a.color,flexShrink:0}}>{a.avatar}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <p style={{margin:'0 0 2px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>{a.name}</p>
+                <div style={{display:'flex',gap:10,fontSize:11,color:'#999999'}}>
+                  <span>Нээлттэй: <strong style={{color:'#3C3489'}}>{a.open}</strong></span>
+                  <span>Явж байна: <strong style={{color:'#D97706'}}>{a.inprog}</strong></span>
+                  <span>Шийдсэн: <strong style={{color:'#059669'}}>{a.resolved}</strong></span>
+                </div>
+              </div>
+              <div style={{textAlign:'right',flexShrink:0}}>
+                <p style={{margin:'0 0 2px',fontSize:12,fontWeight:600,color:'#1A1A1A'}}>Дундаж: {a.avgTime}</p>
+                <p style={{margin:0,fontSize:11,color:'#D97706'}}>CSAT: {a.csat}/5</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px'}}>
+        <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>SLA зөрчлийн анхааруулга</p>
+        {TICKETS.filter(t=>t.status!=="Хаагдсан"&&t.priority==="Critical").map(t=>(
+          <div key={t.id} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 0',borderBottom:'0.5px solid #EBEBEB'}}>
+            <div style={{width:8,height:8,borderRadius:69,background:'#DC2626',flexShrink:0}}/>
+            <div style={{flex:1}}><p style={{margin:0,fontSize:12,fontWeight:600,color:'#1A1A1A'}}>{t.title}</p><p style={{margin:'1px 0 0',fontSize:11,color:'#999999'}}>{t.id} · SLA: {t.sla.split(" ")[0]}</p></div>
+            <PBadge priority={t.priority}/>
+          </div>
+        ))}
+        {TICKETS.filter(t=>t.status!=="Хаагдсан"&&t.priority==="Critical").length===0&&<p style={{margin:0,fontSize:12,color:'#999999'}}>SLA зөрчил байхгүй</p>}
+      </div>
+    </div>
+  );
+}
+
+// ── TICKET ANALYTICS (Платформ Админ) ─────────────────────────
+function TicketAnalyticsModule() {
+  const monthly = [{m:"1-р сар",created:32,resolved:28},{m:"2-р сар",created:41,resolved:38},{m:"3-р сар",created:47,resolved:42}];
+  const byCat = [{cat:"Компьютер удирдлага",count:18,pct:38},{cat:"Сүлжээний үйлчилгээ",count:10,pct:21},{cat:"Үйл ажиллагааны систем",count:8,pct:17},{cat:"МАБ",count:6,pct:13},{cat:"Бусад",count:5,pct:11}];
+  const max = Math.max(...monthly.map(m=>Math.max(m.created,m.resolved)));
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тикет тайлан</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Гүйцэтгэл, ангилал, trend шинжилгээ</p></div>
+      <div className="rg-dash">
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px'}}>
+          <p style={{margin:'0 0 16px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Сарын тикет trend</p>
+          <div style={{display:'flex',gap:20,alignItems:'flex-end',height:160}}>
+            {monthly.map(m=>(
+              <div key={m.m} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+                <div style={{display:'flex',gap:4,alignItems:'flex-end',width:'100%',justifyContent:'center'}}>
+                  <div style={{width:'35%',background:'#EEEDFE',borderRadius:'4px 4px 0 0',height:`${(m.created/max)*120}px`}}/>
+                  <div style={{width:'35%',background:'#D1FAE5',borderRadius:'4px 4px 0 0',height:`${(m.resolved/max)*120}px`}}/>
+                </div>
+                <p style={{margin:0,fontSize:10,color:'#999999',textAlign:'center'}}>{m.m}</p>
+                <p style={{margin:0,fontSize:10,color:'#555555'}}>{m.created}/{m.resolved}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{display:'flex',gap:16,justifyContent:'center',marginTop:10}}>
+            <span style={{fontSize:11,color:'#3C3489',display:'flex',alignItems:'center',gap:4}}><span style={{width:10,height:10,background:'#EEEDFE',borderRadius:2}}/>Үүсгэсэн</span>
+            <span style={{fontSize:11,color:'#059669',display:'flex',alignItems:'center',gap:4}}><span style={{width:10,height:10,background:'#D1FAE5',borderRadius:2}}/>Шийдсэн</span>
+          </div>
+        </div>
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px'}}>
+          <p style={{margin:'0 0 16px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Ангиллаар</p>
+          {byCat.map(c=>(
+            <div key={c.cat} style={{marginBottom:10}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}>
+                <span style={{fontSize:12,color:'#555555'}}>{c.cat}</span>
+                <span style={{fontSize:11,fontWeight:600,color:'#1A1A1A'}}>{c.count} ({c.pct}%)</span>
+              </div>
+              <div style={{height:6,background:'#F5F5F5',borderRadius:3}}><div style={{height:6,background:'#534AB7',borderRadius:3,width:`${c.pct}%`}}/></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="rg-3">
+        {[{l:"CSAT дундаж",v:"4.5/5",s:"Өмнөх сараас +0.2",sc:"#059669",icon:"star",ib:"#D1FAE5",ic:"#059669"},
+          {l:"Эхний хариу",v:"22 мин",s:"Зорилт: 30 мин",sc:"#059669",icon:"reply",ib:"#EEEDFE",ic:"#534AB7"},
+          {l:"Deflection rate",v:"38%",s:"KB-аас шийдэгдсэн",sc:"#534AB7",icon:"shield-check",ib:"#EDE9FE",ic:"#7C3AED"}
+        ].map(k=>(
+          <div key={k.l} style={{background:'#fff',border:'0.5px solid #EBEBEB',borderRadius:8,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <p style={{margin:0,fontSize:11,color:'#999999',fontWeight:500}}>{k.l}</p>
+              <div style={{width:28,height:28,borderRadius:6,background:k.ib,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={k.icon} s={13} style={{color:k.ic}}/></div>
+            </div>
+            <div><p style={{margin:'0 0 3px',fontSize:22,fontWeight:600,color:'#1A1A1A',lineHeight:1}}>{k.v}</p><p style={{margin:0,fontSize:11,color:k.sc,fontWeight:500}}>{k.s}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── CANNED RESPONSES (Платформ Админ) ─────────────────────────
+function CannedResponsesModule() {
+  const [responses] = useState([
+    {id:1,title:"VPN холболтын стандарт хариу",category:"Сүлжээ",body:"VPN холболтын асуудлыг шийдэхийн тулд дараах алхмуудыг хийнэ үү:\n1. VPN клиент програмаа дахин ачааллана уу\n2. vpn.tavanbogd.com хаягийг шалгана уу\n3. Firewall тохиргоог шалгана уу",uses:42,updated:"2026/03/15"},
+    {id:2,title:"Нууц үг сэргээх заавар",category:"МАБ",body:"Нууц үг сэргээхийн тулд:\n1. Нэвтрэх хуудас → 'Нууц үг мартсан'\n2. Бүртгэлтэй имэйл оруулах\n3. Имэйлд ирсэн холбоосоор шинэчлэх",uses:67,updated:"2026/03/10"},
+    {id:3,title:"Outlook тохиргоо",category:"Систем",body:"Outlook 365 тохиргоо:\n1. File → Account Settings → Repair\n2. Хэрэв ажиллахгүй бол profile устгаад дахин үүсгэнэ үү",uses:31,updated:"2026/03/12"},
+    {id:4,title:"Принтер суулгах",category:"Тоног төхөөрөмж",body:"Принтерийн жолооч суулгах:\n1. Control Panel → Devices and Printers\n2. Add a printer → Network\n3. Жолоочийг сонгох",uses:19,updated:"2026/03/08"},
+  ]);
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+        <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Бэлэн хариултууд</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Macro / template хариултын сан</p></div>
+        <Btn icon="plus-lg">Шинэ хариулт</Btn>
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:8}}>
+        {responses.map(r=>(
+          <div key={r.id} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'16px 20px',cursor:'pointer',transition:'all .12s'}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor='#AFA9EC';}} onMouseLeave={e=>{e.currentTarget.style.borderColor='#E8E8E8';}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:6}}>
+              <div>
+                <p style={{margin:'0 0 3px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>{r.title}</p>
+                <span style={{fontSize:11,background:'#F5F5F5',color:'#666666',padding:'2px 8px',borderRadius:69}}>{r.category}</span>
+              </div>
+              <div style={{textAlign:'right',flexShrink:0}}>
+                <p style={{margin:0,fontSize:11,color:'#999999'}}>{r.uses} удаа ашигласан</p>
+                <p style={{margin:'2px 0 0',fontSize:10,color:'#C8D0D8'}}>Шинэчлэгдсэн: {r.updated}</p>
+              </div>
+            </div>
+            <p style={{margin:0,fontSize:12,color:'#666666',lineHeight:1.5,whiteSpace:'pre-line',maxHeight:40,overflow:'hidden'}}>{r.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── SLA CONFIG (Платформ Админ) ───────────────────────────────
+function SLAConfigModule() {
+  const slaRules = [
+    {pri:"Critical",label:"Маш яаралтай",response:"15 мин",resolution:"2 цаг",escalate:"IT Director",color:"#DC2626",bg:"#FEE2E2"},
+    {pri:"High",label:"Яаралтай",response:"30 мин",resolution:"4 цаг",escalate:"IT Manager",color:"#D97706",bg:"#FEF3C7"},
+    {pri:"Medium",label:"Дунд",response:"2 цаг",resolution:"1 ажлын өдөр",escalate:"Team Lead",color:"#534AB7",bg:"#EEEDFE"},
+    {pri:"Low",label:"Бага",response:"4 цаг",resolution:"3 ажлын өдөр",escalate:"—",color:"#059669",bg:"#D1FAE5"},
+  ];
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>SLA тохиргоо</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Хариу хугацаа, шийдвэрлэх хугацаа, escalation дүрмүүд</p></div>
+      <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,overflow:'hidden'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr',gap:0,padding:'12px 20px',background:'#F5F5F5',borderBottom:'0.5px solid #E8E8E8'}}>
+          {["Эрэмбэ","Response SLA","Resolution SLA","Escalation",""].map(h=>(
+            <span key={h} style={{fontSize:11,fontWeight:700,color:'#999999',textTransform:'uppercase',letterSpacing:.4}}>{h}</span>
+          ))}
+        </div>
+        {slaRules.map((r,i)=>(
+          <div key={r.pri} style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr 1fr',gap:0,padding:'14px 20px',borderBottom:i<3?'0.5px solid #EBEBEB':'none',alignItems:'center'}}>
+            <span style={{fontSize:12,fontWeight:700,color:r.color,display:'flex',alignItems:'center',gap:6}}><span style={{width:8,height:8,borderRadius:69,background:r.color}}/>{r.label}</span>
+            <span style={{fontSize:13,fontWeight:600,color:'#1A1A1A'}}>{r.response}</span>
+            <span style={{fontSize:13,fontWeight:600,color:'#1A1A1A'}}>{r.resolution}</span>
+            <span style={{fontSize:12,color:'#555555'}}>{r.escalate}</span>
+            <button style={{padding:'5px 10px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',width:'fit-content'}}>Засах</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── NAVIGATION GROUPS ─────────────────────────────────────────
 // Харилцагчийн портал (охин компани) — no permissions
 const NAV_GROUPS_CLIENT = [
@@ -4798,12 +5488,15 @@ const NAV_GROUPS_CLIENT = [
     {key:"billing",   label:"Төлбөр", icon:"receipt",           badge:2},
     {key:"reports",   label:"Тайлан", icon:"bar-chart-line"},
   ]},
+  {label:"IT ДЭМЖЛЭГ", items:[
+    {key:"t-list",      label:"Тикет",           icon:"ticket-detailed"},
+    {key:"t-kb",        label:"Тусламж",          icon:"question-circle"},
+  ]},
   {label:"ТОХИРГОО", items:[
     {key:"users", label:"Хэрэглэгчид", icon:"people"},
     {key:"logs",  label:"Лог бүртгэл", icon:"clock-history"},
   ]},
 ];
-// Платформ Админ (backoffice) — includes permissions
 const NAV_GROUPS_ADMIN = [
   {label:"ҮНДСЭН", items:[
     {key:"dashboard", label:"Хянах самбар", icon:"grid-1x2"},
@@ -4815,81 +5508,69 @@ const NAV_GROUPS_ADMIN = [
     {key:"billing",   label:"Төлбөр", icon:"receipt",           badge:2},
     {key:"reports",   label:"Тайлан", icon:"bar-chart-line"},
   ]},
+  {label:"IT ДЭМЖЛЭГ", items:[
+    {key:"t-list",        label:"Тикет",              icon:"ticket-detailed"},
+    {key:"t-agents",      label:"Agent Dashboard",    icon:"headset"},
+    {key:"t-analytics",   label:"Тикет тайлан",       icon:"graph-up"},
+    {key:"t-canned",      label:"Бэлэн хариулт",      icon:"chat-square-text"},
+    {key:"t-sla",         label:"SLA тохиргоо",        icon:"speedometer2"},
+    {key:"t-kb",          label:"Тусламж",             icon:"question-circle"},
+  ]},
   {label:"ТОХИРГОО", items:[
     {key:"users",       label:"Хэрэглэгчид",     icon:"people"},
     {key:"permissions", label:"Эрхийн тохиргоо", icon:"shield-check"},
     {key:"logs",        label:"Лог бүртгэл",      icon:"clock-history"},
   ]},
 ];
-const NAV_GROUPS = NAV_GROUPS_ADMIN; // backward compat
-const NAV_GROUPS_TICKET = [
-  {label:"ТИКЕТ", items:[
-    {key:"t-dashboard", label:"Хянах самбар",   icon:"grid-1x2"},
-    {key:"t-new",       label:"Тикет үүсгэх",   icon:"plus-circle"},
-    {key:"t-list",      label:"Миний тикетүүд", icon:"list-ul"},
-    {key:"t-kb",        label:"Мэдлэгийн сан",  icon:"book"},
-    {key:"t-notif", label:"Мэдэгдэл",      icon:"bell", badge:3},
-  ]},
-];
+const NAV_GROUPS = NAV_GROUPS_ADMIN;
+const NAV_GROUPS_TICKET = NAV_GROUPS_ADMIN;
 const PORTALS = [
   {id:"client", label:"Харилцагчийн портал",   sub:"Миний үйлчилгээ, захиалга",    icon:"briefcase",   color:"#534AB7", bg:"#EEEDFE"},
-  {id:"vendor", label:"Вендор Портал", sub:"Борлуулалт, бүтээгдэхүүн",     icon:"shop",        color:"#7C3AED", bg:"#F5F3FF"},
   {id:"admin",  label:"Платформ Админ",sub:"Систем, байгууллагын хяналт",  icon:"shield-check", color:"#DC2626", bg:"#FEF2F2"},
 ];
 const ALL_ITEMS = NAV_GROUPS_ADMIN.flatMap(g=>g.items);
-const ALL_TICKET_ITEMS = NAV_GROUPS_TICKET.flatMap(g=>g.items);
+const ALL_TICKET_ITEMS = ALL_ITEMS;
 
 // ── ROOT APP ──────────────────────────────────────────────────
 function App() {
-  const [sys, setSys]         = useState("subscription"); // "subscription" | "ticket"
-  const [portal, setPortal]   = useState("client"); // "client" | "vendor" | "admin"
+  const [portal, setPortal]   = useState("client");
   const [portalOpen, setPortalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [active, setActive]   = useState("dashboard");
-  const [tModule, setTModule] = useState("t-dashboard");
   const [notifOpen, setNotif] = useState(false);
   const [jumpOrderId, setJumpOrderId] = useState(null);
   const navigateToOrder = (orderId) => { setActive("orders"); setJumpOrderId(orderId); };
   const unread = notifications.filter(n=>n.type!=="success").length;
   const tUnread = TICKET_NOTIFS.filter(n=>n.type!=="success").length;
+  const totalUnread = unread + tUnread;
 
-  const curLabel = sys==="subscription"
-    ? ALL_ITEMS.find(i=>i.key===active)?.label
-    : ALL_TICKET_ITEMS.find(i=>i.key===tModule)?.label;
+  const curLabel = ALL_ITEMS.find(i=>i.key===active)?.label;
 
-  const switchSys = (s) => { setSys(s); setNotif(false); };
+  const setTModule = (key) => setActive(key);
 
   const renderModule = () => {
-    if(sys==="subscription") {
-      const MODULES = {
-        dashboard:<DashboardModule onNavigate={setActive} onNavigateToOrder={navigateToOrder}/>, services:<ServiceModule onNavigate={setActive}/>, orders:<OrderModule onNavigate={setActive} jumpOrderId={jumpOrderId} onJumpDone={()=>setJumpOrderId(null)}/>,
-        reports:<ReportModule/>, contracts:<ContractModule/>, billing:<BillingModule/>,
-        permissions:<PermissionsModule/>, users:<UserModule/>, logs:<AuditLogModule/>,
-      };
-      return MODULES[active];
-    }
-    const setT = setTModule;
-    const TMODULES = {
-      "t-dashboard":<TicketDashboardModule setTModule={setT}/>,
-      "t-new":<NewTicketModule setTModule={setT}/>,
+    const MODULES = {
+      dashboard:<DashboardModule onNavigate={setActive} onNavigateToOrder={navigateToOrder}/>, services:<ServiceModule onNavigate={setActive}/>, orders:<OrderModule onNavigate={setActive} jumpOrderId={jumpOrderId} onJumpDone={()=>setJumpOrderId(null)}/>,
+      reports:<ReportModule/>, contracts:<ContractModule/>, billing:<BillingModule/>,
+      permissions:<PermissionsModule/>, users:<UserModule/>, logs:<AuditLogModule/>,
       "t-list":<MyTicketsModule/>,
+      "t-agents":<AgentDashboardModule/>,
+      "t-analytics":<TicketAnalyticsModule/>,
+      "t-canned":<CannedResponsesModule/>,
+      "t-sla":<SLAConfigModule/>,
       "t-kb":<KnowledgeBaseModule/>,
-      "t-notif":<TicketNotifsModule/>,
     };
-    return TMODULES[tModule]||<TicketDashboardModule setTModule={setT}/>;
+    return MODULES[active]||<DashboardModule onNavigate={setActive} onNavigateToOrder={navigateToOrder}/>;
   };
 
   const switchPortal = (pid) => {
     setPortal(pid);
     setPortalOpen(false);
-    // If switching to client portal while on permissions page, reset to dashboard
     if(pid==="client" && active==="permissions") setActive("dashboard");
   };
-  const clientNavGroups = sys==="subscription" ? NAV_GROUPS_CLIENT : NAV_GROUPS_TICKET;
-  const adminNavGroups  = sys==="subscription" ? NAV_GROUPS_ADMIN  : NAV_GROUPS_TICKET;
-  const activeNavGroups = portal==="admin" ? adminNavGroups : clientNavGroups;
-  const activeKey = sys==="subscription" ? active : tModule;
-  const setActiveKey = sys==="subscription" ? setActive : setTModule;
+  const activeNavGroups = portal==="admin" ? NAV_GROUPS_ADMIN : NAV_GROUPS_CLIENT;
+  const activeKey = active;
+  const setActiveKey = setActive;
   const curPortal = PORTALS.find(p=>p.id===portal)||PORTALS[0];
 
   return (
@@ -4912,20 +5593,6 @@ function App() {
           </div>
         </div>
 
-        {/* System Toggle */}
-        <div style={{padding:'10px 10px 8px',borderBottom:'0.5px solid #E8E8E8'}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',background:'#F5F5F5',borderRadius:6,padding:3,gap:3}}>
-            {[{id:"subscription",label:"Захиалга",icon:"box-seam"},{id:"ticket",label:"IT Дэмжлэг",icon:"headset"}].map(s=>(
-              <button key={s.id} onClick={()=>switchSys(s.id)} style={{display:'flex',alignItems:'center',justifyContent:'center',gap:5,padding:'7px 4px',borderRadius:7,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',fontSize:11,fontWeight:700,transition:'all .15s',
-                background:sys===s.id?'#fff':'transparent',
-                color:sys===s.id?'#534AB7':'#667788',
-                boxShadow:sys===s.id?'0 1px 4px rgba(0,0,0,.08)':undefined}}>
-                <Ic n={s.icon} s={12}/>{s.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Nav */}
         <nav style={{flex:1,padding:'8px 8px',overflowY:'auto',display:'flex',flexDirection:'column',gap:2}}>
           {activeNavGroups.map(g=>(
@@ -4933,16 +5600,17 @@ function App() {
               <p style={{margin:'8px 8px 3px',fontSize:10,fontWeight:500,color:'#999999',letterSpacing:.8,textTransform:'uppercase'}}>{g.label}</p>
               {g.items.map(item=>{
                 const on = activeKey===item.key;
-                const activeColor = sys==="subscription" ? '#3C3489' : '#5B21B6';
-                const activeBg    = sys==="subscription" ? '#EEEDFE' : '#EDE9FE';
+                const isTicket = item.key.startsWith('t-');
+                const activeColor = isTicket ? '#5B21B6' : '#3C3489';
+                const activeBg    = isTicket ? '#EDE9FE' : '#EEEDFE';
                 return (
                   <button key={item.key} onClick={()=>{setActiveKey(item.key);setSidebarOpen(false);}} style={{width:'100%',display:'flex',alignItems:'center',gap:9,padding:'7px 10px 7px 8px',borderRadius:6,border:'none',borderLeft:on?'2px solid #534AB7':'2px solid transparent',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',fontSize:13,fontWeight:on?600:400,background:on?activeBg:'transparent',color:on?activeColor:'#555555',textAlign:'left',marginBottom:1,transition:'all .12s'}}
                     onMouseEnter={e=>{if(!on){e.currentTarget.style.background='#F5F5F5';e.currentTarget.style.color='#1A1A1A';}}}
                     onMouseLeave={e=>{if(!on){e.currentTarget.style.background='transparent';e.currentTarget.style.color='#555555';}}}>
                     <Ic n={item.icon} s={15}/>
                     <span style={{flex:1}}>{item.label}</span>
-                    {item.badge>0&&!on&&<span style={{minWidth:18,height:18,background:'#EF4444',color:'#fff',borderRadius:69,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,padding:'0 4px'}}>{item.badge}</span>}
-                    {on&&<Ic n="chevron-right" s={11} style={{color:sys==="subscription"?'#AFA9EC':'#C4B5FD'}}/>}
+                    {item.badge&&!on&&<span style={{minWidth:18,height:18,background:item.badge==="AI"?'#7C3AED':'#EF4444',color:'#fff',borderRadius:69,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,padding:'0 4px'}}>{item.badge}</span>}
+                    {on&&<Ic n="chevron-right" s={11} style={{color:isTicket?'#C4B5FD':'#AFA9EC'}}/>}
                   </button>
                 );
               })}
@@ -5016,15 +5684,15 @@ function App() {
                 onMouseEnter={e=>{e.currentTarget.style.background='#EEEDFE';e.currentTarget.style.borderColor='#AFA9EC';}}
                 onMouseLeave={e=>{e.currentTarget.style.background='#F4F6F8';e.currentTarget.style.borderColor='#E8ECEF';}}>
                 <Ic n="bell" s={15}/>
-                {(sys==="subscription"?unread:tUnread)>0&&<span style={{position:'absolute',top:-5,right:-5,width:17,height:17,background:'#EF4444',color:'#fff',borderRadius:69,fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid #fff'}}>{sys==="subscription"?unread:tUnread}</span>}
+                {totalUnread>0&&<span style={{position:'absolute',top:-5,right:-5,width:17,height:17,background:'#EF4444',color:'#fff',borderRadius:69,fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid #fff'}}>{totalUnread}</span>}
               </button>
               {notifOpen&&(
-                <div style={{position:'absolute',top:42,right:0,width:320,background:'#fff',borderRadius:8,boxShadow:'0 12px 24px -4px rgba(0,0,0,.12)',border:'0.5px solid #E8E8E8',zIndex:99,overflow:'hidden'}}>
+                <div style={{position:'absolute',top:42,right:0,width:320,background:'#fff',borderRadius:8,boxShadow:'0 12px 24px -4px rgba(0,0,0,.12)',border:'0.5px solid #E8E8E8',zIndex:99,overflow:'hidden',maxHeight:400,overflowY:'auto'}}>
                   <div style={{padding:'12px 16px',borderBottom:'0.5px solid #E8E8E8',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                     <span style={{fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Мэдэгдэл</span>
                     <span style={{fontSize:11,color:'#534AB7',cursor:'pointer'}}>Бүгдийг уншсан</span>
                   </div>
-                  {(sys==="subscription"?notifications:TICKET_NOTIFS).map(n=>(
+                  {[...notifications,...TICKET_NOTIFS].map(n=>(
                     <div key={n.id} style={{padding:'11px 16px',borderBottom:'0.5px solid #EBEBEB',cursor:'pointer',display:'flex',gap:10,alignItems:'flex-start',transition:'background .1s'}}
                       onMouseEnter={e=>e.currentTarget.style.background='#F4F6F8'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
                       <span style={{width:7,height:7,borderRadius:69,marginTop:4,flexShrink:0,background:{danger:'#EF4444',warning:'#D97706',info:'#534AB7',success:'#10B981'}[n.type]}}/>
@@ -5045,6 +5713,65 @@ function App() {
           {renderModule()}
         </main>
       </div>
+
+      {/* Floating HelpON AI Chatbot */}
+      {(()=>{
+        const [chatOpen, setChatOpen] = useState(false);
+        const [msgs, setMsgs] = useState([{role:"bot",text:"Сайн байна уу! Би HelpON AI туслах. Танд юугаар туслах вэ?",time:"Одоо",suggestions:["VPN холбогдохгүй","Имэйл нээгдэхгүй","Принтер ажиллахгүй","Нууц үг сэргээх"]}]);
+        const [inp, setInp] = useState("");
+        const [typing, setTyping] = useState(false);
+        const cRef = React.useRef(null);
+        React.useEffect(()=>{if(cRef.current)cRef.current.scrollTop=cRef.current.scrollHeight;},[msgs,typing]);
+
+        const send=(text)=>{
+          const m=text||inp;if(!m.trim())return;
+          setMsgs(p=>[...p,{role:"user",text:m,time:"Одоо"}]);setInp("");setTyping(true);
+          setTimeout(()=>{
+            const lower=m.toLowerCase();
+            const kb=lower.includes("vpn")||lower.includes("холбогд")?"VPN-ийн асуудлыг шийдэхийн тулд:\n1. VPN клиент дахин ачааллана уу\n2. Интернэт шалгана уу\n3. vpn.tavanbogd.com хаягийг шалгана уу"
+              :lower.includes("имэйл")||lower.includes("outlook")?"Outlook асуудлыг шийдэхийн тулд:\n1. Outlook хааж дахин нээнэ үү\n2. Нууц үгээ шинэчлэнэ үү\n3. File → Account Settings → Repair"
+              :lower.includes("принтер")||lower.includes("printer")?"Принтерийн асуудлыг шийдэхийн тулд:\n1. Принтер асаалттай эсэхийг шалгана уу\n2. Жолоочийг дахин суулгана уу"
+              :lower.includes("нууц")||lower.includes("password")?"Нууц үг сэргээхийн тулд:\n1. Нэвтрэх хуудсан дээр 'Нууц үг мартсан' дарна уу\n2. Имэйлээр ирсэн холбоосоор шинэчилнэ үү"
+              :null;
+            setMsgs(p=>[...p,{role:"bot",text:kb||"Таны асуудлыг ойлголоо. Тикет үүсгэж IT инженерт хандах уу?",time:"Одоо",askCreate:!kb}]);
+            setTyping(false);
+          },1200);
+        };
+
+        return (<>
+          {chatOpen&&(
+            <div style={{position:'fixed',bottom:80,right:24,width:360,height:480,background:'#fff',borderRadius:16,boxShadow:'0 12px 40px rgba(0,0,0,.15)',border:'0.5px solid #E8E8E8',display:'flex',flexDirection:'column',zIndex:999,overflow:'hidden'}}>
+              <div style={{padding:'14px 16px',background:'linear-gradient(135deg,#534AB7,#7C3AED)',display:'flex',alignItems:'center',gap:10}}>
+                <div style={{width:32,height:32,background:'rgba(255,255,255,.2)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n="stars" s={16} style={{color:'#fff'}}/></div>
+                <div style={{flex:1}}><p style={{margin:0,fontSize:14,fontWeight:700,color:'#fff'}}>HelpON AI</p><p style={{margin:0,fontSize:11,color:'rgba(255,255,255,.7)'}}>Онлайн</p></div>
+                <button onClick={()=>setChatOpen(false)} style={{background:'rgba(255,255,255,.15)',border:'none',borderRadius:8,width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><Ic n="x-lg" s={12} style={{color:'#fff'}}/></button>
+              </div>
+              <div ref={cRef} style={{flex:1,overflowY:'auto',padding:12,display:'flex',flexDirection:'column',gap:8}}>
+                {msgs.map((m,i)=>(
+                  <div key={i} style={{display:'flex',justifyContent:m.role==='user'?'flex-end':'flex-start',gap:6}}>
+                    {m.role==='bot'&&<div style={{width:24,height:24,background:'#EEEDFE',borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:2}}><Ic n="stars" s={11} style={{color:'#534AB7'}}/></div>}
+                    <div style={{maxWidth:'78%',background:m.role==='user'?'#534AB7':'#F5F5F5',color:m.role==='user'?'#fff':'#1A1A1A',padding:'10px 14px',borderRadius:m.role==='user'?'14px 14px 4px 14px':'14px 14px 14px 4px',fontSize:12,lineHeight:1.6,whiteSpace:'pre-line'}}>
+                      {m.text}
+                      {m.suggestions&&<div style={{marginTop:8,display:'flex',gap:4,flexWrap:'wrap'}}>{m.suggestions.map(s=><button key={s} onClick={()=>send(s)} style={{padding:'4px 10px',background:'#fff',color:'#534AB7',border:'0.5px solid #E9E4FD',borderRadius:69,fontSize:10,fontWeight:600,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>{s}</button>)}</div>}
+                      {m.askCreate&&<div style={{marginTop:8}}><button onClick={()=>{setChatOpen(false);setActive("t-list");}} style={{padding:'5px 12px',background:'#534AB7',color:'#fff',border:'none',borderRadius:8,fontSize:11,fontWeight:700,cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:4}}><Ic n="plus-circle" s={11}/>Тикет үүсгэх</button></div>}
+                    </div>
+                  </div>
+                ))}
+                {typing&&<div style={{display:'flex',gap:6}}><div style={{width:24,height:24,background:'#EEEDFE',borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n="stars" s={11} style={{color:'#534AB7'}}/></div><div style={{background:'#F5F5F5',borderRadius:'14px 14px 14px 4px',padding:'10px 16px',display:'flex',gap:3}}><span style={{width:5,height:5,background:'#AFA9EC',borderRadius:69,animation:'spin .8s ease-in-out infinite'}}/><span style={{width:5,height:5,background:'#AFA9EC',borderRadius:69,animation:'spin .8s ease-in-out infinite .15s'}}/><span style={{width:5,height:5,background:'#AFA9EC',borderRadius:69,animation:'spin .8s ease-in-out infinite .3s'}}/></div></div>}
+              </div>
+              <div style={{padding:'8px 12px',borderTop:'0.5px solid #E8E8E8',display:'flex',gap:6}}>
+                <input value={inp} onChange={e=>setInp(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"){e.preventDefault();send();}}} placeholder="Асуудлаа бичнэ үү..."
+                  style={{flex:1,padding:'8px 12px',fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:10,outline:'none',color:'#1A1A1A'}}/>
+                <button onClick={()=>send()} disabled={!inp.trim()} style={{width:34,height:34,background:inp.trim()?'#534AB7':'#E8ECEF',border:'none',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',cursor:inp.trim()?'pointer':'not-allowed',flexShrink:0}}><Ic n="send" s={13} style={{color:inp.trim()?'#fff':'#C8D0D8'}}/></button>
+              </div>
+            </div>
+          )}
+          <button onClick={()=>setChatOpen(!chatOpen)} style={{position:'fixed',bottom:24,right:24,width:52,height:52,background:'linear-gradient(135deg,#534AB7,#7C3AED)',border:'none',borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',boxShadow:'0 6px 20px rgba(83,74,183,.35)',zIndex:998,transition:'transform .15s'}}
+            onMouseEnter={e=>e.currentTarget.style.transform='scale(1.08)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>
+            <Ic n={chatOpen?"x-lg":"stars"} s={20} style={{color:'#fff'}}/>
+          </button>
+        </>);
+      })()}
     </div>
   );
 }
