@@ -101,6 +101,13 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans
 </div>
 <div id="root"></div>
 
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  var ld = document.getElementById("loading");
+  if(ld) ld.innerHTML = '<div style="color:red;font-family:monospace;padding:20px;text-align:left;max-width:900px"><h3>JS Error:</h3><pre style="white-space:pre-wrap;word-break:break-all">'+msg+'\nLine: '+line+' Col: '+col+'\n'+(err&&err.stack||'')+'</pre></div>';
+};
+</script>
+
 <script type="text/babel">
 const { useState } = React;
 
@@ -112,18 +119,24 @@ const Ic = ({ n, s=16, style:st }) => (
 // ── Helpers ──────────────────────────────────────────────────
 const fmt = n => new Intl.NumberFormat("mn-MN").format(Math.round(n)) + "₮";
 
-// ── Shared Permissions Data ────────────────────────────────────
-const PERM_MODS    = ["Хянах самбар","Үйлчилгээ","Захиалга","Гэрээ","Төлбөр","Тайлан","Лог бүртгэл"];
-const PERM_ACTIONS = ["Харах","Засах","Үүсгэх","Батлах","Татах"];
+// ── Shared Permissions Data (Keycloak RBAC — 7 TechOn Roles) ──
+const PERM_MODS    = ["Хянах самбар","Үйлчилгээ","Захиалга","Тайлан","Гэрээ","Төлбөр","Эрхийн тохиргоо","Хэрэглэгчид","Админ тохиргоо","Тикет & AI","Тайлан & Аналитик","Мэдлэгийн сан"];
+const PERM_ACTIONS = ["Харах","Засах","Үүсгэх","Батлах","Устгах"];
 const PERM_ROLES = [
-  {id:1,name:"Захирал",  bg:"#EDE9FE",color:"#5B21B6",
-   perms:[[true,false,false,true,false],[true,false,true,false,false],[true,false,true,true,false],[true,false,false,true,true],[true,false,false,false,true],[true,false,false,false,true],[false,false,false,false,false]]},
-  {id:2,name:"Нягтлан",  bg:"#EAF3DE",color:"#3B6D11",
-   perms:[[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,true],[true,true,true,true,true],[true,true,false,false,true],[true,false,false,false,false]]},
-  {id:3,name:"Менежер",  bg:"#EEEDFE",color:"#3C3489",
-   perms:[[true,false,false,false,false],[true,false,true,false,false],[true,true,true,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,true],[false,false,false,false,false]]},
-  {id:4,name:"Ажилтан",  bg:"#FAEEDA",color:"#633806",
-   perms:[[true,false,false,false,false],[true,false,false,false,false],[true,false,true,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false]]},
+  {id:1,name:"Super Admin",  bg:"#FEE2E2",color:"#991B1B",
+   perms:[[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true],[true,true,true,true,true]]},
+  {id:2,name:"Компани Админ",  bg:"#EDE9FE",color:"#5B21B6",
+   perms:[[true,true,false,false,false],[true,true,true,false,false],[true,true,true,true,false],[true,true,false,false,false],[true,true,true,true,false],[true,true,true,true,false],[true,true,true,false,false],[true,true,true,false,true],[true,true,true,false,false],[true,true,true,false,false],[true,true,false,false,false],[true,true,true,false,false]]},
+  {id:3,name:"Борлуулалт",  bg:"#EEEDFE",color:"#3C3489",
+   perms:[[true,false,false,false,false],[true,true,true,false,false],[true,true,true,true,false],[true,false,false,false,false],[true,true,true,true,false],[true,false,false,false,false],[false,false,false,false,false],[true,false,false,false,false],[false,false,false,false,false],[true,false,true,false,false],[false,false,false,false,false],[true,false,false,false,false]]},
+  {id:4,name:"IT Инженер",  bg:"#EAF3DE",color:"#3B6D11",
+   perms:[[true,false,false,false,false],[true,true,false,false,false],[true,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[true,true,true,false,false],[true,true,false,false,false],[true,true,true,false,false]]},
+  {id:5,name:"Нягтлан",  bg:"#FAEEDA",color:"#633806",
+   perms:[[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,true,false,true,false],[true,false,false,false,false],[true,true,true,true,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[true,false,false,false,false],[true,true,false,false,false],[true,false,false,false,false]]},
+  {id:6,name:"Хэрэглэгч",  bg:"#F4F6F8",color:"#555555",
+   perms:[[true,false,false,false,false],[true,false,false,false,false],[true,false,true,false,false],[false,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[true,false,true,false,false],[false,false,false,false,false],[true,false,false,false,false]]},
+  {id:7,name:"Viewer",  bg:"#F0F2F5",color:"#667788",
+   perms:[[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false],[true,false,false,false,false]]},
 ];
 
 const STATUS_META = {
@@ -879,11 +892,11 @@ const notifications = [
   {id:4,type:"success",message:"НЭ-2026-0287 төлбөр амжилттай баталгаажлаа",time:"5 өдрийн өмнө"},
 ];
 const users = [
-  {id:1,name:"Д.Мөнхбат",email:"munkbat@tbgpetroleum.mn",role:"Захирал",status:"Идэвхтэй",lastLogin:"2026/03/16"},
-  {id:2,name:"Б.Оюунчимэг",email:"oyunaa@tbgpetroleum.mn",role:"Нягтлан",status:"Идэвхтэй",lastLogin:"2026/03/15"},
-  {id:3,name:"Г.Батсүх",email:"batsukh@tbgpetroleum.mn",role:"Менежер",status:"Идэвхтэй",lastLogin:"2026/03/14"},
-  {id:4,name:"Н.Дэлгэрмаа",email:"delger@tbgpetroleum.mn",role:"Нягтлан",status:"Идэвхгүй",lastLogin:"2026/02/20"},
-  {id:5,name:"О.Батжаргал",email:"batjargal@tbgpetroleum.mn",role:"Менежер",status:"Урилга илгээсэн",lastLogin:"—"},
+  {id:1,name:"Д.Мөнхбат",email:"munkbat@tbgpetroleum.mn",role:"Захирал",status:"Идэвхтэй",lastLogin:"2026/03/16",company:"Таван Богд Фүүдс",position:"Гүйцэтгэх захирал",dept:"Удирдлага"},
+  {id:2,name:"Б.Оюунчимэг",email:"oyunaa@tbgpetroleum.mn",role:"Нягтлан",status:"Идэвхтэй",lastLogin:"2026/03/15",company:"Таван Богд Фүүдс",position:"Ахлах нягтлан бодогч",dept:"Санхүү"},
+  {id:3,name:"Г.Батсүх",email:"batsukh@tbgpetroleum.mn",role:"Менежер",status:"Идэвхтэй",lastLogin:"2026/03/14",company:"Таван Богд Трэйд",position:"Борлуулалтын менежер",dept:"Борлуулалт"},
+  {id:4,name:"Н.Дэлгэрмаа",email:"delger@tbgpetroleum.mn",role:"Нягтлан",status:"Идэвхгүй",lastLogin:"2026/02/20",company:"Таван Богд Моторс",position:"Нягтлан бодогч",dept:"Санхүү"},
+  {id:5,name:"О.Батжаргал",email:"batjargal@tbgpetroleum.mn",role:"Менежер",status:"Урилга илгээсэн",lastLogin:"—",company:"Таван Богд Трэйд",position:"IT менежер",dept:"МТ"},
 ];
 const auditLogs = [
   {id:1,user:"Б.Оюунтуяа",role:"Нягтлан бодогч",action:"INV-2026-028 нэхэмжлэх татаж авлаа",module:"Төлбөр",type:"read",ip:"192.168.1.45",time:"2026/03/18 10:15"},
@@ -2300,10 +2313,10 @@ function ReportModule() {
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:18}}>
-      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тайлан</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Санхүүгийн болон гүйцэтгэлийн тайлан</p></div>
+      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тайлан</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Модуль 4: Санхүүгийн & гүйцэтгэлийн тайлан (FR-12~15)</p></div>
       {/* Tabs */}
       <div style={{display:'flex',gap:0,borderBottom:'2px solid #E8ECEF'}}>
-        {[["financial","Санхүүгийн тайлан"],["performance","Гүйцэтгэлийн тайлан"]].map(([k,l])=>(
+        {[["financial","Санхүүгийн тайлан"],["performance","Гүйцэтгэлийн тайлан"],["subscription","Захиалгын тайлан"]].map(([k,l])=>(
           <button key={k} onClick={()=>{setTab(k);setMF("Бүх сар");setSF("Бүх төлөв");setCF("Бүх чиглэл");}} style={{padding:'10px 20px',fontSize:13,fontWeight:600,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'transparent',color:tab===k?'#534AB7':'#667788',borderBottom:tab===k?'2px solid #534AB7':'2px solid transparent',marginBottom:-2}}>{l}</button>
         ))}
       </div>
@@ -2468,6 +2481,74 @@ function ReportModule() {
           <button style={{padding:'8px 16px',borderRadius:8,border:'0.5px solid #FECACA',background:'#FEF2F2',cursor:'pointer',fontSize:12,fontWeight:700,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',color:'#DC2626',whiteSpace:'nowrap'}}>
             Маргаан үүсгэх / Буцаах
           </button>
+        </div>
+      </>)}
+
+      {/* ── SUBSCRIPTION REPORT TAB (MRR, ARR, Churn) ── */}
+      {tab==="subscription"&&(<>
+        <div className="rg-4">
+          {[
+            {label:"MRR (Сарын орлого)",value:"₮67.4M",change:"+9.3%",icon:"graph-up-arrow",color:"#059669",bg:"#D1FAE5"},
+            {label:"ARR (Жилийн орлого)",value:"₮808.8M",change:"+12%",icon:"calendar2-check",color:"#534AB7",bg:"#EEEDFE"},
+            {label:"Churn Rate",value:"2.1%",change:"-0.4%",icon:"arrow-down-circle",color:"#059669",bg:"#D1FAE5"},
+            {label:"ARPU",value:"₮185K",change:"+8%",icon:"person-lines-fill",color:"#D97706",bg:"#FEF3C7"},
+          ].map(s=>(
+            <div key={s.label} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:16}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                <div style={{width:36,height:36,borderRadius:8,background:s.bg,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={s.icon} s={16} style={{color:s.color}}/></div>
+                <span style={{fontSize:12,color:'#666666'}}>{s.label}</span>
+              </div>
+              <div style={{display:'flex',alignItems:'baseline',gap:8}}>
+                <span style={{fontSize:22,fontWeight:700,color:'#1A1A1A'}}>{s.value}</span>
+                <span style={{fontSize:12,fontWeight:600,color:s.change.startsWith('-')&&s.label==="Churn Rate"?'#059669':s.change.startsWith('+')?'#059669':'#DC2626'}}>{s.change}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+          <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Захиалга → Орлогын урсгал (6 сар)</p>
+          <div style={{display:'flex',alignItems:'flex-end',gap:8,height:160}}>
+            {monthlyData.map(m=>(
+              <div key={m.month} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+                <span style={{fontSize:11,fontWeight:700,color:'#1A1A1A'}}>{fmt(m.total)}</span>
+                <div style={{width:'100%',background:'linear-gradient(to top,#534AB7,#7C3AED)',borderRadius:'4px 4px 0 0',height:`${(m.total/70000000)*120}px`,minHeight:20,transition:'height .3s'}}/>
+                <span style={{fontSize:11,color:'#666666'}}>{m.month} сар</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="rg-dash">
+          <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+            <p style={{margin:'0 0 12px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Гэрээний гүйцэтгэл</p>
+            {[
+              {label:"Идэвхтэй гэрээ",val:12,color:"#059669"},
+              {label:"Сунгалтад ирж буй (30 хоног)",val:3,color:"#D97706"},
+              {label:"Дууссан / Цуцалсан",val:2,color:"#DC2626"},
+            ].map(g=>(
+              <div key={g.label} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 0',borderBottom:'0.5px solid #EBEBEB'}}>
+                <span style={{fontSize:13,color:'#555555'}}>{g.label}</span>
+                <span style={{fontSize:16,fontWeight:700,color:g.color}}>{g.val}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+            <p style={{margin:'0 0 12px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Төлбөрийн байдал</p>
+            {[
+              {label:"Төлөгдсөн",val:"₮245.6M",pct:78,color:"#059669"},
+              {label:"Хүлээгдэж буй",val:"₮52.3M",pct:16,color:"#D97706"},
+              {label:"Хугацаа хэтэрсэн",val:"₮18.5M",pct:6,color:"#DC2626"},
+            ].map(p=>(
+              <div key={p.label} style={{marginBottom:10}}>
+                <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+                  <span style={{fontSize:12,color:'#555555'}}>{p.label}</span>
+                  <span style={{fontSize:12,fontWeight:700,color:p.color}}>{p.val} ({p.pct}%)</span>
+                </div>
+                <div style={{height:6,background:'#F4F6F8',borderRadius:69,overflow:'hidden'}}>
+                  <div style={{width:`${p.pct}%`,height:'100%',background:p.color,borderRadius:69,transition:'width .5s'}}/>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </>)}
 
@@ -4070,7 +4151,7 @@ function UserModule() {
     {bg:"#FCE7F3",color:"#DB2777"},
   ];
 
-  const roles = ["Захирал","Нягтлан","Менежер","Ажилтан"];
+  const roles = ["Super Admin","Компани Админ","Борлуулалт","IT Инженер","Нягтлан","Хэрэглэгч","Viewer"];
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:18}}>
@@ -4099,6 +4180,8 @@ function UserModule() {
         <thead>
           <tr>
             <TH>Нэр</TH>
+            <TH>Компани / Хэлтэс</TH>
+            <TH>Алба тушаал</TH>
             <TH>И-мэйл</TH>
             <TH>Дүр</TH>
             <TH>Статус</TH>
@@ -4124,6 +4207,13 @@ function UserModule() {
                   </div>
                 </div>
               </TD>
+              <TD>
+                <div>
+                  <span style={{fontSize:12,fontWeight:600,color:'#1A1A1A'}}>{u.company||"—"}</span>
+                  {u.dept&&<p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>{u.dept}</p>}
+                </div>
+              </TD>
+              <TD><span style={{fontSize:12,color:'#555555'}}>{u.position||"—"}</span></TD>
               <TD><span style={{color:'#666666',fontSize:12}}>{u.email}</span></TD>
               <TD>
                 <span style={{fontSize:11,background:'#EEEDFE',color:'#3C3489',padding:'3px 10px',borderRadius:69,fontWeight:600}}>{u.role}</span>
@@ -4159,13 +4249,45 @@ function UserModule() {
 
       {/* Invite modal */}
       {invite&&(
-        <Modal title="Хэрэглэгч урих" onClose={()=>setInvite(false)}>
+        <Modal title="Хэрэглэгч урих" onClose={()=>setInvite(false)} width={560}>
           <div style={{display:'flex',flexDirection:'column',gap:14}}>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
               <div><label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Овог *</label><Input placeholder="Овог" onChange={()=>{}}/></div>
               <div><label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Нэр *</label><Input placeholder="Нэр" onChange={()=>{}}/></div>
             </div>
             <div><label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>И-мэйл *</label><Input type="email" placeholder="name@tbgnura.mn" onChange={()=>{}}/></div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Охин компани *</label>
+                <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option value="">Компани сонгох</option>
+                  <option>Таван Богд Фүүдс</option>
+                  <option>Таван Богд Трэйд</option>
+                  <option>Таван Богд Моторс</option>
+                  <option>Таван Богд Проперти</option>
+                </select>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Хэлтэс / Алба</label>
+                <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option value="">Хэлтэс сонгох</option>
+                  <option>Мэдээллийн технологи</option>
+                  <option>  ↳ Дэд бүтэц</option>
+                  <option>  ↳ Хөгжүүлэлт</option>
+                  <option>  ↳ Дэмжлэг</option>
+                  <option>Санхүү</option>
+                  <option>  ↳ Нягтлан бодох</option>
+                  <option>  ↳ Төлөвлөлт</option>
+                  <option>Борлуулалт</option>
+                  <option>  ↳ B2B борлуулалт</option>
+                  <option>  ↳ B2C борлуулалт</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Алба тушаал *</label>
+              <Input placeholder="Жишээ: Ахлах нягтлан бодогч, IT инженер..." onChange={()=>{}}/>
+            </div>
             <div>
               <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Системийн дүр *</label>
               <select value={inviteRole} onChange={e=>setInvRole(e.target.value)} style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A'}}>
@@ -4234,7 +4356,7 @@ function UserModule() {
 
       {/* Edit modal */}
       {editUser&&(
-        <Modal title="Хэрэглэгч засах" onClose={()=>setEditU(null)}>
+        <Modal title="Хэрэглэгч засах" onClose={()=>setEditU(null)} width={560}>
           <div style={{display:'flex',flexDirection:'column',gap:14}}>
             <div style={{display:'flex',alignItems:'center',gap:12,background:'#F5F5F5',borderRadius:8,padding:12}}>
               <div style={{width:40,height:40,borderRadius:69,background:'#EEEDFE',color:'#534AB7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,flexShrink:0}}>
@@ -4243,6 +4365,7 @@ function UserModule() {
               <div>
                 <p style={{margin:'0 0 1px',fontSize:13,fontWeight:600,color:'#1A1A1A'}}>{editUser.name}</p>
                 <p style={{margin:0,fontSize:12,color:'#666666'}}>{editUser.email}</p>
+                {editUser.company&&<p style={{margin:'2px 0 0',fontSize:11,color:'#534AB7'}}>{editUser.company} · {editUser.dept||""}</p>}
               </div>
             </div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
@@ -4254,6 +4377,34 @@ function UserModule() {
                 <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Нэр *</label>
                 <input value={editFirst} onChange={e=>setEF(e.target.value)} style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}/>
               </div>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Охин компани</label>
+                <select defaultValue={editUser.company||""} style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option value="">Компани сонгох</option>
+                  <option>Таван Богд Фүүдс</option>
+                  <option>Таван Богд Трэйд</option>
+                  <option>Таван Богд Моторс</option>
+                  <option>Таван Богд Проперти</option>
+                </select>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Хэлтэс / Алба</label>
+                <select defaultValue={editUser.dept||""} style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option value="">Хэлтэс сонгох</option>
+                  <option>Удирдлага</option>
+                  <option>Мэдээллийн технологи</option>
+                  <option>Санхүү</option>
+                  <option>Борлуулалт</option>
+                  <option>Маркетинг</option>
+                  <option>Хүний нөөц</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Алба тушаал</label>
+              <input defaultValue={editUser.position||""} placeholder="Жишээ: Ахлах нягтлан бодогч" style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}/>
             </div>
             <div>
               <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Системийн дүр *</label>
@@ -5047,13 +5198,21 @@ function KnowledgeBaseModule() {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:20}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-        <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тусламж</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Гарын авлага, зааварчилгаа болон түгээмэл асуултууд</p></div>
+        <div>
+          <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Мэдлэгийн сан</h2>
+          <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Модуль 12: RAG-powered Knowledge Base · pgvector семантик хайлт</p>
+        </div>
+        <div style={{display:'flex',gap:6}}>
+          <span style={{display:'flex',alignItems:'center',gap:4,padding:'5px 12px',background:'#EDE9FE',borderRadius:69,fontSize:11,fontWeight:700,color:'#7C3AED'}}><Ic n="stars" s={12}/>AI хайлт</span>
+          <span style={{display:'flex',alignItems:'center',gap:4,padding:'5px 12px',background:'#D1FAE5',borderRadius:69,fontSize:11,fontWeight:700,color:'#059669'}}><Ic n="database" s={12}/>pgvector</span>
+        </div>
       </div>
+      {/* AI-powered search */}
       <div style={{position:'relative',maxWidth:520}}>
-        <Ic n="search" s={14} style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'#999999',pointerEvents:'none'}}/>
-        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Тусламж хайх..."
-          style={{width:'100%',paddingLeft:36,paddingRight:12,paddingTop:10,paddingBottom:10,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}
-          onFocus={e=>e.target.style.borderColor='#534AB7'} onBlur={e=>e.target.style.borderColor='#E8E8E8'}/>
+        <Ic n="stars" s={14} style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'#7C3AED',pointerEvents:'none'}}/>
+        <input value={q} onChange={e=>setQ(e.target.value)} placeholder="AI семантик хайлт... (жишээ: VPN холбогдохгүй)"
+          style={{width:'100%',paddingLeft:36,paddingRight:12,paddingTop:10,paddingBottom:10,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#fff',border:'1px solid #E9E4FD',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}}
+          onFocus={e=>e.target.style.borderColor='#7C3AED'} onBlur={e=>e.target.style.borderColor='#E9E4FD'}/>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
         {cats.map(c=>{
@@ -5351,12 +5510,21 @@ function AgentDashboardModule() {
 
 // ── TICKET ANALYTICS (Платформ Админ) ─────────────────────────
 function TicketAnalyticsModule() {
+  const [atab, setAtab] = useState("overview");
   const monthly = [{m:"1-р сар",created:32,resolved:28},{m:"2-р сар",created:41,resolved:38},{m:"3-р сар",created:47,resolved:42}];
   const byCat = [{cat:"Компьютер удирдлага",count:18,pct:38},{cat:"Сүлжээний үйлчилгээ",count:10,pct:21},{cat:"Үйл ажиллагааны систем",count:8,pct:17},{cat:"МАБ",count:6,pct:13},{cat:"Бусад",count:5,pct:11}];
   const max = Math.max(...monthly.map(m=>Math.max(m.created,m.resolved)));
   return (
     <div style={{display:'flex',flexDirection:'column',gap:18}}>
-      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Тикет тайлан</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Гүйцэтгэл, ангилал, trend шинжилгээ</p></div>
+      <div><h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>IT Аналитик</h2><p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>Модуль 11: IT Operations Analytics (FR-50~55) — Гүйцэтгэл, SLA, AI үр ашиг</p></div>
+      {/* Sub-tabs */}
+      <div style={{display:'flex',gap:0,borderBottom:'2px solid #E8ECEF'}}>
+        {[["overview","Ерөнхий"],["ai","AI үр ашиг"],["sla-trend","SLA Trend"]].map(([k,l])=>(
+          <button key={k} onClick={()=>setAtab(k)} style={{padding:'8px 16px',fontSize:12,fontWeight:600,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'transparent',color:atab===k?'#7C3AED':'#667788',borderBottom:atab===k?'2px solid #7C3AED':'2px solid transparent',marginBottom:-2}}>{l}</button>
+        ))}
+      </div>
+      {/* Overview tab */}
+      {atab==="overview"&&(<>
       <div className="rg-dash">
         <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'20px 24px'}}>
           <p style={{margin:'0 0 16px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Сарын тикет trend</p>
@@ -5404,6 +5572,264 @@ function TicketAnalyticsModule() {
           </div>
         ))}
       </div>
+      </>)}
+
+      {/* AI Effectiveness tab */}
+      {atab==="ai"&&(<>
+        <div className="rg-4">
+          {[
+            {l:"AI ангилалын нарийвчлал",v:"92%",s:"NLP model v2.1",icon:"stars",bg:"#EDE9FE",color:"#7C3AED"},
+            {l:"Авто-чиглүүлэлт",v:"87%",s:"Зөв team-д оноосон",icon:"signpost-split",bg:"#D1FAE5",color:"#059669"},
+            {l:"KB Deflection",v:"38%",s:"Тикет үүсгэлгүй шийдсэн",icon:"book",bg:"#EEEDFE",color:"#534AB7"},
+            {l:"AI хариултын хугацаа",v:"1.2 сек",s:"RAG + pgvector",icon:"lightning",bg:"#FEF3C7",color:"#D97706"},
+          ].map(k=>(
+            <div key={k.l} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:16}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                <div style={{width:36,height:36,borderRadius:8,background:k.bg,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={k.icon} s={16} style={{color:k.color}}/></div>
+                <span style={{fontSize:12,color:'#666666'}}>{k.l}</span>
+              </div>
+              <p style={{margin:0,fontSize:24,fontWeight:700,color:'#1A1A1A'}}>{k.v}</p>
+              <p style={{margin:'4px 0 0',fontSize:11,color:'#059669',fontWeight:600}}>{k.s}</p>
+            </div>
+          ))}
+        </div>
+        <div className="rg-dash">
+          <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+            <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>AI ангилалын матриц (Confusion Matrix)</p>
+            <div style={{display:'grid',gridTemplateColumns:'120px repeat(4,1fr)',gap:0,border:'0.5px solid #E8E8E8',borderRadius:8,overflow:'hidden'}}>
+              <div style={{padding:8,background:'#F5F5F5',fontSize:10,fontWeight:700,color:'#999999',textAlign:'center'}}>Бодит\Таамаг</div>
+              {["Компьютер","Сүлжээ","Програм","МАБ"].map(h=><div key={h} style={{padding:8,background:'#F5F5F5',fontSize:10,fontWeight:600,color:'#534AB7',textAlign:'center'}}>{h}</div>)}
+              {[
+                ["Компьютер",45,2,1,0],
+                ["Сүлжээ",1,38,0,1],
+                ["Програм",2,0,52,1],
+                ["МАБ",0,1,0,18],
+              ].map(row=>(
+                <React.Fragment key={row[0]}>
+                  <div style={{padding:8,background:'#F5F5F5',fontSize:11,fontWeight:600,color:'#555555'}}>{row[0]}</div>
+                  {row.slice(1).map((v,i)=>(
+                    <div key={i} style={{padding:8,textAlign:'center',fontSize:13,fontWeight:700,color:row[0]===["Компьютер","Сүлжээ","Програм","МАБ"][i]?'#059669':'#DC2626',background:row[0]===["Компьютер","Сүлжээ","Програм","МАБ"][i]?'#F0FDF4':'#fff'}}>{v}</div>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+            <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>AI NLP Intent Detection</p>
+            {[
+              {intent:"ticket_create",label:"Тикет үүсгэх хүсэлт",count:89,pct:95,color:"#534AB7"},
+              {intent:"info_request",label:"Мэдээлэл хүсэлт",count:56,pct:92,color:"#059669"},
+              {intent:"complaint",label:"Гомдол",count:12,pct:88,color:"#D97706"},
+              {intent:"password_reset",label:"Нууц үг сэргээх",count:34,pct:97,color:"#7C3AED"},
+            ].map(i=>(
+              <div key={i.intent} style={{marginBottom:12}}>
+                <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+                  <span style={{fontSize:12,fontWeight:600,color:'#555555'}}>{i.label}</span>
+                  <span style={{fontSize:11,fontWeight:700,color:i.color}}>{i.count} ({i.pct}%)</span>
+                </div>
+                <div style={{height:6,background:'#F5F5F5',borderRadius:69,overflow:'hidden'}}>
+                  <div style={{height:'100%',width:`${i.pct}%`,background:i.color,borderRadius:69}}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── FR-46: Intelligent Priority Leveling — NLP дэлгэрэнгүй ── */}
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,overflow:'hidden'}}>
+          <div style={{background:'linear-gradient(135deg,#1A1A2E 0%,#534AB7 100%)',color:'#fff',padding:'18px 24px'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <Ic n="stars" s={18}/>
+              <span style={{fontSize:16,fontWeight:700}}>FR-46: Intelligent Priority Leveling — NLP</span>
+              <span style={{fontSize:10,background:'rgba(255,255,255,.2)',padding:'2px 10px',borderRadius:69}}>AI Model v2.1</span>
+            </div>
+            <p style={{margin:'6px 0 0',fontSize:12,opacity:.8}}>Хэрэглэгчийн бичсэн тайлбар дахь түлхүүр үгс, контекст, sentiment-д тулгуурлан AI эрэмбийг автоматаар санал болгоно. Алдааны магадлал ≤ 5%.</p>
+          </div>
+
+          <div style={{padding:'20px 24px',display:'flex',flexDirection:'column',gap:20}}>
+
+            {/* Ажиллах зарчим — 4 алхам */}
+            <div>
+              <p style={{margin:'0 0 12px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Ажиллах зарчим</p>
+              <div className="rg-4">
+                {[
+                  {step:1,icon:"pencil-square",title:"Текст оруулах",desc:"Хэрэглэгч асуудлаа чөлөөт бичвэрээр тайлбарлана",color:"#534AB7"},
+                  {step:2,icon:"search",title:"NLP шинжилгээ",desc:"Түлхүүр үгс таних + Sentiment + Entity extraction",color:"#7C3AED"},
+                  {step:3,icon:"lightning",title:"Эрэмбэ санал болгох",desc:"AI confidence score (0.00–1.00) priority санал болгоно",color:"#D97706"},
+                  {step:4,icon:"check-circle",title:"Баталгаажуулах",desc:"FR-45: AI-ийн бөглөсөн талбарыг хянаж, засах боломжтой",color:"#059669"},
+                ].map(s=>(
+                  <div key={s.step} style={{background:'#F8F9FA',borderRadius:10,padding:16,textAlign:'center',border:'0.5px solid #E8E8E8'}}>
+                    <div style={{width:36,height:36,borderRadius:69,background:s.color+'18',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 10px'}}>
+                      <Ic n={s.icon} s={16} style={{color:s.color}}/>
+                    </div>
+                    <p style={{margin:'0 0 4px',fontSize:12,fontWeight:700,color:'#1A1A1A'}}>{s.step}. {s.title}</p>
+                    <p style={{margin:0,fontSize:11,color:'#999999'}}>{s.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* NLP Түлхүүр үгс → Priority Mapping */}
+            <div>
+              <p style={{margin:'0 0 12px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>NLP Түлхүүр үгс → Priority Mapping</p>
+              <div style={{borderRadius:10,border:'0.5px solid #E8E8E8',overflow:'hidden'}}>
+                <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+                  <thead>
+                    <tr style={{background:'#1A1A2E',color:'#fff'}}>
+                      <th style={{padding:'10px 14px',textAlign:'left',fontWeight:600}}>Priority</th>
+                      <th style={{padding:'10px 14px',textAlign:'left',fontWeight:600}}>SLA Response</th>
+                      <th style={{padding:'10px 14px',textAlign:'left',fontWeight:600}}>SLA Resolve</th>
+                      <th style={{padding:'10px 14px',textAlign:'left',fontWeight:600}}>Түлхүүр үгс (MN/EN)</th>
+                      <th style={{padding:'10px 14px',textAlign:'left',fontWeight:600}}>Confidence</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      {pri:"P0 — Critical",resp:"15 мин",res:"2 цаг",kw:["систем унасан","system down","бүгд зогссон","database crash","серверлүү хандаж чадахгүй"],conf:"≥ 0.90",color:"#DC2626",bg:"#FEE2E2",kwBg:"#fce4ec"},
+                      {pri:"P1 — High",resp:"30 мин",res:"4 цаг",kw:["яаралтай","urgent","ажиллахгүй","error","хандаж чадахгүй","данс хаагдсан"],conf:"≥ 0.80",color:"#D97706",bg:"#FEF3C7",kwBg:"#fef3e2"},
+                      {pri:"P2 — Medium",resp:"2 цаг",res:"1 ажлын өдөр",kw:["удааширсан","slow","заримдаа алдаа","асуудалтай","тохиргоо"],conf:"≥ 0.70",color:"#534AB7",bg:"#EEEDFE",kwBg:"#e3f2fd"},
+                      {pri:"P3 — Low",resp:"4 цаг",res:"3 ажлын өдөр",kw:["хүсэлт","request","сайжруулах","асуулт","мэдээлэл"],conf:"≥ 0.60",color:"#059669",bg:"#D1FAE5",kwBg:"#e8f5e9"},
+                    ].map(r=>(
+                      <tr key={r.pri} style={{background:r.bg+'66',borderBottom:'0.5px solid #E8E8E8'}}>
+                        <td style={{padding:'10px 14px'}}><span style={{display:'inline-block',padding:'3px 10px',borderRadius:69,background:r.color,color:'#fff',fontSize:11,fontWeight:700}}>{r.pri}</span></td>
+                        <td style={{padding:'10px 14px',fontWeight:600}}>{r.resp}</td>
+                        <td style={{padding:'10px 14px',fontWeight:600}}>{r.res}</td>
+                        <td style={{padding:'10px 14px'}}><div style={{display:'flex',flexWrap:'wrap',gap:4}}>{r.kw.map(k=><span key={k} style={{background:r.kwBg,padding:'2px 6px',borderRadius:4,fontSize:11}}>{k}</span>)}</div></td>
+                        <td style={{padding:'10px 14px',fontWeight:700}}>{r.conf}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* NLP Pipeline — 4 step */}
+            <div>
+              <p style={{margin:'0 0 12px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>NLP Pipeline (техникийн дэлгэрэнгүй)</p>
+              <div className="rg-dash">
+                {[
+                  {icon:"type",title:"Step 1: Text Preprocessing",items:["Монгол + Англи хэлний tokenization","Stopword removal (MN/EN)","Typo correction (fuzzy matching)","Хавсралт файл нэр шинжлэх"],color:"#534AB7"},
+                  {icon:"tag",title:"Step 2: Entity & Intent",items:["Category: hardware, software, network, access","Sub-category: printer, VPN, ERP, email","Affected system: Odoo, TechOn, AD","Impact scope: 1 хэрэглэгч vs бүх хэлтэс"],color:"#7C3AED"},
+                  {icon:"calculator",title:"Step 3: Priority Scoring",items:["Keyword weight × 0.40","Sentiment score × 0.20","Impact multiplier × 0.25","Historical avg × 0.10","Time context × 0.05"],color:"#D97706"},
+                  {icon:"check2-circle",title:"Step 4: Confidence & Override",items:["Confidence ≥ threshold → автомат бөглөнө","Confidence < threshold → анхааруулга","Хэрэглэгч гараар засах боломжтой (FR-45)","Feedback loop → AI моделийг дахин сургана"],color:"#059669"},
+                ].map(s=>(
+                  <div key={s.title} style={{background:'#F8F9FA',border:'0.5px solid #E8E8E8',borderRadius:10,padding:16}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+                      <div style={{width:28,height:28,borderRadius:6,background:s.color+'18',display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={s.icon} s={13} style={{color:s.color}}/></div>
+                      <span style={{fontSize:12,fontWeight:700,color:s.color}}>{s.title}</span>
+                    </div>
+                    {s.items.map((it,i)=><p key={i} style={{margin:'3px 0',fontSize:11,color:'#555555',paddingLeft:8,borderLeft:`2px solid ${s.color}22`}}>• {it}</p>)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Нэгтгэсэн оноо тооцох томъёо */}
+            <div>
+              <p style={{margin:'0 0 10px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Нэгтгэсэн оноо тооцох томъёо</p>
+              <div style={{background:'#1A1A2E',borderRadius:10,padding:'18px 22px',fontFamily:'Consolas,Monaco,monospace',fontSize:12,lineHeight:2,color:'#E0E0E0',overflowX:'auto'}}>
+                <span style={{color:'#56CCF2'}}>PriorityScore</span> = (<span style={{color:'#F2994A'}}>keyword_weight_sum</span> × 0.40)<br/>
+                {"              "}+ (<span style={{color:'#F2994A'}}>sentiment_score</span> × 0.20)<br/>
+                {"              "}+ (<span style={{color:'#F2994A'}}>impact_multiplier</span> × 0.25)<br/>
+                {"              "}+ (<span style={{color:'#F2994A'}}>historical_avg</span> × 0.10)<br/>
+                {"              "}+ (<span style={{color:'#F2994A'}}>time_context</span> × 0.05)<br/><br/>
+                <span style={{color:'#888'}}>// Priority mapping:</span><br/>
+                <span style={{color:'#DC2626'}}>P0 Critical</span> → score ≥ 0.85 && confidence ≥ 0.90<br/>
+                <span style={{color:'#D97706'}}>P1 High</span>{"     "}→ score ≥ 0.65 && confidence ≥ 0.80<br/>
+                <span style={{color:'#56CCF2'}}>P2 Medium</span>{"   "}→ score ≥ 0.35 && confidence ≥ 0.70 <span style={{color:'#888'}}>(default)</span><br/>
+                <span style={{color:'#059669'}}>P3 Low</span>{"      "}→ score {"<"} 0.35 && confidence ≥ 0.60
+              </div>
+            </div>
+
+            {/* Жишээ сценариуд */}
+            <div>
+              <p style={{margin:'0 0 12px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Жишээ сценариуд</p>
+              <div className="rg-dash">
+                {[
+                  {pri:"P0 Critical",conf:"0.95",text:"ERP систем бүр унасан, бүх ажилтнууд ажиллаж чадахгүй байна!",kw:["унасан","ажиллаж чадахгүй","яаралтай"],extra:"Impact: бүх ажилтан (×2.0) | Sentiment: −0.9",color:"#DC2626",bg:"#FEE2E2",kwBg:"#fce4ec"},
+                  {pri:"P1 High",conf:"0.87",text:"Манай хэлтсийн принтер ажиллахгүй байна, 5 хүн хэвлэж чадахгүй.",kw:["ажиллахгүй","яаралтай"],extra:"Category: hardware/printer | Impact: 5 хэрэглэгч (×1.5)",color:"#D97706",bg:"#FEF3C7",kwBg:"#fef3e2"},
+                  {pri:"P2 Medium",conf:"0.78",text:"CRM систем удааширсан, заримдаа timeout гарч байна.",kw:["удааширсан","заримдаа"],extra:"Category: software/CRM | Impact: 1 хэрэглэгч (×1.0)",color:"#534AB7",bg:"#EEEDFE",kwBg:"#e3f2fd"},
+                  {pri:"P3 Low",conf:"0.92",text:"Шинэ ажилтанд VPN хандалт нээж өгөх хүсэлт.",kw:["хүсэлт","нээж өгөх"],extra:"Category: access/VPN | Sentiment: neutral",color:"#059669",bg:"#D1FAE5",kwBg:"#e8f5e9"},
+                ].map(s=>(
+                  <div key={s.pri} style={{border:`1px solid ${s.color}44`,borderRadius:10,padding:14,background:'#fff'}}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                      <span style={{background:s.color,color:'#fff',padding:'3px 10px',borderRadius:69,fontSize:11,fontWeight:700}}>{s.pri}</span>
+                      <span style={{fontSize:11,color:'#999999'}}>Confidence: {s.conf}</span>
+                    </div>
+                    <p style={{margin:'0 0 8px',fontSize:12,color:'#555555',fontStyle:'italic',background:s.bg+'66',padding:'8px 10px',borderRadius:6}}>"{s.text}"</p>
+                    <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:6}}>
+                      <span style={{fontSize:10,color:'#999999',marginRight:4}}>Detected:</span>
+                      {s.kw.map(k=><span key={k} style={{background:s.kwBg,padding:'1px 6px',borderRadius:4,fontSize:10}}>{k}</span>)}
+                    </div>
+                    <p style={{margin:0,fontSize:10,color:'#999999'}}>{s.extra}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Холбогдох DB хүснэгтүүд */}
+            <div>
+              <p style={{margin:'0 0 8px',fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Холбогдох DB хүснэгтүүд</p>
+              <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                {["tickets.priority","tickets.ai_confidence","tickets.category","tickets.sub_category","ai_ticket_actions.ai_suggestion","ai_ticket_actions.user_accepted","sla_configs","ticket_priorities"].map(t=>(
+                  <span key={t} style={{background:'#EEEDFE',padding:'4px 10px',borderRadius:6,fontFamily:'monospace',fontSize:11,color:'#534AB7'}}>{t}</span>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </>)}
+
+      {/* SLA Trend tab */}
+      {atab==="sla-trend"&&(<>
+        <div className="rg-4">
+          {[
+            {l:"SLA Response нийцэл",v:"94.2%",target:"95%",ok:false,color:"#D97706",bg:"#FEF3C7"},
+            {l:"SLA Resolution нийцэл",v:"89.1%",target:"90%",ok:false,color:"#DC2626",bg:"#FEE2E2"},
+            {l:"P0/P1 хэтэрсэн",v:"3",target:"0",ok:false,color:"#DC2626",bg:"#FEE2E2"},
+            {l:"Дундаж шийдвэрлэх",v:"2.4 цаг",target:"4 цаг",ok:true,color:"#059669",bg:"#D1FAE5"},
+          ].map(k=>(
+            <div key={k.l} style={{background:'#fff',border:`1px solid ${k.ok?'#BBF7D0':'#FECACA'}`,borderRadius:10,padding:16}}>
+              <p style={{margin:'0 0 8px',fontSize:12,color:'#666666'}}>{k.l}</p>
+              <p style={{margin:'0 0 4px',fontSize:24,fontWeight:700,color:k.ok?'#059669':'#DC2626'}}>{k.v}</p>
+              <p style={{margin:0,fontSize:11,color:'#999999'}}>Зорилт: {k.target}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+          <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>SLA эрэмбийн тархалт (энэ сар)</p>
+          <div style={{display:'flex',gap:12}}>
+            {[
+              {pri:"P0",count:2,pct:4,color:"#DC2626"},
+              {pri:"P1",count:8,pct:17,color:"#D97706"},
+              {pri:"P2",count:22,pct:47,color:"#534AB7"},
+              {pri:"P3",count:15,pct:32,color:"#059669"},
+            ].map(p=>(
+              <div key={p.pri} style={{flex:1,background:'#F5F5F5',borderRadius:8,padding:14,textAlign:'center',borderTop:`3px solid ${p.color}`}}>
+                <p style={{margin:'0 0 4px',fontSize:16,fontWeight:700,color:p.color}}>{p.pri}</p>
+                <p style={{margin:'0 0 2px',fontSize:20,fontWeight:700,color:'#1A1A1A'}}>{p.count}</p>
+                <p style={{margin:0,fontSize:11,color:'#999999'}}>{p.pct}%</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+          <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Escalation түүх</p>
+          {[
+            {ticket:"TKT-2026-042",title:"VPN бүх салбарт унасан",from:"L1",to:"IT Director",time:"2026-04-05 14:30",pri:"P0"},
+            {ticket:"TKT-2026-039",title:"Odoo ERP 502 алдаа",from:"L1",to:"IT Manager",time:"2026-04-04 09:15",pri:"P1"},
+            {ticket:"TKT-2026-035",title:"Email server удааширсан",from:"L1",to:"Team Lead",time:"2026-04-03 16:45",pri:"P1"},
+          ].map(e=>(
+            <div key={e.ticket} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:'0.5px solid #EBEBEB'}}>
+              <span style={{fontSize:11,fontWeight:700,fontFamily:'monospace',color:'#534AB7'}}>{e.ticket}</span>
+              <span style={{flex:1,fontSize:12,fontWeight:600,color:'#1A1A1A'}}>{e.title}</span>
+              <span style={{fontSize:11,color:'#999999'}}>{e.from} → {e.to}</span>
+              <span style={{fontSize:10,fontWeight:700,background:e.pri==="P0"?'#FEE2E2':'#FEF3C7',color:e.pri==="P0"?'#DC2626':'#D97706',padding:'2px 8px',borderRadius:69}}>{e.pri}</span>
+            </div>
+          ))}
+        </div>
+      </>)}
     </div>
   );
 }
@@ -5475,6 +5901,1025 @@ function SLAConfigModule() {
   );
 }
 
+// ── DEPT TREE SUB-COMPONENT ──────────────────────────────────
+function DeptTreePanel({ depts, CardStat, onAdd }) {
+  const [expandedDepts, setExpandedDepts] = useState({});
+  const [expandedSubs, setExpandedSubs] = useState({});
+  const [assignModal, setAssignModal] = useState(null); // {deptName, deptCode, deptColor}
+  const [assignSearch, setAssignSearch] = useState("");
+  const [assignSelected, setAssignSelected] = useState([]);
+  const [assignPos, setAssignPos] = useState("");
+  const [newDeptModal, setNewDeptModal] = useState(null); // {parentName, parentCode, parentColor, level}
+  const [newDeptName, setNewDeptName] = useState("");
+  const [newDeptCode, setNewDeptCode] = useState("");
+  const [newDeptHead, setNewDeptHead] = useState("");
+  const totalMembers = depts.reduce((s,d)=>s+d.members,0);
+  const totalSubs = depts.reduce((s,d)=>s+d.children.length,0);
+
+  // Mock бүртгэлтэй хэрэглэгчид (Users модулиас)
+  const allUsers = [
+    {id:1,name:"Д.Мөнхбат",email:"munkbat@tbg.mn",dept:"МТ",pos:"Дэд бүтцийн ахлах инженер",avatar:"ДМ",color:"#534AB7"},
+    {id:2,name:"Б.Оюунчимэг",email:"oyunchimeg@tbg.mn",dept:"Санхүү",pos:"Ахлах нягтлан бодогч",avatar:"БО",color:"#059669"},
+    {id:3,name:"Г.Батсүх",email:"batsukh@tbg.mn",dept:"Борлуулалт",pos:"Борлуулалтын менежер",avatar:"ГБ",color:"#D97706"},
+    {id:4,name:"Н.Дэлгэрмаа",email:"delgermaa@tbg.mn",dept:"Санхүү",pos:"Нягтлан бодогч",avatar:"НД",color:"#D97706"},
+    {id:5,name:"О.Батжаргал",email:"batjargal@tbg.mn",dept:"МТ",pos:"IT менежер",avatar:"ОБ",color:"#534AB7"},
+    {id:6,name:"С.Энхжин",email:"enkhjin@tbg.mn",dept:"МТ",pos:"Ахлах хөгжүүлэгч",avatar:"СЭ",color:"#7C3AED"},
+    {id:7,name:"Э.Тэмүүлэн",email:"temuulen@tbg.mn",dept:"МТ",pos:"Сүлжээний инженер",avatar:"ЭТ",color:"#059669"},
+    {id:8,name:"Т.Золжаргал",email:"zoljargal@tbg.mn",dept:"Борлуулалт",pos:"Борлуулагч",avatar:"ТЗ",color:"#059669"},
+    {id:9,name:"М.Оюунгэрэл",email:"oyungerel@tbg.mn",dept:"Хүний нөөц",pos:"HR Director",avatar:"МО",color:"#DB2777"},
+    {id:10,name:"Б.Чимэг",email:"chimeg@tbg.mn",dept:"Хүний нөөц",pos:"Сургалтын менежер",avatar:"БЧ",color:"#DB2777"},
+  ];
+  const filteredUsers = allUsers.filter(u=>
+    !assignSearch || u.name.toLowerCase().includes(assignSearch.toLowerCase()) || u.email.toLowerCase().includes(assignSearch.toLowerCase()) || u.dept.toLowerCase().includes(assignSearch.toLowerCase())
+  );
+
+  return (<>
+    {/* Summary */}
+    <div className="rg-4">
+      <CardStat label="Нийт хэлтэс" value={depts.length} icon="diagram-3" color="#534AB7" bg="#EEEDFE"/>
+      <CardStat label="Нийт алба/тасаг" value={totalSubs} icon="layers" color="#7C3AED" bg="#EDE9FE"/>
+      <CardStat label="Нийт ажилтан" value={totalMembers} icon="people" color="#059669" bg="#D1FAE5"/>
+      <CardStat label="Мод гүн (depth)" value="3 түвшин" icon="signpost-split" color="#D97706" bg="#FEF3C7"/>
+    </div>
+
+    {/* Tree */}
+    <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,overflow:'hidden'}}>
+      <div style={{padding:'14px 20px',borderBottom:'0.5px solid #E8E8E8',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <Ic n="diagram-3" s={16} style={{color:'#534AB7'}}/>
+          <span style={{fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Байгууллагын бүтэц (Organization Tree)</span>
+        </div>
+        <div style={{display:'flex',gap:6}}>
+          <button onClick={()=>{const all={};depts.forEach(d=>{all[d.id]=true;d.children.forEach(c=>{all[c.id]=true;});});setExpandedDepts(all);setExpandedSubs(all);}} style={{padding:'4px 10px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:4}}>
+            <Ic n="arrows-expand" s={11}/>Бүгд нээх
+          </button>
+          <button onClick={()=>{setExpandedDepts({});setExpandedSubs({});}} style={{padding:'4px 10px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#666666',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:4}}>
+            <Ic n="arrows-collapse" s={11}/>Бүгд хаах
+          </button>
+        </div>
+      </div>
+
+      {/* Root: ТБН */}
+      <div style={{padding:'12px 20px',background:'#F5F3FF',borderBottom:'0.5px solid #E9E4FD',display:'flex',alignItems:'center',gap:10}}>
+        <div style={{width:36,height:36,background:'#3C3489',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <span style={{fontSize:13,fontWeight:700,color:'#fff'}}>ТБН</span>
+        </div>
+        <div style={{flex:1}}>
+          <p style={{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Таван Богд Нура ХХК</p>
+          <p style={{margin:'2px 0 0',fontSize:11,color:'#666666'}}>{depts.length} хэлтэс · {totalMembers} ажилтан</p>
+        </div>
+        <span style={{fontSize:10,fontWeight:700,background:'#D1FAE5',color:'#059669',padding:'3px 10px',borderRadius:69}}>ROOT</span>
+      </div>
+
+      {/* Level 1: Departments */}
+      {depts.map(d=>{
+        const isOpen = expandedDepts[d.id];
+        return (
+          <div key={d.id}>
+            {/* Dept header */}
+            <div onClick={()=>setExpandedDepts(p=>({...p,[d.id]:!p[d.id]}))} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 20px 12px 36px',borderBottom:'0.5px solid #EBEBEB',cursor:'pointer',transition:'background .1s',background:isOpen?`${d.color}08`:'transparent'}}
+              onMouseEnter={e=>{if(!isOpen)e.currentTarget.style.background='#FAFBFC';}}
+              onMouseLeave={e=>{if(!isOpen)e.currentTarget.style.background='transparent';}}>
+              <div style={{width:20,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <Ic n={isOpen?"chevron-down":"chevron-right"} s={12} style={{color:d.color}}/>
+              </div>
+              <div style={{width:32,height:32,borderRadius:8,background:d.color+'18',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <Ic n="diagram-3" s={14} style={{color:d.color}}/>
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:'flex',alignItems:'center',gap:8}}>
+                  <span style={{fontSize:13,fontWeight:700,color:'#1A1A1A'}}>{d.name}</span>
+                  <span style={{fontFamily:'monospace',fontSize:10,color:d.color,background:d.color+'15',padding:'1px 6px',borderRadius:4}}>{d.code}</span>
+                </div>
+                <p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>{d.head} · {d.headPos}</p>
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+                <span style={{fontSize:11,color:'#666666',display:'flex',alignItems:'center',gap:4}}><Ic n="people" s={12}/>{d.members}</span>
+                <span style={{fontSize:11,color:'#999999',display:'flex',alignItems:'center',gap:4}}><Ic n="folder2" s={12}/>{d.children.length}</span>
+                <button onClick={e=>{e.stopPropagation();setAssignModal({deptName:d.name,deptCode:d.code,deptColor:d.color});setAssignSearch("");setAssignSelected([]);setAssignPos("");}} style={{padding:'3px 8px',background:'#F0FDF4',border:'0.5px solid #BBF7D0',borderRadius:4,fontSize:10,color:'#059669',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:3}}>
+                  <Ic n="person-plus" s={9}/>Ажилтан
+                </button>
+                <button onClick={e=>{e.stopPropagation();}} style={{padding:'3px 8px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:4,fontSize:10,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:3}}>
+                  <Ic n="pencil" s={9}/>Засах
+                </button>
+              </div>
+            </div>
+
+            {/* Level 2: Sub-departments */}
+            {isOpen&&d.children.map(ch=>{
+              const subOpen = expandedSubs[ch.id];
+              return (
+                <div key={ch.id}>
+                  <div onClick={()=>setExpandedSubs(p=>({...p,[ch.id]:!p[ch.id]}))} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 20px 10px 72px',borderBottom:'0.5px solid #EBEBEB',cursor:'pointer',background:subOpen?'#FAFBFC':'transparent',transition:'background .1s'}}
+                    onMouseEnter={e=>{if(!subOpen)e.currentTarget.style.background='#FAFBFC';}}
+                    onMouseLeave={e=>{if(!subOpen)e.currentTarget.style.background='transparent';}}>
+                    <div style={{width:16,display:'flex',alignItems:'center',flexShrink:0}}>
+                      <Ic n={subOpen?"chevron-down":"chevron-right"} s={11} style={{color:'#AFA9EC'}}/>
+                    </div>
+                    <div style={{width:6,height:6,borderRadius:69,background:d.color,flexShrink:0,opacity:.5}}/>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{display:'flex',alignItems:'center',gap:6}}>
+                        <span style={{fontSize:12,fontWeight:600,color:'#555555'}}>{ch.name}</span>
+                        <span style={{fontFamily:'monospace',fontSize:9,color:'#999999',background:'#F4F6F8',padding:'1px 5px',borderRadius:3}}>{ch.code}</span>
+                      </div>
+                      <p style={{margin:'1px 0 0',fontSize:10,color:'#C8D0D8'}}>{ch.head} · {ch.headPos}</p>
+                    </div>
+                    <span style={{fontSize:11,color:'#999999',flexShrink:0}}>{ch.members} ажилтан</span>
+                    <button onClick={e=>{e.stopPropagation();}} style={{padding:'3px 8px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:4,fontSize:10,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:3,flexShrink:0}}>
+                      <Ic n="pencil" s={9}/>Засах
+                    </button>
+                  </div>
+
+                  {/* Level 3: People */}
+                  {subOpen&&ch.people&&(
+                    <div style={{padding:'6px 20px 6px 108px',borderBottom:'0.5px solid #EBEBEB',background:'#FAFBFC'}}>
+                      {ch.people.map((p,pi)=>(
+                        <div key={pi} style={{display:'flex',alignItems:'center',gap:10,padding:'6px 8px',borderRadius:6,transition:'background .1s'}}
+                          onMouseEnter={e=>e.currentTarget.style.background='#F0F2F5'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                          <div style={{width:28,height:28,borderRadius:69,background:p.color+'18',color:p.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,flexShrink:0}}>
+                            {p.avatar}
+                          </div>
+                          <div style={{flex:1,minWidth:0}}>
+                            <span style={{fontSize:12,fontWeight:600,color:'#1A1A1A'}}>{p.name}</span>
+                            <span style={{fontSize:11,color:'#999999',marginLeft:8}}>{p.pos}</span>
+                          </div>
+                          {pi===0&&<span style={{fontSize:9,fontWeight:700,background:d.color+'15',color:d.color,padding:'2px 6px',borderRadius:69,flexShrink:0}}>HEAD</span>}
+                        </div>
+                      ))}
+                      {ch.members>(ch.people||[]).length&&(
+                        <p style={{margin:'4px 0 2px 38px',fontSize:10,color:'#AFA9EC'}}>+{ch.members-(ch.people||[]).length} бусад ажилтан...</p>
+                      )}
+                      {/* Ажилтан нэмэх товч */}
+                      <button onClick={()=>{setAssignModal({deptName:ch.name,deptCode:ch.code,deptColor:d.color});setAssignSearch("");setAssignSelected([]);setAssignPos("");}}
+                        style={{display:'flex',alignItems:'center',gap:5,padding:'5px 10px',margin:'6px 0 2px',borderRadius:6,border:'1px dashed #E8E8E8',background:'transparent',cursor:'pointer',fontSize:10,fontWeight:600,color:'#AFA9EC',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',transition:'all .12s'}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor='#059669';e.currentTarget.style.color='#059669';e.currentTarget.style.background='#F0FDF4';}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor='#E8E8E8';e.currentTarget.style.color='#AFA9EC';e.currentTarget.style.background='transparent';}}>
+                        <Ic n="person-plus" s={11}/> Ажилтан нэмэх
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            {/* Add sub-dept */}
+            {isOpen&&(
+              <div style={{padding:'8px 20px 8px 72px',borderBottom:'0.5px solid #EBEBEB'}}>
+                <button onClick={()=>{setNewDeptModal({parentName:d.name,parentCode:d.code,parentColor:d.color,level:2});setNewDeptName("");setNewDeptCode("");setNewDeptHead("");}} style={{display:'flex',alignItems:'center',gap:5,padding:'5px 12px',borderRadius:6,border:'1px dashed #E8E8E8',background:'transparent',cursor:'pointer',fontSize:11,fontWeight:600,color:'#AFA9EC',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',transition:'all .12s'}}
+                  onMouseEnter={e=>{e.currentTarget.style.borderColor='#AFA9EC';e.currentTarget.style.color='#534AB7';e.currentTarget.style.background='#F5F3FF';}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor='#E8E8E8';e.currentTarget.style.color='#AFA9EC';e.currentTarget.style.background='transparent';}}>
+                  <Ic n="plus" s={11}/> {d.name}-д алба нэмэх
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Add root dept */}
+      <div style={{padding:'12px 20px'}}>
+        <button onClick={()=>{setNewDeptModal({parentName:"ТБН",parentCode:null,parentColor:"#534AB7",level:1});setNewDeptName("");setNewDeptCode("");setNewDeptHead("");}} style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:8,border:'1px dashed #AFA9EC',background:'#F5F3FF',cursor:'pointer',fontSize:12,fontWeight:600,color:'#534AB7',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',width:'100%',justifyContent:'center',transition:'all .12s'}}
+          onMouseEnter={e=>{e.currentTarget.style.background='#EEEDFE';e.currentTarget.style.borderColor='#534AB7';}}
+          onMouseLeave={e=>{e.currentTarget.style.background='#F5F3FF';e.currentTarget.style.borderColor='#AFA9EC';}}>
+          <Ic n="plus-circle" s={13}/> Шинэ хэлтэс нэмэх
+        </button>
+      </div>
+    </div>
+
+
+    {/* ── ASSIGN EMPLOYEE MODAL ── */}
+    {assignModal&&(
+      <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.45)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:9999}} onClick={()=>setAssignModal(null)}>
+        <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:14,width:560,maxHeight:'80vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,.2)'}}>
+          {/* Header */}
+          <div style={{padding:'18px 22px',borderBottom:'0.5px solid #E8E8E8',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <div style={{width:32,height:32,borderRadius:8,background:(assignModal.deptColor||'#534AB7')+'18',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <Ic n="person-plus-fill" s={15} style={{color:assignModal.deptColor||'#534AB7'}}/>
+              </div>
+              <div>
+                <p style={{margin:0,fontSize:15,fontWeight:700,color:'#1A1A1A'}}>Ажилтан хуваарилах</p>
+                <p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>{assignModal.deptName} ({assignModal.deptCode})</p>
+              </div>
+            </div>
+            <button onClick={()=>setAssignModal(null)} style={{background:'none',border:'none',cursor:'pointer',padding:4}}><Ic n="x-lg" s={14} style={{color:'#999999'}}/></button>
+          </div>
+
+          {/* Search */}
+          <div style={{padding:'14px 22px',borderBottom:'0.5px solid #E8E8E8'}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,background:'#F8F9FA',borderRadius:8,padding:'8px 12px',border:'0.5px solid #E8E8E8'}}>
+              <Ic n="search" s={14} style={{color:'#999999'}}/>
+              <input value={assignSearch} onChange={e=>setAssignSearch(e.target.value)} placeholder="Нэр, имэйл, хэлтсээр хайх..."
+                style={{border:'none',background:'transparent',outline:'none',flex:1,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',color:'#1A1A1A'}}/>
+              {assignSearch&&<button onClick={()=>setAssignSearch("")} style={{background:'none',border:'none',cursor:'pointer',padding:0}}><Ic n="x-circle" s={13} style={{color:'#CCCCCC'}}/></button>}
+            </div>
+          </div>
+
+          {/* User list */}
+          <div style={{flex:1,overflowY:'auto',padding:'8px 22px',maxHeight:300}}>
+            {filteredUsers.map(u=>{
+              const sel = assignSelected.includes(u.id);
+              return (
+                <div key={u.id} onClick={()=>setAssignSelected(p=>sel?p.filter(x=>x!==u.id):[...p,u.id])}
+                  style={{display:'flex',alignItems:'center',gap:10,padding:'10px 8px',borderRadius:8,cursor:'pointer',transition:'background .1s',background:sel?'#F0FDF4':'transparent',border:sel?'1px solid #BBF7D0':'1px solid transparent',marginBottom:4}}
+                  onMouseEnter={e=>{if(!sel)e.currentTarget.style.background='#FAFBFC';}}
+                  onMouseLeave={e=>{if(!sel)e.currentTarget.style.background='transparent';}}>
+                  {/* Checkbox */}
+                  <div style={{width:18,height:18,borderRadius:4,border:sel?'none':'1.5px solid #D1D5DB',background:sel?'#059669':'#fff',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    {sel&&<Ic n="check" s={12} style={{color:'#fff'}}/>}
+                  </div>
+                  {/* Avatar */}
+                  <div style={{width:32,height:32,borderRadius:69,background:u.color+'18',color:u.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,flexShrink:0}}>
+                    {u.avatar}
+                  </div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <p style={{margin:0,fontSize:13,fontWeight:600,color:'#1A1A1A'}}>{u.name}</p>
+                    <p style={{margin:'1px 0 0',fontSize:11,color:'#999999'}}>{u.email} · {u.dept}</p>
+                  </div>
+                  <span style={{fontSize:10,color:'#999999',background:'#F4F6F8',padding:'2px 8px',borderRadius:4,flexShrink:0}}>{u.pos}</span>
+                </div>
+              );
+            })}
+            {filteredUsers.length===0&&(
+              <div style={{textAlign:'center',padding:'30px 0'}}>
+                <Ic n="person-x" s={28} style={{color:'#E8E8E8'}}/>
+                <p style={{margin:'8px 0 0',fontSize:12,color:'#999999'}}>Хэрэглэгч олдсонгүй</p>
+              </div>
+            )}
+          </div>
+
+          {/* Selected count + position + submit */}
+          <div style={{padding:'14px 22px',borderTop:'0.5px solid #E8E8E8',display:'flex',flexDirection:'column',gap:10}}>
+            {assignSelected.length>0&&(
+              <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                <span style={{fontSize:11,color:'#059669',fontWeight:700}}>{assignSelected.length} хэрэглэгч сонгосон:</span>
+                {assignSelected.map(id=>{const u=allUsers.find(x=>x.id===id);return u?<span key={id} style={{background:'#D1FAE5',color:'#059669',padding:'2px 8px',borderRadius:69,fontSize:10,fontWeight:600,display:'flex',alignItems:'center',gap:4}}>
+                  {u.name}<button onClick={e=>{e.stopPropagation();setAssignSelected(p=>p.filter(x=>x!==id));}} style={{background:'none',border:'none',cursor:'pointer',padding:0}}><Ic n="x" s={9} style={{color:'#059669'}}/></button>
+                </span>:null;})}
+              </div>
+            )}
+            <div style={{display:'flex',gap:8}}>
+              <div style={{flex:1}}>
+                <label style={{fontSize:10,fontWeight:600,color:'#999999',marginBottom:4,display:'block'}}>Алба тушаал (position)</label>
+                <input value={assignPos} onChange={e=>setAssignPos(e.target.value)} placeholder="жнь: Ахлах инженер"
+                  style={{width:'100%',padding:'8px 12px',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:12,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',outline:'none',boxSizing:'border-box'}}/>
+              </div>
+              <div style={{display:'flex',gap:6,alignItems:'flex-end'}}>
+                <button onClick={()=>setAssignModal(null)} style={{padding:'8px 16px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:12,fontWeight:600,color:'#666666',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>Болих</button>
+                <button onClick={()=>setAssignModal(null)} disabled={assignSelected.length===0}
+                  style={{padding:'8px 16px',background:assignSelected.length>0?'#059669':'#E8E8E8',border:'none',borderRadius:8,fontSize:12,fontWeight:700,color:assignSelected.length>0?'#fff':'#999999',cursor:assignSelected.length>0?'pointer':'not-allowed',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:5}}>
+                  <Ic n="person-plus" s={12}/> Хуваарилах
+                </button>
+              </div>
+            </div>
+            <p style={{margin:0,fontSize:10,color:'#AFA9EC'}}>
+              <Ic n="info-circle" s={10} style={{marginRight:4}}/>
+              user_departments хүснэгтэд INSERT хийгдэнэ (user_id, dept_id, position, is_primary)
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ── NEW DEPT/SUB-DEPT MODAL ── */}
+    {newDeptModal&&(
+      <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.45)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:9999}} onClick={()=>setNewDeptModal(null)}>
+        <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:14,width:480,boxShadow:'0 20px 60px rgba(0,0,0,.2)'}}>
+          <div style={{padding:'18px 22px',borderBottom:'0.5px solid #E8E8E8',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <div style={{width:32,height:32,borderRadius:8,background:(newDeptModal.parentColor||'#534AB7')+'18',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <Ic n="diagram-3" s={15} style={{color:newDeptModal.parentColor||'#534AB7'}}/>
+              </div>
+              <div>
+                <p style={{margin:0,fontSize:15,fontWeight:700,color:'#1A1A1A'}}>{newDeptModal.level===0?"Шинэ хэлтэс үүсгэх":`${newDeptModal.parentName}-д алба нэмэх`}</p>
+                {newDeptModal.parentCode&&<p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>Parent: {newDeptModal.parentCode}</p>}
+              </div>
+            </div>
+            <button onClick={()=>setNewDeptModal(null)} style={{background:'none',border:'none',cursor:'pointer',padding:4}}><Ic n="x-lg" s={14} style={{color:'#999999'}}/></button>
+          </div>
+          <div style={{padding:'18px 22px',display:'flex',flexDirection:'column',gap:14}}>
+            <div>
+              <label style={{fontSize:11,fontWeight:600,color:'#666666',marginBottom:4,display:'block'}}>Нэр *</label>
+              <input value={newDeptName} onChange={e=>setNewDeptName(e.target.value)} placeholder={newDeptModal.level===0?"жнь: Маркетинг":"жнь: Дижитал маркетинг"}
+                style={{width:'100%',padding:'9px 14px',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',outline:'none',boxSizing:'border-box'}}/>
+            </div>
+            <div style={{display:'flex',gap:12}}>
+              <div style={{flex:1}}>
+                <label style={{fontSize:11,fontWeight:600,color:'#666666',marginBottom:4,display:'block'}}>Код *</label>
+                <input value={newDeptCode} onChange={e=>setNewDeptCode(e.target.value)} placeholder="жнь: MKT" style={{width:'100%',padding:'9px 14px',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:13,fontFamily:'Consolas,monospace',outline:'none',boxSizing:'border-box'}}/>
+              </div>
+              <div style={{flex:1}}>
+                <label style={{fontSize:11,fontWeight:600,color:'#666666',marginBottom:4,display:'block'}}>Дарга / Head</label>
+                <input value={newDeptHead} onChange={e=>setNewDeptHead(e.target.value)} placeholder="жнь: Б.Ганзориг" style={{width:'100%',padding:'9px 14px',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',outline:'none',boxSizing:'border-box'}}/>
+              </div>
+            </div>
+            <p style={{margin:0,fontSize:10,color:'#AFA9EC'}}>
+              <Ic n="database" s={10} style={{marginRight:4}}/>
+              departments хүснэгтэд INSERT (name, code, parent_id={newDeptModal.parentCode||"NULL"}, level={newDeptModal.level}, head_user)
+            </p>
+          </div>
+          <div style={{padding:'14px 22px',borderTop:'0.5px solid #E8E8E8',display:'flex',justifyContent:'flex-end',gap:8}}>
+            <button onClick={()=>setNewDeptModal(null)} style={{padding:'8px 18px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:12,fontWeight:600,color:'#666666',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>Болих</button>
+            <button onClick={()=>setNewDeptModal(null)} disabled={!newDeptName||!newDeptCode}
+              style={{padding:'8px 18px',background:newDeptName&&newDeptCode?'#534AB7':'#E8E8E8',border:'none',borderRadius:8,fontSize:12,fontWeight:700,color:newDeptName&&newDeptCode?'#fff':'#999999',cursor:newDeptName&&newDeptCode?'pointer':'not-allowed',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:5}}>
+              <Ic n="plus-circle" s={12}/> Үүсгэх
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </>);
+}
+
+// ── MODULE: ADMIN CONFIG (FR-34~41) ──────────────────────────
+function AdminConfigModule() {
+  const [tab, setTab] = useState("company");
+  const [newModal, setNewModal] = useState(false);
+  const tabs = [
+    {key:"company",  label:"Компани CRUD",     icon:"building"},
+    {key:"dept",     label:"Хэлтэс бүтэц",    icon:"diagram-3"},
+    {key:"team",     label:"Support Team",      icon:"people-fill"},
+    {key:"category", label:"Ангилал",           icon:"tags"},
+    {key:"sso",      label:"SSO & ERP",         icon:"link-45deg"},
+    {key:"notif",    label:"Мэдэгдэл",          icon:"bell"},
+    {key:"sla",      label:"SLA тохиргоо",       icon:"speedometer2"},
+  ];
+
+  // Mock data
+  const companies = [
+    {id:1, name:"Таван Богд Фүүдс", code:"TBF", status:"Идэвхтэй", users:245, erp:true, sso:true},
+    {id:2, name:"Таван Богд Трэйд",  code:"TBT", status:"Идэвхтэй", users:180, erp:true, sso:true},
+    {id:3, name:"Таван Богд Моторс", code:"TBM", status:"Идэвхтэй", users:320, erp:true, sso:false},
+    {id:4, name:"Таван Богд Проперти",code:"TBP", status:"Идэвхгүй",users:45,  erp:false,sso:false},
+  ];
+  const depts = [
+    {id:1, name:"Мэдээллийн технологи", code:"IT", head:"Б.Ганзориг", headPos:"CTO", members:28, color:"#534AB7", children:[
+      {id:11, name:"Дэд бүтэц", code:"IT-INFRA", head:"Д.Мөнхбат", headPos:"Infra Lead", members:8, people:[
+        {name:"Д.Мөнхбат",pos:"Дэд бүтцийн ахлах инженер",avatar:"ДМ",color:"#534AB7"},
+        {name:"Э.Тэмүүлэн",pos:"Сүлжээний инженер",avatar:"ЭТ",color:"#059669"},
+        {name:"А.Батбаяр",pos:"Системийн админ",avatar:"АБ",color:"#D97706"},
+        {name:"Г.Наранчимэг",pos:"Cloud инженер",avatar:"ГН",color:"#7C3AED"},
+      ]},
+      {id:12, name:"Хөгжүүлэлт", code:"IT-DEV", head:"С.Энхжин", headPos:"Dev Lead", members:12, people:[
+        {name:"С.Энхжин",pos:"Ахлах хөгжүүлэгч",avatar:"СЭ",color:"#534AB7"},
+        {name:"Б.Тамир",pos:"Backend хөгжүүлэгч",avatar:"БТ",color:"#059669"},
+        {name:"О.Сарангэрэл",pos:"Frontend хөгжүүлэгч",avatar:"ОС",color:"#DB2777"},
+        {name:"Л.Анар",pos:"QA инженер",avatar:"ЛА",color:"#D97706"},
+      ]},
+      {id:13, name:"Дэмжлэг", code:"IT-SUP", head:"Б.Амарбаясгалан", headPos:"Support Lead", members:8, people:[
+        {name:"Б.Амарбаясгалан",pos:"Дэмжлэгийн ахлагч",avatar:"БА",color:"#534AB7"},
+        {name:"Ж.Болормаа",pos:"IT дэмжлэгийн инженер",avatar:"ЖБ",color:"#059669"},
+        {name:"Н.Эрдэнэ",pos:"Helpdesk инженер",avatar:"НЭ",color:"#D97706"},
+      ]},
+    ]},
+    {id:2, name:"Санхүү", code:"FIN", head:"Д.Оюунцэцэг", headPos:"CFO", members:15, color:"#059669", children:[
+      {id:21, name:"Нягтлан бодох", code:"FIN-ACC", head:"Б.Оюунчимэг", headPos:"Ахлах нягтлан", members:8, people:[
+        {name:"Б.Оюунчимэг",pos:"Ахлах нягтлан бодогч",avatar:"БО",color:"#059669"},
+        {name:"Н.Дэлгэрмаа",pos:"Нягтлан бодогч",avatar:"НД",color:"#D97706"},
+        {name:"Ц.Мөнхзул",pos:"Нягтлан бодогч",avatar:"ЦМ",color:"#534AB7"},
+      ]},
+      {id:22, name:"Төлөвлөлт", code:"FIN-PLAN", head:"Г.Ундрах", headPos:"Төлөвлөлтийн менежер", members:7, people:[
+        {name:"Г.Ундрах",pos:"Төлөвлөлтийн менежер",avatar:"ГУ",color:"#059669"},
+        {name:"С.Номин",pos:"Шинжээч",avatar:"СН",color:"#7C3AED"},
+      ]},
+    ]},
+    {id:3, name:"Борлуулалт", code:"SALES", head:"Ж.Батбаяр", headPos:"Борлуулалтын захирал", members:42, color:"#D97706", children:[
+      {id:31, name:"B2B борлуулалт", code:"SALES-B2B", head:"Г.Батсүх", headPos:"B2B менежер", members:18, people:[
+        {name:"Г.Батсүх",pos:"Борлуулалтын менежер",avatar:"ГБ",color:"#D97706"},
+        {name:"Д.Мөнхзул",pos:"Ахлах борлуулагч",avatar:"ДМ",color:"#534AB7"},
+        {name:"А.Цэцэгмаа",pos:"Борлуулагч",avatar:"АЦ",color:"#DB2777"},
+      ]},
+      {id:32, name:"B2C борлуулалт", code:"SALES-B2C", head:"Н.Амаржаргал", headPos:"B2C менежер", members:24, people:[
+        {name:"Н.Амаржаргал",pos:"B2C менежер",avatar:"НА",color:"#D97706"},
+        {name:"Т.Золжаргал",pos:"Борлуулагч",avatar:"ТЗ",color:"#059669"},
+      ]},
+    ]},
+    {id:4, name:"Хүний нөөц", code:"HR", head:"М.Оюунгэрэл", headPos:"HR Director", members:10, color:"#DB2777", children:[
+      {id:41, name:"Сургалт & Хөгжил", code:"HR-LD", head:"Б.Чимэг", headPos:"Сургалтын менежер", members:4, people:[
+        {name:"Б.Чимэг",pos:"Сургалтын менежер",avatar:"БЧ",color:"#DB2777"},
+      ]},
+      {id:42, name:"Цалин & Нөхөн олговор", code:"HR-PAY", head:"Э.Сарантуяа", headPos:"Payroll менежер", members:6, people:[
+        {name:"Э.Сарантуяа",pos:"Payroll менежер",avatar:"ЭС",color:"#DB2777"},
+        {name:"Д.Нарангэрэл",pos:"HR мэргэжилтэн",avatar:"ДН",color:"#7C3AED"},
+      ]},
+    ]},
+  ];
+  const supportTeams = [
+    {id:1, name:"Network Team", lead:"Д. Мөнхбат", members:4, categories:["Сүлжээ","VPN","Firewall"], active:true,
+      people:[{name:"Д. Мөнхбат",pos:"Team Lead",avatar:"ДМ",color:"#534AB7"},{name:"Э. Тэмүүлэн",pos:"Сүлжээний инженер",avatar:"ЭТ",color:"#059669"},{name:"А. Батбаяр",pos:"Firewall админ",avatar:"АБ",color:"#D97706"},{name:"Г. Наранчимэг",pos:"VPN инженер",avatar:"ГН",color:"#7C3AED"}],
+      services:[{name:"Сүлжээний дэд бүтэц",type:"Дотоод"},{name:"VPN хандалт",type:"Үйлчилгээ"},{name:"Firewall тохиргоо",type:"Аюулгүй байдал"}]},
+    {id:2, name:"Desktop Support", lead:"Б. Амарбаясгалан", members:3, categories:["Компьютер","Принтер","OS"], active:true,
+      people:[{name:"Б. Амарбаясгалан",pos:"Team Lead",avatar:"БА",color:"#534AB7"},{name:"Ж. Болормаа",pos:"Техникч",avatar:"ЖБ",color:"#059669"},{name:"Н. Эрдэнэ",pos:"Helpdesk",avatar:"НЭ",color:"#D97706"}],
+      services:[{name:"Компьютер засвар",type:"Техник хангамж"},{name:"Принтер суурилуулалт",type:"Техник хангамж"},{name:"OS суулгах / шинэчлэх",type:"Програм хангамж"}]},
+    {id:3, name:"ERP Team", lead:"Г. Батболд", members:5, categories:["Odoo","1C","SAP"], active:true,
+      people:[{name:"Г. Батболд",pos:"Team Lead",avatar:"ГБ",color:"#534AB7"},{name:"С. Энхжин",pos:"Odoo хөгжүүлэгч",avatar:"СЭ",color:"#7C3AED"},{name:"О. Сарангэрэл",pos:"1C мэргэжилтэн",avatar:"ОС",color:"#DB2777"},{name:"Л. Анар",pos:"QA",avatar:"ЛА",color:"#D97706"},{name:"Б. Тамир",pos:"Backend",avatar:"БТ",color:"#059669"}],
+      services:[{name:"Odoo ERP дэмжлэг",type:"Програм хангамж"},{name:"1C интеграци",type:"Интеграци"},{name:"SAP холболт",type:"Интеграци"},{name:"ERP сургалт",type:"Сургалт"}]},
+    {id:4, name:"Security Team", lead:"О. Ганзориг", members:2, categories:["МАБ","Аудит","DLP"], active:false,
+      people:[{name:"О. Ганзориг",pos:"Team Lead",avatar:"ОГ",color:"#534AB7"},{name:"Д. Нарангэрэл",pos:"Аудитор",avatar:"ДН",color:"#7C3AED"}],
+      services:[{name:"МАБ шалгалт",type:"Аюулгүй байдал"},{name:"DLP хяналт",type:"Аюулгүй байдал"},{name:"Аудит тайлан",type:"Тайлан"}]},
+  ];
+  const categories = [
+    {id:1, name:"Төхөөрөмж", icon:"pc-display", subs:["Компьютер","Принтер","Сканнер","Монитор","Утас"], count:156},
+    {id:2, name:"Сүлжээ", icon:"router", subs:["VPN","Firewall","WiFi","LAN","DNS"], count:89},
+    {id:3, name:"Програм", icon:"window-stack", subs:["Odoo ERP","Office 365","Антивирус","Имэйл","Бусад"], count:234},
+    {id:4, name:"Аюулгүй байдал", icon:"shield-lock", subs:["МАБ","DLP","Аудит","Инцидент"], count:45},
+  ];
+  const slaConfig = [
+    {pri:"P0 — Critical", response:"15 мин", resolve:"2 цаг", escalate:"IT Director → CTO", color:"#DC2626", bg:"#FEE2E2"},
+    {pri:"P1 — High", response:"30 мин", resolve:"4 цаг", escalate:"IT Manager", color:"#D97706", bg:"#FEF3C7"},
+    {pri:"P2 — Medium", response:"2 цаг", resolve:"1 ажлын өдөр", escalate:"Team Lead", color:"#534AB7", bg:"#EEEDFE"},
+    {pri:"P3 — Low", response:"4 цаг", resolve:"3 ажлын өдөр", escalate:"—", color:"#059669", bg:"#D1FAE5"},
+  ];
+  const notifChannels = [
+    {event:"Тикет үүссэн", email:true, push:true, slack:true, sms:false},
+    {event:"SLA хэтэрсэн", email:true, push:true, slack:true, sms:true},
+    {event:"Тикет шийдэгдсэн", email:true, push:true, slack:false, sms:false},
+    {event:"Шинэ захиалга", email:true, push:false, slack:true, sms:false},
+    {event:"Гэрээ дуусах", email:true, push:true, slack:false, sms:true},
+    {event:"Төлбөр хоцорсон", email:true, push:true, slack:true, sms:true},
+  ];
+
+  const CardStat = ({label, value, icon, color, bg}) => (
+    <div style={{background:'#fff', border:'0.5px solid #E8E8E8', borderRadius:10, padding:'16px 18px', display:'flex', alignItems:'center', gap:14}}>
+      <div style={{width:40, height:40, borderRadius:10, background:bg, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
+        <Ic n={icon} s={18} style={{color}}/>
+      </div>
+      <div>
+        <p style={{margin:0, fontSize:20, fontWeight:700, color:'#1A1A1A'}}>{value}</p>
+        <p style={{margin:'2px 0 0', fontSize:12, color:'#666666'}}>{label}</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:20}}>
+      <div className="mod-header">
+        <div>
+          <h2 style={{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}>Админ тохиргоо</h2>
+          <p style={{margin:'4px 0 0',fontSize:13,color:'#666666'}}>FR-34 ~ FR-41 · Системийн бүх тохиргоо нэг дороос</p>
+        </div>
+        <div style={{display:'flex',gap:8}}>
+          <Btn variant="ghost" icon="arrow-clockwise" size="sm">Sync ERP</Btn>
+          <Btn icon="plus-circle-fill" size="sm" onClick={()=>setNewModal(true)}>Шинэ тохиргоо</Btn>
+        </div>
+      </div>
+
+      {/* ── NEW CONFIG MODAL ── */}
+      {newModal&&(
+        <Modal title={
+          tab==="company"?"Шинэ охин компани бүртгэх"
+          :tab==="dept"?"Шинэ хэлтэс/алба нэмэх"
+          :tab==="team"?"Шинэ Support Team үүсгэх"
+          :tab==="category"?"Шинэ ангилал нэмэх"
+          :tab==="sso"?"SSO / ERP холболт нэмэх"
+          :tab==="notif"?"Мэдэгдлийн дүрэм нэмэх"
+          :"Шинэ SLA эрэмбэ нэмэх"
+        } onClose={()=>setNewModal(false)} width={560}>
+          <div style={{display:'flex',flexDirection:'column',gap:16}}>
+
+            {/* ── Company form ── */}
+            {tab==="company"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Компанийн нэр *</label>
+                <Input placeholder="Жишээ: Таван Богд Финанс"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Компанийн код *</label>
+                  <Input placeholder="Жишээ: TBF"/>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Регистрийн дугаар</label>
+                  <Input placeholder="1234567"/>
+                </div>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Салбар</label>
+                  <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                    <option>Хүнс</option><option>Худалдаа</option><option>Автомашин</option><option>Үл хөдлөх</option><option>Санхүү</option><option>Бусад</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Төлөв</label>
+                  <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                    <option>Идэвхтэй</option><option>Идэвхгүй</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Админ хариуцагч имэйл</label>
+                <Input placeholder="admin@company.mn" type="email"/>
+              </div>
+              <div style={{display:'flex',gap:14}}>
+                <label style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'#555555',cursor:'pointer'}}>
+                  <input type="checkbox" style={{accentColor:'#534AB7'}}/> SSO идэвхжүүлэх
+                </label>
+                <label style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'#555555',cursor:'pointer'}}>
+                  <input type="checkbox" style={{accentColor:'#534AB7'}}/> ERP холбох
+                </label>
+              </div>
+              <div style={{padding:'10px 14px',background:'#F5F3FF',borderRadius:8,border:'0.5px solid #E9E4FD'}}>
+                <p style={{margin:0,fontSize:11,color:'#534AB7'}}><Ic n="info-circle" s={12}/> Компани бүртгэсний дараа Keycloak realm-д автомат бүлэг үүсэх ба, ERP-д харилцагч бүртгэгдэнэ.</p>
+              </div>
+            </>)}
+
+            {/* ── Department form ── */}
+            {tab==="dept"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Хэлтэс/Алба нэр *</label>
+                <Input placeholder="Жишээ: Маркетинг"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Код *</label>
+                  <Input placeholder="Жишээ: MKT"/>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Дээд хэлтэс</label>
+                  <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                    <option value="">— Толгой хэлтэс (root) —</option>
+                    <option>Мэдээллийн технологи</option><option>Санхүү</option><option>Борлуулалт</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Хэлтсийн дарга</label>
+                <Input placeholder="Нэр хайх..."/>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Тайлбар</label>
+                <textarea placeholder="Хэлтсийн үндсэн чиг үүрэг..." rows={3} style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',resize:'vertical',boxSizing:'border-box'}}/>
+              </div>
+              <div style={{padding:'10px 14px',background:'#F5F3FF',borderRadius:8,border:'0.5px solid #E9E4FD'}}>
+                <p style={{margin:0,fontSize:11,color:'#534AB7'}}><Ic n="info-circle" s={12}/> Хэлтэс нэмсний дараа мод бүтцэд автоматаар нэмэгдэж, хэрэглэгч оноож болно.</p>
+              </div>
+            </>)}
+
+            {/* ── Support Team form ── */}
+            {tab==="team"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Багийн нэр *</label>
+                <Input placeholder="Жишээ: Cloud Team"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Team Lead *</label>
+                  <Input placeholder="Нэр хайх..."/>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Төлөв</label>
+                  <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                    <option>Идэвхтэй</option><option>Идэвхгүй</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Хариуцах ангиллууд</label>
+                <div style={{display:'flex',gap:6,flexWrap:'wrap',padding:'8px 12px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,minHeight:40}}>
+                  {["Cloud","AWS","Azure","Docker","K8s"].map(t=>(
+                    <span key={t} style={{fontSize:11,background:'#EEEDFE',color:'#534AB7',padding:'3px 10px',borderRadius:69,fontWeight:600,display:'flex',alignItems:'center',gap:4}}>{t} <span style={{cursor:'pointer',color:'#AFA9EC'}}>×</span></span>
+                  ))}
+                </div>
+                <p style={{margin:'4px 0 0',fontSize:11,color:'#999999'}}>Ангилал оноосноор тухайн багт тикет автоматаар чиглүүлэгдэнэ</p>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Гишүүд нэмэх</label>
+                <Input placeholder="Хэрэглэгч хайх..."/>
+              </div>
+              <div style={{padding:'10px 14px',background:'#FEF3C7',borderRadius:8,border:'0.5px solid #FDE68A'}}>
+                <p style={{margin:0,fontSize:11,color:'#92400E'}}><Ic n="exclamation-triangle" s={12}/> Support Team-д дор хаяж 1 гишүүн шаардлагатай. Авто-чиглүүлэлт зөвхөн идэвхтэй баг дээр ажиллана.</p>
+              </div>
+            </>)}
+
+            {/* ── Category form ── */}
+            {tab==="category"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Ангиллын нэр *</label>
+                <Input placeholder="Жишээ: Хамтын ажиллагаа"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Дүрс тэмдэг</label>
+                  <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                    <option>pc-display</option><option>router</option><option>window-stack</option><option>shield-lock</option><option>cloud</option><option>people</option><option>gear</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Дээд ангилал</label>
+                  <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                    <option value="">— Root ангилал —</option>
+                    <option>Төхөөрөмж</option><option>Сүлжээ</option><option>Програм</option><option>Аюулгүй байдал</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Дэд ангиллууд (мөр тус бүрт нэг)</label>
+                <textarea placeholder={"Teams\nSharePoint\nOneDrive"} rows={4} style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'monospace',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',resize:'vertical',boxSizing:'border-box'}}/>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Авто-оноох баг</label>
+                <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option value="">— Сонгох —</option>
+                  <option>Network Team</option><option>Desktop Support</option><option>ERP Team</option><option>Security Team</option>
+                </select>
+              </div>
+            </>)}
+
+            {/* ── SSO/ERP form ── */}
+            {tab==="sso"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Холболтын төрөл *</label>
+                <div style={{display:'flex',gap:8}}>
+                  {[{l:"Keycloak SSO",icon:"shield-lock",bg:"#EEEDFE",color:"#534AB7"},{l:"Odoo ERP",icon:"arrow-left-right",bg:"#FEF3C7",color:"#D97706"},{l:"AD/LDAP",icon:"hdd-network",bg:"#D1FAE5",color:"#059669"}].map(o=>(
+                    <button key={o.l} style={{flex:1,padding:'12px 10px',borderRadius:8,border:'1px solid #E8E8E8',background:'#fff',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:6,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',transition:'all .12s'}}
+                      onMouseEnter={e=>{e.currentTarget.style.borderColor=o.color;e.currentTarget.style.background=o.bg;}}
+                      onMouseLeave={e=>{e.currentTarget.style.borderColor='#E8E8E8';e.currentTarget.style.background='#fff';}}>
+                      <div style={{width:36,height:36,borderRadius:8,background:o.bg,display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={o.icon} s={16} style={{color:o.color}}/></div>
+                      <span style={{fontSize:12,fontWeight:600,color:'#1A1A1A'}}>{o.l}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Серверийн URL *</label>
+                <Input placeholder="https://sso.tavanbogd.com"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Client ID</label>
+                  <Input placeholder="techon-web"/>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Client Secret</label>
+                  <Input placeholder="••••••••" type="password"/>
+                </div>
+              </div>
+              <div style={{display:'flex',gap:14}}>
+                <label style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'#555555',cursor:'pointer'}}>
+                  <input type="checkbox" defaultChecked style={{accentColor:'#534AB7'}}/> Auto-sync хэрэглэгч
+                </label>
+                <label style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'#555555',cursor:'pointer'}}>
+                  <input type="checkbox" style={{accentColor:'#534AB7'}}/> MFA шаардах
+                </label>
+              </div>
+            </>)}
+
+            {/* ── Notification rule form ── */}
+            {tab==="notif"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Үйл явдлын нэр *</label>
+                <Input placeholder="Жишээ: Хэрэглэгч нэмэгдсэн"/>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Trigger нөхцөл</label>
+                <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option>Тикет үүссэн</option><option>SLA хэтэрсэн</option><option>Тикет шийдэгдсэн</option><option>Шинэ захиалга</option><option>Гэрээ дуусах</option><option>Төлбөр хоцорсон</option><option>Хэрэглэгч нэмэгдсэн</option><option>Системийн алдаа</option>
+                </select>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:8}}>Мэдэгдлийн суваг</label>
+                <div style={{display:'flex',gap:12,flexWrap:'wrap'}}>
+                  {[{l:"Email",icon:"envelope",checked:true},{l:"Push",icon:"bell",checked:true},{l:"Slack",icon:"chat-dots",checked:false},{l:"SMS",icon:"phone",checked:false}].map(ch=>(
+                    <label key={ch.l} style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'#555555',cursor:'pointer',padding:'6px 12px',background:'#F5F5F5',borderRadius:6,border:'0.5px solid #E8E8E8'}}>
+                      <input type="checkbox" defaultChecked={ch.checked} style={{accentColor:'#534AB7'}}/>
+                      <Ic n={ch.icon} s={13} style={{color:'#534AB7'}}/> {ch.l}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Хүлээн авагч</label>
+                <select style={{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}}>
+                  <option>Бүх админ</option><option>Тухайн компани админ</option><option>Support Team Lead</option><option>Оноогдсон инженер</option><option>Custom</option>
+                </select>
+              </div>
+            </>)}
+
+            {/* ── SLA form ── */}
+            {tab==="sla"&&(<>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Эрэмбийн нэр *</label>
+                <Input placeholder="Жишээ: P4 — Informational"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Response SLA *</label>
+                  <Input placeholder="Жишээ: 8 цаг"/>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Resolution SLA *</label>
+                  <Input placeholder="Жишээ: 5 ажлын өдөр"/>
+                </div>
+              </div>
+              <div>
+                <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Escalation хүлээн авагч</label>
+                <Input placeholder="Жишээ: Team Lead"/>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Өнгө</label>
+                  <div style={{display:'flex',gap:6}}>
+                    {["#DC2626","#D97706","#534AB7","#059669","#7C3AED","#0284C7"].map(c=>(
+                      <span key={c} style={{width:28,height:28,borderRadius:6,background:c,cursor:'pointer',border:'2px solid transparent',display:'inline-block'}}/>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label style={{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}}>Автомат эрэмбэ тогтоох</label>
+                  <label style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'#555555',cursor:'pointer'}}>
+                    <input type="checkbox" defaultChecked style={{accentColor:'#534AB7'}}/> AI NLP-ээр эрэмбэ тодорхойлох
+                  </label>
+                </div>
+              </div>
+            </>)}
+
+          </div>
+          <div style={{display:'flex',gap:10,marginTop:20}}>
+            <Btn variant="ghost" onClick={()=>setNewModal(false)} full>Болих</Btn>
+            <Btn onClick={()=>setNewModal(false)} full icon="check-circle">{
+              tab==="company"?"Компани бүртгэх"
+              :tab==="dept"?"Хэлтэс нэмэх"
+              :tab==="team"?"Баг үүсгэх"
+              :tab==="category"?"Ангилал нэмэх"
+              :tab==="sso"?"Холболт хадгалах"
+              :tab==="notif"?"Дүрэм хадгалах"
+              :"SLA хадгалах"
+            }</Btn>
+          </div>
+        </Modal>
+      )}
+
+      {/* Tab navigation */}
+      <div style={{display:'flex',gap:0,borderBottom:'2px solid #E8ECEF',overflowX:'auto'}}>
+        {tabs.map(t=>(
+          <button key={t.key} onClick={()=>setTab(t.key)} style={{padding:'10px 16px',fontSize:12,fontWeight:600,border:'none',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',background:'transparent',color:tab===t.key?'#534AB7':'#667788',borderBottom:tab===t.key?'2px solid #534AB7':'2px solid transparent',marginBottom:-2,display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap'}}>
+            <Ic n={t.icon} s={13}/>{t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ── COMPANY TAB ── */}
+      {tab==="company"&&(<>
+        <div className="rg-4">
+          <CardStat label="Нийт охин компани" value={companies.length} icon="building" color="#534AB7" bg="#EEEDFE"/>
+          <CardStat label="Идэвхтэй" value={companies.filter(c=>c.status==="Идэвхтэй").length} icon="check-circle" color="#059669" bg="#D1FAE5"/>
+          <CardStat label="ERP холбогдсон" value={companies.filter(c=>c.erp).length} icon="link-45deg" color="#D97706" bg="#FEF3C7"/>
+          <CardStat label="SSO идэвхтэй" value={companies.filter(c=>c.sso).length} icon="shield-check" color="#7C3AED" bg="#EDE9FE"/>
+        </div>
+        <TableWrap>
+          <thead><tr><TH>Компани</TH><TH>Код</TH><TH>Хэрэглэгчид</TH><TH>Төлөв</TH><TH>ERP</TH><TH>SSO</TH><TH></TH></tr></thead>
+          <tbody>
+            {companies.map(c=>(
+              <tr key={c.id}>
+                <TD><span style={{fontWeight:600}}>{c.name}</span></TD>
+                <TD><span style={{fontFamily:'monospace',fontSize:12,color:'#534AB7',background:'#EEEDFE',padding:'2px 8px',borderRadius:4}}>{c.code}</span></TD>
+                <TD><span style={{fontWeight:600}}>{c.users}</span> хэрэглэгч</TD>
+                <TD><Badge status={c.status}/></TD>
+                <TD>{c.erp?<Ic n="check-circle-fill" s={16} style={{color:'#059669'}}/>:<Ic n="x-circle" s={16} style={{color:'#C8D0D8'}}/>}</TD>
+                <TD>{c.sso?<Ic n="check-circle-fill" s={16} style={{color:'#059669'}}/>:<Ic n="x-circle" s={16} style={{color:'#C8D0D8'}}/>}</TD>
+                <TD><button style={{padding:'5px 12px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>Засах</button></TD>
+              </tr>
+            ))}
+          </tbody>
+        </TableWrap>
+      </>)}
+
+      {/* ── DEPT TAB ── */}
+      {tab==="dept"&&<DeptTreePanel depts={depts} CardStat={CardStat} onAdd={()=>setNewModal(true)}/>}
+
+      {/* ── SUPPORT TEAM TAB ── */}
+      {tab==="team"&&(<>
+        {/* Summary cards */}
+        <div className="rg-4">
+          <CardStat label="Нийт баг" value={supportTeams.length} icon="people-fill" color="#534AB7" bg="#EEEDFE"/>
+          <CardStat label="Идэвхтэй баг" value={supportTeams.filter(t=>t.active).length} icon="check-circle" color="#059669" bg="#D1FAE5"/>
+          <CardStat label="Нийт гишүүн" value={supportTeams.reduce((s,t)=>s+t.members,0)} icon="person" color="#7C3AED" bg="#EDE9FE"/>
+          <CardStat label="Хариуцах ангилал" value={supportTeams.reduce((s,t)=>s+t.categories.length,0)} icon="tags" color="#D97706" bg="#FEF3C7"/>
+        </div>
+
+        {/* Team cards */}
+        <div style={{display:'flex',flexDirection:'column',gap:14}}>
+          {supportTeams.map(t=>(
+            <div key={t.id} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,overflow:'hidden',opacity:t.active?1:.6}}>
+              {/* Team header */}
+              <div style={{padding:'16px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid #E8E8E8'}}>
+                <div style={{display:'flex',alignItems:'center',gap:12}}>
+                  <div style={{width:40,height:40,borderRadius:10,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <Ic n="people-fill" s={18} style={{color:'#534AB7'}}/>
+                  </div>
+                  <div>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      <span style={{fontSize:15,fontWeight:700,color:'#1A1A1A'}}>{t.name}</span>
+                      <span style={{fontSize:10,fontWeight:700,background:t.active?'#D1FAE5':'#F4F6F8',color:t.active?'#059669':'#999999',padding:'3px 10px',borderRadius:69}}>{t.active?"Идэвхтэй":"Идэвхгүй"}</span>
+                    </div>
+                    <p style={{margin:'2px 0 0',fontSize:11,color:'#999999'}}>Lead: {t.lead} · {t.members} гишүүн · {t.categories.length} ангилал</p>
+                  </div>
+                </div>
+                <div style={{display:'flex',gap:6}}>
+                  <button onClick={()=>setNewModal(true)} style={{padding:'5px 12px',background:'#F0FDF4',border:'0.5px solid #BBF7D0',borderRadius:6,fontSize:11,fontWeight:600,color:'#059669',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:4}}>
+                    <Ic n="person-plus" s={11}/>Гишүүн нэмэх
+                  </button>
+                  <button style={{padding:'5px 12px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',display:'flex',alignItems:'center',gap:4}}>
+                    <Ic n="pencil" s={10}/>Засах
+                  </button>
+                </div>
+              </div>
+
+              <div style={{display:'flex'}}>
+                {/* Left: Team members */}
+                <div style={{flex:1,padding:'14px 20px',borderRight:'0.5px solid #E8E8E8'}}>
+                  <p style={{margin:'0 0 10px',fontSize:11,fontWeight:700,color:'#999999',textTransform:'uppercase',letterSpacing:.5}}>
+                    <Ic n="people" s={11} style={{marginRight:4}}/>Багийн гишүүд ({t.members})
+                  </p>
+                  <div style={{display:'flex',flexDirection:'column',gap:4}}>
+                    {(t.people||[]).map((p,pi)=>(
+                      <div key={pi} style={{display:'flex',alignItems:'center',gap:8,padding:'6px 8px',borderRadius:6,transition:'background .1s'}}
+                        onMouseEnter={e=>e.currentTarget.style.background='#F8F9FA'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                        <div style={{width:28,height:28,borderRadius:69,background:p.color+'18',color:p.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,flexShrink:0}}>
+                          {p.avatar}
+                        </div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <span style={{fontSize:12,fontWeight:600,color:'#1A1A1A'}}>{p.name}</span>
+                          <span style={{fontSize:10,color:'#999999',marginLeft:6}}>{p.pos}</span>
+                        </div>
+                        {pi===0&&<span style={{fontSize:9,fontWeight:700,background:'#EEEDFE',color:'#534AB7',padding:'2px 7px',borderRadius:69}}>LEAD</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Categories & Services */}
+                <div style={{flex:1,padding:'14px 20px'}}>
+                  {/* Хариуцах ангилал */}
+                  <p style={{margin:'0 0 8px',fontSize:11,fontWeight:700,color:'#999999',textTransform:'uppercase',letterSpacing:.5}}>
+                    <Ic n="tags" s={11} style={{marginRight:4}}/>Хариуцах ангилал
+                  </p>
+                  <div style={{display:'flex',gap:5,flexWrap:'wrap',marginBottom:14}}>
+                    {t.categories.map(c=>(
+                      <span key={c} style={{fontSize:11,background:'#EEEDFE',color:'#534AB7',padding:'4px 10px',borderRadius:69,fontWeight:600}}>{c}</span>
+                    ))}
+                  </div>
+
+                  {/* Хариуцаж буй үйлчилгээ */}
+                  <p style={{margin:'0 0 8px',fontSize:11,fontWeight:700,color:'#999999',textTransform:'uppercase',letterSpacing:.5}}>
+                    <Ic n="box-seam" s={11} style={{marginRight:4}}/>Хариуцаж буй үйлчилгээ
+                  </p>
+                  <div style={{display:'flex',flexDirection:'column',gap:4}}>
+                    {(t.services||[]).map((sv,si)=>(
+                      <div key={si} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 10px',background:'#F8F9FA',borderRadius:6,border:'0.5px solid #E8E8E8'}}>
+                        <Ic n="arrow-return-right" s={10} style={{color:'#C8D0D8',flexShrink:0}}/>
+                        <span style={{fontSize:12,color:'#1A1A1A',flex:1,fontWeight:500}}>{sv.name}</span>
+                        <span style={{fontSize:9,background:sv.type==="Аюулгүй байдал"?'#FEE2E2':sv.type==="Интеграци"?'#EDE9FE':sv.type==="Сургалт"?'#FEF3C7':'#D1FAE5',color:sv.type==="Аюулгүй байдал"?'#DC2626':sv.type==="Интеграци"?'#7C3AED':sv.type==="Сургалт"?'#D97706':'#059669',padding:'2px 8px',borderRadius:69,fontWeight:600}}>{sv.type}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>)}
+
+      {/* ── CATEGORY TAB ── */}
+      {tab==="category"&&(<>
+        <div className="rg-4g16">
+          {categories.map(c=>(
+            <div key={c.id} style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:18}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
+                <div style={{width:36,height:36,borderRadius:8,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n={c.icon} s={16} style={{color:'#534AB7'}}/></div>
+                <div>
+                  <p style={{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}}>{c.name}</p>
+                  <p style={{margin:0,fontSize:11,color:'#999999'}}>{c.count} тикет</p>
+                </div>
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:4}}>
+                {c.subs.map(s=>(
+                  <div key={s} style={{display:'flex',alignItems:'center',gap:6,padding:'6px 10px',background:'#F5F5F5',borderRadius:6}}>
+                    <Ic n="arrow-return-right" s={11} style={{color:'#C8D0D8'}}/>
+                    <span style={{fontSize:12,color:'#555555',flex:1}}>{s}</span>
+                    <Ic n="pencil" s={10} style={{color:'#C8D0D8',cursor:'pointer'}}/>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </>)}
+
+      {/* ── SSO & ERP TAB ── */}
+      {tab==="sso"&&(<>
+        <div className="rg-dash">
+          <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+              <div style={{width:40,height:40,borderRadius:10,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n="shield-lock" s={18} style={{color:'#534AB7'}}/></div>
+              <div><p style={{margin:0,fontSize:16,fontWeight:700,color:'#1A1A1A'}}>SSO / Keycloak</p><p style={{margin:0,fontSize:12,color:'#059669',fontWeight:600}}>Холбогдсон</p></div>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {[["Realm","tbg-techon"],["Client","techon-web"],["Protocol","OpenID Connect"],["IdP","AD/LDAP"],["MFA","TOTP идэвхтэй"],["Sessions","1,247 идэвхтэй"]].map(([k,v])=>(
+                <div key={k} style={{display:'flex',justifyContent:'space-between',padding:'8px 12px',background:'#F5F5F5',borderRadius:6}}>
+                  <span style={{fontSize:12,fontWeight:600,color:'#555555'}}>{k}</span>
+                  <span style={{fontSize:12,fontWeight:700,color:'#1A1A1A',fontFamily:k==="Realm"||k==="Client"?'monospace':undefined}}>{v}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:14,padding:'12px 16px',background:'#F0FDF4',borderRadius:8,border:'0.5px solid #BBF7D0'}}>
+              <p style={{margin:0,fontSize:12,color:'#059669',fontWeight:600}}>Сүүлийн sync: 2026-04-07 09:15:00 · 790 хэрэглэгч синк хийгдсэн</p>
+            </div>
+          </div>
+          <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+              <div style={{width:40,height:40,borderRadius:10,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center'}}><Ic n="arrow-left-right" s={18} style={{color:'#D97706'}}/></div>
+              <div><p style={{margin:0,fontSize:16,fontWeight:700,color:'#1A1A1A'}}>Odoo ERP v19</p><p style={{margin:0,fontSize:12,color:'#059669',fontWeight:600}}>Холбогдсон</p></div>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {[["URL","https://erp.tavanbogd.com"],["Database","tbg_production"],["Sync mode","Real-time webhook"],["Modules","Sale, Invoice, HR, Helpdesk"],["API Key","••••••••sk-7d4f"]].map(([k,v])=>(
+                <div key={k} style={{display:'flex',justifyContent:'space-between',padding:'8px 12px',background:'#F5F5F5',borderRadius:6}}>
+                  <span style={{fontSize:12,fontWeight:600,color:'#555555'}}>{k}</span>
+                  <span style={{fontSize:12,fontWeight:700,color:'#1A1A1A',fontFamily:k==="URL"||k==="Database"||k==="API Key"?'monospace':undefined}}>{v}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:14,display:'flex',gap:8}}>
+              <Btn variant="ghost" icon="arrow-clockwise" size="sm" full>Sync хийх</Btn>
+              <Btn variant="ghost" icon="gear" size="sm" full>Тохируулах</Btn>
+            </div>
+          </div>
+        </div>
+      </>)}
+
+      {/* ── NOTIFICATION TAB ── */}
+      {tab==="notif"&&(<>
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,overflow:'hidden'}}>
+          <div style={{padding:'14px 20px',borderBottom:'0.5px solid #E8E8E8',background:'#F5F5F5'}}>
+            <p style={{margin:0,fontSize:13,fontWeight:700,color:'#1A1A1A'}}>Мэдэгдлийн суваг тохиргоо</p>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1.5fr repeat(4,80px)',padding:'10px 20px',borderBottom:'0.5px solid #E8E8E8',background:'#FAFBFC'}}>
+            <span style={{fontSize:11,fontWeight:700,color:'#999999',textTransform:'uppercase'}}>Үйл явдал</span>
+            {["Email","Push","Slack","SMS"].map(h=><span key={h} style={{fontSize:11,fontWeight:700,color:'#999999',textAlign:'center',textTransform:'uppercase'}}>{h}</span>)}
+          </div>
+          {notifChannels.map((n,i)=>(
+            <div key={n.event} style={{display:'grid',gridTemplateColumns:'1.5fr repeat(4,80px)',padding:'12px 20px',borderBottom:i<notifChannels.length-1?'0.5px solid #EBEBEB':'none',alignItems:'center'}}>
+              <span style={{fontSize:13,fontWeight:600,color:'#555555'}}>{n.event}</span>
+              {[n.email,n.push,n.slack,n.sms].map((v,ci)=>(
+                <div key={ci} style={{textAlign:'center'}}>
+                  <span style={{width:24,height:24,borderRadius:6,display:'inline-flex',alignItems:'center',justifyContent:'center',background:v?'#D1FAE5':'#F4F6F8',color:v?'#059669':'#C8D0D8',fontSize:12,fontWeight:700,cursor:'pointer'}}>{v?"✓":"—"}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </>)}
+
+      {/* ── SLA CONFIG TAB ── */}
+      {tab==="sla"&&(<>
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,overflow:'hidden'}}>
+          <div style={{padding:'14px 20px',borderBottom:'0.5px solid #E8E8E8',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <p style={{margin:0,fontSize:13,fontWeight:700,color:'#1A1A1A'}}>SLA эрэмбийн тохиргоо (P0–P3)</p>
+            <Btn variant="ghost" icon="plus-circle" size="sm">Шинэ эрэмбэ</Btn>
+          </div>
+          {slaConfig.map((s,i)=>(
+            <div key={s.pri} style={{display:'grid',gridTemplateColumns:'1.2fr 1fr 1fr 1.3fr auto',gap:10,padding:'14px 20px',borderBottom:i<slaConfig.length-1?'0.5px solid #EBEBEB':'none',alignItems:'center'}}>
+              <span style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:10,height:10,borderRadius:69,background:s.color}}/>
+                <span style={{fontSize:13,fontWeight:700,color:s.color}}>{s.pri}</span>
+              </span>
+              <div><p style={{margin:0,fontSize:10,color:'#999999',textTransform:'uppercase'}}>Response</p><p style={{margin:'2px 0 0',fontSize:13,fontWeight:600,color:'#1A1A1A'}}>{s.response}</p></div>
+              <div><p style={{margin:0,fontSize:10,color:'#999999',textTransform:'uppercase'}}>Resolution</p><p style={{margin:'2px 0 0',fontSize:13,fontWeight:600,color:'#1A1A1A'}}>{s.resolve}</p></div>
+              <div><p style={{margin:0,fontSize:10,color:'#999999',textTransform:'uppercase'}}>Escalation</p><p style={{margin:'2px 0 0',fontSize:12,color:'#555555'}}>{s.escalate}</p></div>
+              <button style={{padding:'5px 12px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#534AB7',cursor:'pointer',fontFamily:'-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'}}>Засах</button>
+            </div>
+          ))}
+        </div>
+        {/* Auto-routing flow diagram */}
+        <div style={{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:20}}>
+          <p style={{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}}>Тикет авто-чиглүүлэлтийн урсгал</p>
+          <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap',justifyContent:'center'}}>
+            {[
+              {label:"Тикет ирнэ",icon:"envelope-open",bg:"#EEEDFE",color:"#534AB7"},
+              {label:"→",icon:null},
+              {label:"AI ангилал",icon:"stars",bg:"#EDE9FE",color:"#7C3AED"},
+              {label:"→",icon:null},
+              {label:"Эрэмбэ тооцоолох",icon:"calculator",bg:"#FEF3C7",color:"#D97706"},
+              {label:"→",icon:null},
+              {label:"Team оноох",icon:"people-fill",bg:"#D1FAE5",color:"#059669"},
+              {label:"→",icon:null},
+              {label:"Agent оноох",icon:"person-check",bg:"#EAF3DE",color:"#3B6D11"},
+            ].map((s,i)=>s.icon?(
+              <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,padding:'12px 16px',background:s.bg,borderRadius:10,minWidth:90}}>
+                <Ic n={s.icon} s={20} style={{color:s.color}}/>
+                <span style={{fontSize:11,fontWeight:600,color:s.color,textAlign:'center'}}>{s.label}</span>
+              </div>
+            ):(
+              <Ic key={i} n="arrow-right" s={16} style={{color:'#C8D0D8'}}/>
+            ))}
+          </div>
+        </div>
+      </>)}
+    </div>
+  );
+}
+
 // ── NAVIGATION GROUPS ─────────────────────────────────────────
 // Харилцагчийн портал (охин компани) — no permissions
 const NAV_GROUPS_CLIENT = [
@@ -5489,8 +6934,8 @@ const NAV_GROUPS_CLIENT = [
     {key:"reports",   label:"Тайлан", icon:"bar-chart-line"},
   ]},
   {label:"IT ДЭМЖЛЭГ", items:[
-    {key:"t-list",      label:"Тикет",           icon:"ticket-detailed"},
-    {key:"t-kb",        label:"Тусламж",          icon:"question-circle"},
+    {key:"t-list",      label:"Тикет",             icon:"ticket-detailed"},
+    {key:"t-kb",        label:"Мэдлэгийн сан",     icon:"book", badge:"AI"},
   ]},
   {label:"ТОХИРГОО", items:[
     {key:"users", label:"Хэрэглэгчид", icon:"people"},
@@ -5511,15 +6956,16 @@ const NAV_GROUPS_ADMIN = [
   {label:"IT ДЭМЖЛЭГ", items:[
     {key:"t-list",        label:"Тикет",              icon:"ticket-detailed"},
     {key:"t-agents",      label:"Agent Dashboard",    icon:"headset"},
-    {key:"t-analytics",   label:"Тикет тайлан",       icon:"graph-up"},
+    {key:"t-analytics",   label:"IT Аналитик",        icon:"graph-up"},
     {key:"t-canned",      label:"Бэлэн хариулт",      icon:"chat-square-text"},
     {key:"t-sla",         label:"SLA тохиргоо",        icon:"speedometer2"},
-    {key:"t-kb",          label:"Тусламж",             icon:"question-circle"},
+    {key:"t-kb",          label:"Мэдлэгийн сан",      icon:"book", badge:"AI"},
   ]},
   {label:"ТОХИРГОО", items:[
-    {key:"users",       label:"Хэрэглэгчид",     icon:"people"},
-    {key:"permissions", label:"Эрхийн тохиргоо", icon:"shield-check"},
-    {key:"logs",        label:"Лог бүртгэл",      icon:"clock-history"},
+    {key:"admin-config", label:"Админ тохиргоо", icon:"gear-wide-connected"},
+    {key:"users",        label:"Хэрэглэгчид",    icon:"people"},
+    {key:"permissions",  label:"Эрхийн тохиргоо", icon:"shield-check"},
+    {key:"logs",         label:"Лог бүртгэл",     icon:"clock-history"},
   ]},
 ];
 const NAV_GROUPS = NAV_GROUPS_ADMIN;
@@ -5552,6 +6998,7 @@ function App() {
     const MODULES = {
       dashboard:<DashboardModule onNavigate={setActive} onNavigateToOrder={navigateToOrder}/>, services:<ServiceModule onNavigate={setActive}/>, orders:<OrderModule onNavigate={setActive} jumpOrderId={jumpOrderId} onJumpDone={()=>setJumpOrderId(null)}/>,
       reports:<ReportModule/>, contracts:<ContractModule/>, billing:<BillingModule/>,
+      "admin-config":<AdminConfigModule/>,
       permissions:<PermissionsModule/>, users:<UserModule/>, logs:<AuditLogModule/>,
       "t-list":<MyTicketsModule/>,
       "t-agents":<AgentDashboardModule/>,
@@ -5776,9 +7223,13 @@ function App() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(App));
-document.getElementById("loading").style.display = "none";
+try {
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(React.createElement(App));
+  document.getElementById("loading").style.display = "none";
+} catch(e) {
+  document.getElementById("loading").innerHTML = '<div style="color:red;font-family:monospace;padding:20px;text-align:left;max-width:800px"><h3>Runtime Error:</h3><pre style="white-space:pre-wrap;word-break:break-all">' + e.message + '\n\n' + e.stack + '</pre></div>';
+}
 </script>
 </body>
 </html>
