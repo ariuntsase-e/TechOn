@@ -18633,22 +18633,44 @@ function SLAConfigModule() {
   const [newModal, setNewModal] = useState(false);
   const [selectedCats, setSelectedCats] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
+  const [typeSearch, setTypeSearch] = useState("");
   const [catSearch, setCatSearch] = useState("");
   const [bhMode, setBhMode] = useState("business");
   const [openSections, setOpenSections] = useState({"cond":true,"time":true,"bh":false,"status":false,"esc":false});
   const [catNewModal, setCatNewModal] = useState(false);
+  const [typeEditModal, setTypeEditModal] = useState(null);
+  const [typeCatConfigs, setTypeCatConfigs] = useState({});
+  const [expandedCat, setExpandedCat] = useState(null);
 
-  var ticketCategories = [{id:1,name:"\u0422\u04E9\u0445\u04E9\u04E9\u0440\u04E9\u043C\u0436",icon:"pc-display",subs:["\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440","\u041F\u0440\u0438\u043D\u0442\u0435\u0440","\u0421\u043A\u0430\u043D\u043D\u0435\u0440","\u041C\u043E\u043D\u0438\u0442\u043E\u0440","\u0423\u0442\u0430\u0441"],count:156},{id:2,name:"\u0421\u04AF\u043B\u0436\u044D\u044D",icon:"router",subs:["VPN","Firewall","WiFi","LAN","DNS"],count:89},{id:3,name:"\u041F\u0440\u043E\u0433\u0440\u0430\u043C",icon:"window-stack",subs:["Odoo ERP","Office 365","\u0410\u043D\u0442\u0438\u0432\u0438\u0440\u0443\u0441","\u0418\u043C\u044D\u0439\u043B","\u0411\u0443\u0441\u0430\u0434"],count:234},{id:4,name:"\u0410\u044E\u0443\u043B\u0433\u04AF\u0439 \u0431\u0430\u0439\u0434\u0430\u043B",icon:"shield-lock",subs:["\u041C\u0410\u0411","DLP","\u0410\u0443\u0434\u0438\u0442","\u0418\u043D\u0446\u0438\u0434\u0435\u043D\u0442"],count:45}];
+  var ticketTypes = [
+    {id:1,code:"feedback",name:"Feedback / \u0421\u0430\u043D\u0430\u043B",icon:"chat-square-heart",color:"#8B5CF6",bg:"#F3F0FF",desc:"\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u0438\u0439\u043D \u0441\u0430\u043D\u0430\u043B, \u0441\u044D\u0442\u0433\u044D\u0433\u0434\u044D\u043B, \u04AF\u043D\u044D\u043B\u0433\u044D\u044D",count:42},
+    {id:2,code:"support",name:"Support / \u0414\u044D\u043C\u0436\u043B\u044D\u0433",icon:"headset",color:"#534AB7",bg:"#EEEDFE",desc:"\u0422\u0435\u0445\u043D\u0438\u043A\u0438\u0439\u043D \u0434\u044D\u043C\u0436\u043B\u044D\u0433, \u0442\u0443\u0441\u043B\u0430\u043C\u0436 \u0445\u04AF\u0441\u044D\u0445",count:187},
+    {id:3,code:"request",name:"Request / \u0425\u04AF\u0441\u044D\u043B\u0442",icon:"inbox",color:"#2563EB",bg:"#EFF6FF",desc:"\u0428\u0438\u043D\u044D \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D, \u043D\u044D\u0432\u0442\u0440\u04AF\u04AF\u043B\u044D\u043B\u0442, \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E \u0445\u04AF\u0441\u044D\u043B\u0442",count:95},
+    {id:4,code:"complaint",name:"Complaint / \u0413\u043E\u043C\u0434\u043E\u043B",icon:"exclamation-triangle",color:"#DC2626",bg:"#FEF2F2",desc:"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0447\u0430\u043D\u0430\u0440, \u0433\u043E\u043C\u0434\u043E\u043B, \u0441\u0430\u043D\u0430\u043B",count:23},
+    {id:5,code:"incident",name:"Incident / \u0413\u044D\u043C\u0442\u044D\u043B, \u0434\u043E\u0433\u043E\u043B\u0434\u043E\u043B",icon:"lightning-charge",color:"#D97706",bg:"#FEF3C7",desc:"\u0421\u0438\u0441\u0442\u0435\u043C\u0438\u0439\u043D \u0433\u044D\u043C\u0442\u044D\u043B, \u0434\u043E\u0433\u043E\u043B\u0434\u043E\u043B, \u0441\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u0442\u0430\u0441\u0430\u043B\u0434\u043B",count:31},
+    {id:6,code:"inquiry",name:"Inquiry / \u0410\u0441\u0443\u0443\u043B\u0442, \u043B\u0430\u0432\u043B\u0430\u0433\u0430\u0430",icon:"question-circle",color:"#059669",bg:"#D1FAE5",desc:"\u041C\u044D\u0434\u044D\u044D\u043B\u044D\u043B \u043B\u0430\u0432\u043B\u0430\u0445, \u0430\u0441\u0443\u0443\u043B\u0442 \u0430\u0441\u0443\u0443\u0445",count:68}
+  ];
   var allCategories = ["\u0422\u04E9\u0445\u04E9\u04E9\u0440\u04E9\u043C\u0436","\u0421\u04AF\u043B\u0436\u044D\u044D","\u041F\u0440\u043E\u0433\u0440\u0430\u043C","\u0410\u044E\u0443\u043B\u0433\u04AF\u0439 \u0431\u0430\u0439\u0434\u0430\u043B","ERP","\u0411\u0443\u0441\u0430\u0434","\u0425\u044D\u0432\u043B\u044D\u043B","\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442","\u0421\u0435\u0440\u0432\u0435\u0440","\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u0438\u0439\u043D \u0434\u044D\u043C\u0436\u043B\u044D\u0433"];
   var allRoles = ["\u042D\u043D\u0433\u0438\u0439\u043D \u0445\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447","\u041D\u044F\u0433\u0442\u043B\u0430\u043D","\u0411\u0430\u0439\u0433\u0443\u0443\u043B\u043B\u0430\u0433\u044B\u043D \u0430\u0434\u043C\u0438\u043D","\u041C\u0435\u043D\u0435\u0436\u0435\u0440","\u0410\u0433\u0443\u0443\u043B\u0430\u0445\u044B\u043D \u043D\u044F\u0433\u0442\u043B\u0430\u043D","\u0425\u04AF\u043D\u0438\u0439 \u043D\u04E9\u04E9\u0446","\u0422\u0435\u0445\u043D\u0438\u043A\u0447"];
-  var allStatuses = ["\u0428\u0438\u043D\u044D","\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439","\u0425\u04AF\u043B\u044D\u044D\u043D \u0430\u0432\u0441\u0430\u043D","\u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439","\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0441\u044D\u043D","\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D"];
+  var allStatuses = [
+    {id:"new",name:"\u0428\u0438\u043D\u044D (New)",icon:"plus-circle",color:"#2563EB",bg:"#EFF6FF",sla:"start",desc:"\u0428\u0438\u043D\u044D\u044D\u0440 \u04AF\u04AF\u0441\u0433\u044D\u0441\u044D\u043D, \u0445\u0443\u0432\u0438\u0430\u0440\u0438\u043B\u0430\u0433\u0434\u0430\u0430\u0433\u04AF\u0439. Response & Resolution SLA \u044D\u0445\u043B\u044D\u043D\u044D."},
+    {id:"in_progress",name:"\u0425\u0438\u0439\u0433\u0434\u044D\u0436 \u0431\u0430\u0439\u0433\u0430\u0430 (In Progress)",icon:"play-circle",color:"#059669",bg:"#D1FAE5",sla:"response_stop",desc:"\u0418\u043D\u0436\u0435\u043D\u0435\u0440 \u0430\u0432\u0441\u0430\u043D. Response SLA \u0437\u043E\u0433\u0441\u043E\u0445, Resolution \u04AF\u0440\u0433\u044D\u043B\u0436\u043B\u044D\u043D\u044D."},
+    {id:"on_hold",name:"\u0422\u04AF\u0440 \u0437\u043E\u0433\u0441\u0441\u043E\u043D (On Hold)",icon:"pause-circle",color:"#D97706",bg:"#FEF3C7",sla:"pause",desc:"SLA \u0446\u0430\u0433 \u0442\u04AF\u0440 \u0437\u043E\u0433\u0441\u043E\u043D\u043E.",sub:[
+      {id:"pending_customer",name:"Pending Customer",desc:"\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u044D\u044D\u0441 \u043D\u044D\u043C\u044D\u043B\u0442 \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439"},
+      {id:"pending_approval",name:"Pending Approval",desc:"\u0423\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430\u0430\u0441 \u0437\u04E9\u0432\u0448\u04E9\u04E9\u0440\u04E9\u043B \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439"},
+      {id:"pending_vendor",name:"Pending Vendor",desc:"\u0413\u0443\u0440\u0430\u0432\u0434\u0430\u0433\u0447 \u0442\u0430\u043B\u0430\u0430\u0441 \u0445\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439"}
+    ]},
+    {id:"resolved",name:"\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0433\u0434\u0441\u044D\u043D (Resolved)",icon:"check-circle",color:"#7C3AED",bg:"#F3F0FF",sla:"stop",desc:"SLA \u0431\u04AF\u0440\u044D\u043D \u0437\u043E\u0433\u0441\u043E\u043D\u043E. \u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447 \u0431\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u043D\u0430."},
+    {id:"closed",name:"\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D (Closed)",icon:"lock",color:"#6B7280",bg:"#F3F4F6",sla:"final",desc:"\u0411\u04AF\u0440\u043C\u04E9\u0441\u04E9\u043D \u0445\u0430\u0430\u0433\u0434\u0441\u0430\u043D. Read-only."},
+    {id:"canceled",name:"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D (Canceled)",icon:"x-circle",color:"#DC2626",bg:"#FEF2F2",sla:"final",desc:"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D \u0442\u0438\u043A\u0435\u0442."}
+  ];
   var escActions = ["\u0410\u0436\u0438\u043B\u0442\u0430\u043D\u0434 \u0430\u043D\u0445\u0430\u0430\u0440\u0443\u0443\u043B\u0430\u0445","\u041C\u0435\u043D\u0435\u0436\u0435\u0440 \u0440\u04AF\u04AF \u043C\u044D\u0439\u043B \u0438\u043B\u0433\u044D\u044D\u0445","\u042D\u0440\u044D\u043C\u0431\u044D \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u04E9\u0441\u0433\u04E9\u0445","\u0411\u0430\u0433\u0438\u0439\u043D \u0430\u0445\u043B\u0430\u0433\u0447 \u0440\u0443\u0443 \u0448\u0438\u043B\u0436\u04AF\u04AF\u043B\u044D\u0445"];
   const slaRules = [{
     pri: "Critical", label: "\u041C\u0430\u0448 \u044F\u0430\u0440\u0430\u043B\u0442\u0430\u0439",
     response: "15 \u043C\u0438\u043D", resolution: "2 \u0446\u0430\u0433", updateTime: "30 \u043C\u0438\u043D",
     escalate: "IT Director",
     categories: ["\u0421\u04AF\u043B\u0436\u044D\u044D","\u0410\u044E\u0443\u043B\u0433\u04AF\u0439 \u0431\u0430\u0439\u0434\u0430\u043B","\u0421\u0435\u0440\u0432\u0435\u0440"],
-    roles: ["\u0411\u0430\u0439\u0433\u0443\u0443\u043B\u043B\u0430\u0433\u044B\u043D \u0430\u0434\u043C\u0438\u043D","\u041C\u0435\u043D\u0435\u0436\u0435\u0440"],
+    types: ["Incident / \u0413\u044D\u043C\u0442\u044D\u043B, \u0434\u043E\u0433\u043E\u043B\u0434\u043E\u043B","Complaint / \u0413\u043E\u043C\u0434\u043E\u043B"],
     businessHours: "24/7", workSchedule: "24/7 \u0442\u0430\u0441\u0440\u0430\u043B\u0442\u0433\u04AF\u0439",
     statusStart: "\u0428\u0438\u043D\u044D", statusPause: "\u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439", statusStop: "\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0441\u044D\u043D",
     warningMin: "15 \u043C\u0438\u043D", warningAction: "\u0410\u0436\u0438\u043B\u0442\u0430\u043D\u0434 \u0430\u043D\u0445\u0430\u0430\u0440\u0443\u0443\u043B\u0430\u0445",
@@ -18659,7 +18681,7 @@ function SLAConfigModule() {
     response: "30 \u043C\u0438\u043D", resolution: "4 \u0446\u0430\u0433", updateTime: "1 \u0446\u0430\u0433",
     escalate: "IT Manager",
     categories: ["\u0422\u04E9\u0445\u04E9\u04E9\u0440\u04E9\u043C\u0436","\u0421\u04AF\u043B\u0436\u044D\u044D","ERP"],
-    roles: ["\u042D\u043D\u0433\u0438\u0439\u043D \u0445\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447","\u041D\u044F\u0433\u0442\u043B\u0430\u043D","\u0411\u0430\u0439\u0433\u0443\u0443\u043B\u043B\u0430\u0433\u044B\u043D \u0430\u0434\u043C\u0438\u043D"],
+    types: ["Support / \u0414\u044D\u043C\u0436\u043B\u044D\u0433","Incident / \u0413\u044D\u043C\u0442\u044D\u043B, \u0434\u043E\u0433\u043E\u043B\u0434\u043E\u043B"],
     businessHours: "business", workSchedule: "\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D 09:00-18:00",
     statusStart: "\u0428\u0438\u043D\u044D", statusPause: "\u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439", statusStop: "\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0441\u044D\u043D",
     warningMin: "30 \u043C\u0438\u043D", warningAction: "\u0410\u0436\u0438\u043B\u0442\u0430\u043D\u0434 \u0430\u043D\u0445\u0430\u0430\u0440\u0443\u0443\u043B\u0430\u0445",
@@ -18670,7 +18692,7 @@ function SLAConfigModule() {
     response: "2 \u0446\u0430\u0433", resolution: "1 \u0430\u0436\u043B\u044B\u043D \u04E9\u0434\u04E9\u0440", updateTime: "4 \u0446\u0430\u0433",
     escalate: "Team Lead",
     categories: ["\u041F\u0440\u043E\u0433\u0440\u0430\u043C","ERP","\u0411\u0443\u0441\u0430\u0434"],
-    roles: ["\u042D\u043D\u0433\u0438\u0439\u043D \u0445\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447","\u041D\u044F\u0433\u0442\u043B\u0430\u043D"],
+    types: ["Request / \u0425\u04AF\u0441\u044D\u043B\u0442","Support / \u0414\u044D\u043C\u0436\u043B\u044D\u0433","Complaint / \u0413\u043E\u043C\u0434\u043E\u043B"],
     businessHours: "business", workSchedule: "\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D 09:00-18:00",
     statusStart: "\u0428\u0438\u043D\u044D", statusPause: "\u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439", statusStop: "\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0441\u044D\u043D",
     warningMin: "1 \u0446\u0430\u0433", warningAction: "\u0410\u0436\u0438\u043B\u0442\u0430\u043D\u0434 \u0430\u043D\u0445\u0430\u0430\u0440\u0443\u0443\u043B\u0430\u0445",
@@ -18681,7 +18703,7 @@ function SLAConfigModule() {
     response: "4 \u0446\u0430\u0433", resolution: "3 \u0430\u0436\u043B\u044B\u043D \u04E9\u0434\u04E9\u0440", updateTime: "24 \u0446\u0430\u0433",
     escalate: "\u2014",
     categories: ["\u0422\u04E9\u0445\u04E9\u04E9\u0440\u04E9\u043C\u0436","\u041F\u0440\u043E\u0433\u0440\u0430\u043C","\u0411\u0443\u0441\u0430\u0434"],
-    roles: ["\u042D\u043D\u0433\u0438\u0439\u043D \u0445\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447"],
+    types: ["Feedback / \u0421\u0430\u043D\u0430\u043B","Inquiry / \u0410\u0441\u0443\u0443\u043B\u0442, \u043B\u0430\u0432\u043B\u0430\u0433\u0430\u0430","Request / \u0425\u04AF\u0441\u044D\u043B\u0442"],
     businessHours: "business", workSchedule: "\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D 09:00-18:00",
     statusStart: "\u0428\u0438\u043D\u044D", statusPause: "\u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439", statusStop: "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",
     warningMin: "\u2014", warningAction: "\u2014",
@@ -18749,136 +18771,46 @@ function SLAConfigModule() {
 
   var slaFormFields = function(defaults) {
     var d = defaults || {};
-    return /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:0,maxHeight:'65vh',overflowY:'auto',paddingRight:4}},
+    return /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:0,maxHeight:'65vh',overflowY:'auto',paddingRight:4,paddingBottom:8}},
       /*#__PURE__*/React.createElement("style", null, ".sla-tip-trigger:hover + .sla-tip-box { opacity:1 !important; pointer-events:auto !important; } .sla-sect{border-bottom:1px solid #F0F0F0;padding-bottom:14px;margin-bottom:2px}"),
 
       /* ── SECTION 1: Нөхцөл ── */
       /*#__PURE__*/React.createElement("div", {className:"sla-sect"},
-        sectionHead("cond","funnel","\u041D\u04E9\u0445\u0446\u04E9\u043B (Conditions)","\u0417\u044D\u0440\u044D\u0433\u043B\u044D\u043B, \u0445\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u0438\u0439\u043D \u0434\u04AF\u0440, \u0430\u043D\u0433\u0438\u043B\u0430\u043B"),
+        sectionHead("cond","funnel","\u041D\u04E9\u0445\u0446\u04E9\u043B (Conditions)","\u0417\u044D\u0440\u044D\u0433\u043B\u044D\u043B, \u0442\u04E9\u0440\u04E9\u043B, \u0430\u043D\u0433\u0438\u043B\u0430\u043B"),
         openSections["cond"] && /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:14,paddingLeft:38,paddingTop:4}},
-          /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}}, "\u042D\u0440\u044D\u043C\u0431\u044D *"),
-              /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: P4 \u2014 Info",defaultValue:d.label||""})
-            ),
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}}, "\u04E8\u043D\u0433\u04E9"),
-              /*#__PURE__*/React.createElement(Input, {placeholder:"#534AB7",defaultValue:d.color||""})
-            )
-          ),
           /*#__PURE__*/React.createElement("div", null,
-            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:6}}, "\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u0438\u0439\u043D \u0434\u04AF\u0440"),
-            pillToggle(allRoles, selectedRoles, setSelectedRoles, '#534AB7')
+            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}}, "\u042D\u0440\u044D\u043C\u0431\u044D *"),
+            /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: P4 \u2014 Info",defaultValue:d.label||""})
           ),
-          /*#__PURE__*/React.createElement("div", null,
-            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:6}}, "\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0430\u043D\u0433\u0438\u043B\u0430\u043B"),
-            /*#__PURE__*/React.createElement("div", {style:{position:'relative'}},
-              /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexWrap:'wrap',gap:4,padding:'6px 8px',border:'1px solid #D1D5DB',borderRadius:8,background:'#fff',minHeight:36,alignItems:'center',cursor:'text'}},
-                selectedCats.map(function(c){
-                  return /*#__PURE__*/React.createElement("span", {key:c,style:{display:'inline-flex',alignItems:'center',gap:4,padding:'3px 10px',fontSize:11,fontWeight:600,background:'#EEEDFE',color:'#534AB7',borderRadius:14,whiteSpace:'nowrap'}},
-                    c,
-                    /*#__PURE__*/React.createElement("button", {type:"button",onClick:function(){setSelectedCats(selectedCats.filter(function(x){return x!==c}));},style:{background:'none',border:'none',color:'#534AB7',cursor:'pointer',fontSize:13,padding:0,lineHeight:1,fontWeight:700}}, "\u00D7")
-                  );
-                }),
-                /*#__PURE__*/React.createElement("input", {type:"text",value:catSearch,onChange:function(e){setCatSearch(e.target.value);},placeholder:selectedCats.length?"\u041D\u044D\u043C\u044D\u0445...":"\u0425\u0430\u0439\u0445 \u0431\u0443\u044E\u0443 \u0441\u043E\u043D\u0433\u043E\u0445...",style:{border:'none',outline:'none',flex:1,minWidth:80,fontSize:12,padding:'2px 4px',background:'transparent',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",color:'#1A1A1A'}})
-              ),
-              catSearch.length > 0 && /*#__PURE__*/React.createElement("div", {style:{position:'absolute',top:'100%',left:0,right:0,marginTop:4,background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,boxShadow:'0 4px 16px rgba(0,0,0,.1)',zIndex:100,maxHeight:160,overflowY:'auto'}},
-                allCategories.filter(function(c){return c.toLowerCase().indexOf(catSearch.toLowerCase())!==-1 && selectedCats.indexOf(c)===-1;}).length===0
-                  ? /*#__PURE__*/React.createElement("div", {style:{padding:'10px 14px',fontSize:11,color:'#999'}}, "\u0418\u043B\u044D\u0440\u0446 \u043E\u043B\u0434\u0441\u043E\u043D\u0433\u04AF\u0439")
-                  : allCategories.filter(function(c){return c.toLowerCase().indexOf(catSearch.toLowerCase())!==-1 && selectedCats.indexOf(c)===-1;}).map(function(c){
-                    return /*#__PURE__*/React.createElement("button", {key:c,type:"button",onClick:function(){setSelectedCats(selectedCats.concat([c]));setCatSearch("");},style:{display:'block',width:'100%',textAlign:'left',padding:'8px 14px',fontSize:12,color:'#1A1A1A',background:'transparent',border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",borderBottom:'1px solid #F5F5F5'}},
-                      /*#__PURE__*/React.createElement("i", {className:"bi bi-plus-circle",style:{marginRight:6,fontSize:11,color:'#534AB7'}}), c
-                    );
-                  })
-              )
-            )
-          )
+          multiSelectDrop("\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0442\u04E9\u0440\u04E9\u043B", ticketTypes.map(function(t){return t.name}), selectedRoles, setSelectedRoles, typeSearch, setTypeSearch, '#534AB7', '#EEEDFE', "\u0422\u04E9\u0440\u04E9\u043B \u0445\u0430\u0439\u0445...")
         )
       ),
 
-      /* ── SECTION 2: Хугацааны зорилт ── */
+      /* ── SECTION 2: Төлөвийн уялдаа ── */
       /*#__PURE__*/React.createElement("div", {className:"sla-sect"},
-        sectionHead("time","clock-history","\u0425\u0443\u0433\u0430\u0446\u0430\u0430\u043D\u044B \u0437\u043E\u0440\u0438\u043B\u0442","\u0425\u0430\u0440\u0438\u0443 \u04E9\u0433\u04E9\u0445, \u0448\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445, \u044F\u0432\u0446\u044B\u043D \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B"),
-        openSections["time"] && /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:12,paddingLeft:38,paddingTop:4}},
-          /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'flex',alignItems:'center',marginBottom:4}},
-                "\u0425\u0430\u0440\u0438\u0443 \u04E9\u0433\u04E9\u0445 \u0445\u0443\u0433\u0430\u0446\u0430\u0430 *",
-                slaTooltip("\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u044D\u044D\u0441 \u0445\u04AF\u0441\u044D\u043B\u0442 \u0438\u0440\u0441\u044D\u043D \u043C\u04E9\u0447\u04E9\u04E9\u0441 \u044D\u0445\u043B\u044D\u043D \u0430\u043D\u0445\u043D\u044B \u0445\u0430\u0440\u0438\u0443 \u04AF\u0439\u043B\u0434\u044D\u043B \u04AF\u0437\u04AF\u04AF\u043B\u044D\u0445 \u0445\u04AF\u0440\u0442\u044D\u043B\u0445 \u0437\u0430\u0440\u0446\u0443\u0443\u043B\u0441\u0430\u043D \u0445\u0443\u0433\u0430\u0446\u0430\u0430.")
+        sectionHead("status","arrow-repeat","\u0422\u04E9\u043B\u04E9\u0432\u0438\u0439\u043D \u0443\u044F\u043B\u0434\u0430\u0430","\u0422\u04E9\u043B\u04E9\u0432 \u0442\u0443\u0441 \u0431\u04AF\u0440 \u0434\u044D\u044D\u0440 SLA \u0446\u0430\u0433 \u0445\u044D\u0440\u0445\u044D\u043D \u043D\u04E9\u043B\u04E9\u04E9\u043B\u04E9\u0445"),
+        openSections["status"] && /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:10,paddingLeft:38,paddingTop:4}},
+          allStatuses.map(function(st){
+            var slaLabel = st.sla==="start"?"\u25B6 SLA \u044D\u0445\u043B\u044D\u0445":st.sla==="response_stop"?"\u2705 Response \u0437\u043E\u0433\u0441\u043E\u0445":st.sla==="pause"?"\u23F8 SLA \u0442\u04AF\u0440 \u0437\u043E\u0433\u0441\u043E\u043D\u043E":st.sla==="stop"?"\u23F9 SLA \u0437\u043E\u0433\u0441\u043E\u043D\u043E":"\uD83D\uDD12 \u042D\u0446\u0441\u0438\u0439\u043D";
+            var slaBg = st.sla==="start"?"#EFF6FF":st.sla==="response_stop"?"#D1FAE5":st.sla==="pause"?"#FEF3C7":st.sla==="stop"?"#F3F0FF":"#F3F4F6";
+            var slaBorder = st.sla==="start"?"#BFDBFE":st.sla==="response_stop"?"#6EE7B7":st.sla==="pause"?"#FDE68A":st.sla==="stop"?"#C4B5FD":"#D1D5DB";
+            return /*#__PURE__*/React.createElement("div", {key:st.id,style:{display:'flex',alignItems:'center',gap:10,padding:'8px 12px',background:'#FAFAFA',borderRadius:8,border:'0.5px solid #EBEBEB'}},
+              /*#__PURE__*/React.createElement("div", {style:{width:28,height:28,borderRadius:7,background:st.bg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+                /*#__PURE__*/React.createElement("i", {className:"bi bi-"+st.icon,style:{fontSize:12,color:st.color}})
               ),
-              /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: 2 \u0446\u0430\u0433",defaultValue:d.response||""})
-            ),
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'flex',alignItems:'center',marginBottom:4}},
-                "\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445 \u0445\u0443\u0433\u0430\u0446\u0430\u0430 *",
-                slaTooltip("\u0425\u04AF\u0441\u044D\u043B\u0442 \u0430\u043D\u0445 \u0431\u04AF\u0440\u0442\u0433\u044D\u0433\u0434\u0441\u044D\u043D \u0446\u0430\u0433\u0430\u0430\u0441 \u0442\u04AF\u04AF\u043D\u0438\u0439\u0433 \u0431\u04AF\u0440\u044D\u043D \u0448\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0436 \u0434\u0443\u0443\u0441\u0430\u0445 \u0445\u04AF\u0440\u0442\u044D\u043B\u0445 \u043D\u0438\u0439\u0442 \u0445\u0443\u0433\u0430\u0446\u0430\u0430.")
+              /*#__PURE__*/React.createElement("div", {style:{flex:1,minWidth:0}},
+                /*#__PURE__*/React.createElement("div", {style:{fontSize:12,fontWeight:600,color:'#1A1A1A',marginBottom:1}}, st.name),
+                /*#__PURE__*/React.createElement("div", {style:{fontSize:10,color:'#6B7280',lineHeight:'1.3'}}, st.desc),
+                st.sub && /*#__PURE__*/React.createElement("div", {style:{display:'flex',gap:6,marginTop:4,flexWrap:'wrap'}},
+                  st.sub.map(function(s){return /*#__PURE__*/React.createElement("span", {key:s.id,style:{fontSize:9,padding:'2px 8px',borderRadius:20,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A',fontWeight:500}}, s.name);})
+                )
               ),
-              /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: 1 \u0430\u0436\u043B\u044B\u043D \u04E9\u0434\u04E9\u0440",defaultValue:d.resolution||""})
-            )
-          ),
-          /*#__PURE__*/React.createElement("div", null,
-            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'flex',alignItems:'center',marginBottom:4}},
-              "\u042F\u0432\u0446\u044B\u043D \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B \u04E9\u0433\u04E9\u0445 \u0437\u0430\u0432\u0441\u0430\u0440",
-              slaTooltip("\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u0438\u0434 \u0430\u0441\u0443\u0443\u0434\u043B\u044B\u043D \u044F\u0432\u0446\u044B\u043D \u0442\u0430\u043B\u0430\u0430\u0440 \u0442\u043E\u0433\u0442\u043C\u043E\u043B \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B \u04E9\u0433\u04E9\u0445 \u0437\u0430\u0432\u0441\u0440\u044B\u043D \u0445\u0443\u0433\u0430\u0446\u0430\u0430. \u0416\u0438\u0448\u044D\u044D: 24 \u0446\u0430\u0433 \u0442\u0443\u0442\u0430\u043C\u0434 \u0448\u0438\u043D\u044D\u0447\u043B\u044D\u043B\u0442 \u0445\u0438\u0439\u0436 \u043C\u044D\u0434\u044D\u0433\u0434\u044D\u0445.")
-            ),
-            /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: 4 \u0446\u0430\u0433",defaultValue:d.updateTime||""})
-          )
-        )
-      ),
-
-      /* ── SECTION 3: Ажлын цагийн тохиргоо ── */
-      /*#__PURE__*/React.createElement("div", {className:"sla-sect"},
-        sectionHead("bh","calendar-week","\u0410\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0438\u0439\u043D \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E","\u0425\u0443\u0433\u0430\u0446\u0430\u0430 \u0442\u043E\u043E\u043B\u043E\u0445 \u0445\u0443\u0430\u043D\u043B\u0438"),
-        openSections["bh"] && /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:12,paddingLeft:38,paddingTop:4}},
-          /*#__PURE__*/React.createElement("div", {style:{display:'flex',gap:8}},
-            [["business","\u0410\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0430\u0430\u0440","clock"],["24/7","24/7 \u0442\u0430\u0441\u0440\u0430\u043B\u0442\u0433\u04AF\u0439","infinity"]].map(function(m){
-              var isOn = bhMode === m[0];
-              return /*#__PURE__*/React.createElement("button", {
-                key:m[0],type:"button",
-                onClick:function(){setBhMode(m[0]);},
-                style:{flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:6,padding:'10px 12px',borderRadius:10,cursor:'pointer',
-                  border:isOn?'1.5px solid #534AB7':'1px solid #D1D5DB',
-                  background:isOn?'#F0EFFE':'#fff',color:isOn?'#534AB7':'#666',
-                  fontSize:12,fontWeight:600,transition:'all .15s',
-                  fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}
-              },
-                /*#__PURE__*/React.createElement("i",{className:"bi bi-"+m[2],style:{fontSize:14}}),
-                m[1]
-              );
-            })
-          ),
-          bhMode === "business" && /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}}, "\u0410\u0436\u043B\u044B\u043D \u04E9\u0434\u04E9\u0440"),
-              /*#__PURE__*/React.createElement(Input, {placeholder:"\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D",defaultValue:d.workSchedule&&d.businessHours==="business"?d.workSchedule.split(" ")[0]||"\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D":"\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D"})
-            ),
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}}, "\u0426\u0430\u0433\u0438\u0439\u043D \u0445\u04AF\u0440\u044D\u044D"),
-              /*#__PURE__*/React.createElement(Input, {placeholder:"09:00-18:00",defaultValue:d.workSchedule&&d.businessHours==="business"?d.workSchedule.split(" ")[1]||"09:00-18:00":"09:00-18:00"})
-            )
-          ),
-          /*#__PURE__*/React.createElement("div", {style:{padding:'10px 14px',background:'#FFFBEB',borderRadius:8,border:'1px solid #FDE68A'}},
-            /*#__PURE__*/React.createElement("span", {style:{fontSize:11,color:'#92400E',lineHeight:'1.5'}},
-              bhMode==="business"
-                ? "\u2139\uFE0F \u0410\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0430\u0430\u0440 \u0442\u043E\u043E\u043B\u043D\u043E. \u0416\u0438\u0448\u044D\u044D: \u0411\u0430\u0430\u0441\u0430\u043D 17:00-\u0434 \u0438\u0440\u0441\u044D\u043D \u0445\u04AF\u0441\u044D\u043B\u0442\u0438\u0439\u043D 2 \u0446\u0430\u0433\u0438\u0439\u043D SLA \u043D\u044C \u0414\u0430\u0432\u0430\u0430 10:00-\u0434 \u0434\u0443\u0443\u0441\u043D\u0430."
-                : "\u26A0\uFE0F 24/7 \u0442\u0430\u0441\u0440\u0430\u043B\u0442\u0433\u04AF\u0439 \u0442\u043E\u043E\u043B\u043D\u043E. \u0410\u043C\u0440\u0430\u043B\u0442, \u0431\u0430\u044F\u0440 \u0445\u0430\u043C\u0430\u0430\u0440\u0430\u0445\u0433\u04AF\u0439. \u041C\u0430\u0448 \u044F\u0430\u0440\u0430\u043B\u0442\u0430\u0439, VIP \u0434\u0443\u0443\u0434\u043B\u0430\u0433\u0430\u043D\u0434 \u0442\u043E\u0445\u0438\u0440\u043E\u043C\u0436\u0442\u043E\u0439."
-            )
-          )
-        )
-      ),
-
-      /* ── SECTION 4: Төлөвийн уялдаа ── */
-      /*#__PURE__*/React.createElement("div", {className:"sla-sect"},
-        sectionHead("status","arrow-repeat","\u0422\u04E9\u043B\u04E9\u0432\u0438\u0439\u043D \u0443\u044F\u043B\u0434\u0430\u0430","\u0426\u0430\u0433 \u044D\u0445\u043B\u044D\u0445, \u0442\u04AF\u0440 \u0437\u043E\u0433\u0441\u043E\u0445, \u0437\u043E\u0433\u0441\u043E\u0445"),
-        openSections["status"] && /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:12,paddingLeft:38,paddingTop:4}},
-          /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}},
-            selectField("\u25B6 \u0426\u0430\u0433 \u044D\u0445\u043B\u044D\u0445 (Start)", allStatuses.slice(0,3), d.statusStart||"\u0428\u0438\u043D\u044D"),
-            selectField("\u23F8 \u0422\u04AF\u0440 \u0437\u043E\u0433\u0441\u043E\u0445 (Pause)", allStatuses, d.statusPause||"\u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439"),
-            selectField("\u23F9 \u0417\u043E\u0433\u0441\u043E\u0445 (Stop)", allStatuses.slice(4), d.statusStop||"\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0441\u044D\u043D")
-          ),
+              /*#__PURE__*/React.createElement("span", {style:{fontSize:10,fontWeight:600,padding:'3px 10px',borderRadius:20,background:slaBg,color:st.color,border:'1px solid '+slaBorder,whiteSpace:'nowrap',flexShrink:0}}, slaLabel)
+            );
+          }),
           /*#__PURE__*/React.createElement("div", {style:{padding:'10px 14px',background:'#EFF6FF',borderRadius:8,border:'1px solid #BFDBFE'}},
             /*#__PURE__*/React.createElement("span", {style:{fontSize:11,color:'#1E40AF',lineHeight:'1.5'}},
-              "\u2139\uFE0F \u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u044D\u044D\u0441 \u043D\u044D\u043C\u044D\u043B\u0442 \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0443\u0439 \u04AF\u0435\u0434 SLA \u0446\u0430\u0433 \u0442\u04AF\u0440 \u0437\u043E\u0433\u0441\u043E\u043D\u043E. \u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u044D\u044D\u0441 \u0445\u0430\u043C\u0430\u0430\u0440\u0447 \u0443\u0434\u0441\u0430\u043D \u0445\u0443\u0433\u0430\u0446\u0430\u0430\u0433 \u0430\u0436\u0438\u043B\u0442\u043D\u044B \u0431\u0443\u0440\u0443\u0443 \u0433\u044D\u0436 \u0442\u043E\u043E\u0446\u043E\u0445\u0433\u04AF\u0439."
+              "\u2139\uFE0F On Hold \u0442\u04E9\u043B\u04E9\u0432\u0442 \u043E\u0440\u043E\u0445\u043E\u0434 SLA \u0446\u0430\u0433 \u0442\u04AF\u0440 \u0437\u043E\u0433\u0441\u043E\u043D\u043E. \u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447 \u0445\u0430\u0440\u0438\u0443 \u04E9\u0433\u04E9\u0445\u04E9\u0434 \u0431\u0443\u0446\u0430\u0430\u0434 In Progress \u0431\u043E\u043B\u0436 SLA \u04AF\u0440\u0433\u044D\u043B\u0436\u043B\u044D\u043D\u044D."
             )
           )
         )
@@ -18925,8 +18857,9 @@ function SLAConfigModule() {
   var openEdit = function(r) {
     setEditModal(r);
     setSelectedCats(r.categories||[]);
-    setSelectedRoles(r.roles||[]);
+    setSelectedRoles(r.types||[]);
     setCatSearch("");
+    setTypeSearch("");
     setBhMode(r.businessHours||"business");
     setOpenSections({"cond":true,"time":true,"bh":false,"status":false,"esc":false});
   };
@@ -18939,54 +18872,188 @@ function SLAConfigModule() {
     setOpenSections({"cond":true,"time":true,"bh":false,"status":false,"esc":false});
   };
 
-  /* ── Ангилал sub-tab rendering ── */
-  var renderCategoryTab = function() {
-    return /*#__PURE__*/React.createElement(React.Fragment, null,
-      catNewModal && /*#__PURE__*/React.createElement(Modal, {title:"\u0428\u0438\u043D\u044D \u0430\u043D\u0433\u0438\u043B\u0430\u043B \u043D\u044D\u043C\u044D\u0445",onClose:function(){setCatNewModal(false)},width:560},
-        /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:16}},
-          /*#__PURE__*/React.createElement("div", null,
-            /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0410\u043D\u0433\u0438\u043B\u043B\u044B\u043D \u043D\u044D\u0440 *"),
-            /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: \u0425\u0430\u043C\u0442\u044B\u043D \u0430\u0436\u0438\u043B\u043B\u0430\u0433\u0430\u0430"})
-          ),
-          /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0414\u04AF\u0440\u0441 \u0442\u044D\u043C\u0434\u044D\u0433"),
-              /*#__PURE__*/React.createElement("select", {style:{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}},
-                /*#__PURE__*/React.createElement("option", null, "pc-display"),/*#__PURE__*/React.createElement("option", null, "router"),/*#__PURE__*/React.createElement("option", null, "window-stack"),/*#__PURE__*/React.createElement("option", null, "shield-lock"),/*#__PURE__*/React.createElement("option", null, "cloud"),/*#__PURE__*/React.createElement("option", null, "people"),/*#__PURE__*/React.createElement("option", null, "gear")
+  /* multi-select dropdown builder */
+  var multiSelectDrop = function(label, allItems, selected, setSelected, searchVal, setSearchVal, acColor, acBg, placeholder) {
+    var ac = acColor||'#534AB7'; var abg = acBg||'#EEEDFE';
+    var isAll = selected.length === allItems.length;
+    return /*#__PURE__*/React.createElement("div", null,
+      /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}}, label),
+      /*#__PURE__*/React.createElement("div", {style:{position:'relative'}},
+        /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexWrap:'wrap',gap:4,padding:'6px 8px',border:'1px solid #D1D5DB',borderRadius:8,background:'#fff',minHeight:36,alignItems:'center',cursor:'text'}},
+          isAll
+            ? /*#__PURE__*/React.createElement("span", {style:{display:'inline-flex',alignItems:'center',gap:4,padding:'3px 10px',fontSize:11,fontWeight:600,background:abg,color:ac,borderRadius:14}},
+                "\u0411\u04AF\u0433\u0434",
+                /*#__PURE__*/React.createElement("button", {type:"button",onClick:function(){setSelected([]);},style:{background:'none',border:'none',color:ac,cursor:'pointer',fontSize:13,padding:0,lineHeight:1,fontWeight:700}}, "\u00D7")
               )
-            ),
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0414\u044D\u044D\u0434 \u0430\u043D\u0433\u0438\u043B\u0430\u043B"),
-              /*#__PURE__*/React.createElement("select", {style:{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',cursor:'pointer'}},
-                /*#__PURE__*/React.createElement("option", {value:""},"\u2014 Root \u0430\u043D\u0433\u0438\u043B\u0430\u043B \u2014"),/*#__PURE__*/React.createElement("option", null, "\u0422\u04E9\u0445\u04E9\u04E9\u0440\u04E9\u043C\u0436"),/*#__PURE__*/React.createElement("option", null, "\u0421\u04AF\u043B\u0436\u044D\u044D"),/*#__PURE__*/React.createElement("option", null, "\u041F\u0440\u043E\u0433\u0440\u0430\u043C"),/*#__PURE__*/React.createElement("option", null, "\u0410\u044E\u0443\u043B\u0433\u04AF\u0439 \u0431\u0430\u0439\u0434\u0430\u043B")
-              )
-            )
+            : selected.map(function(s){
+                return /*#__PURE__*/React.createElement("span", {key:s,style:{display:'inline-flex',alignItems:'center',gap:4,padding:'3px 10px',fontSize:11,fontWeight:600,background:abg,color:ac,borderRadius:14,whiteSpace:'nowrap'}},
+                  s,
+                  /*#__PURE__*/React.createElement("button", {type:"button",onClick:function(){setSelected(selected.filter(function(x){return x!==s}));},style:{background:'none',border:'none',color:ac,cursor:'pointer',fontSize:13,padding:0,lineHeight:1,fontWeight:700}}, "\u00D7")
+                );
+              }),
+          /*#__PURE__*/React.createElement("input", {type:"text",value:searchVal,onChange:function(e){setSearchVal(e.target.value);},placeholder:selected.length?(isAll?"":"\u041D\u044D\u043C\u044D\u0445..."):(placeholder||"\u0425\u0430\u0439\u0445..."),style:{border:'none',outline:'none',flex:1,minWidth:80,fontSize:12,padding:'2px 4px',background:'transparent',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",color:'#1A1A1A'}})
+        ),
+        searchVal.length > 0 && /*#__PURE__*/React.createElement("div", {style:{position:'absolute',top:'100%',left:0,right:0,marginTop:4,background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,boxShadow:'0 4px 16px rgba(0,0,0,.1)',zIndex:100,maxHeight:180,overflowY:'auto'}},
+          !isAll && /*#__PURE__*/React.createElement("button", {type:"button",onClick:function(){setSelected(allItems.slice());setSearchVal("");},style:{display:'block',width:'100%',textAlign:'left',padding:'8px 14px',fontSize:12,color:ac,fontWeight:700,background:'transparent',border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",borderBottom:'1px solid #F0F0F0'}},
+            /*#__PURE__*/React.createElement("i", {className:"bi bi-check2-all",style:{marginRight:6,fontSize:12}}), "\u0411\u04AF\u0433\u0434\u0438\u0439\u0433 \u0441\u043E\u043D\u0433\u043E\u0445"
           ),
-          /*#__PURE__*/React.createElement("div", null,
-            /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0414\u044D\u0434 \u0430\u043D\u0433\u0438\u043B\u043B\u0443\u0443\u0434 (\u043C\u04E9\u0440 \u0442\u0443\u0441 \u0431\u04AF\u0440\u0442 \u043D\u044D\u0433)"),
-            /*#__PURE__*/React.createElement("textarea", {placeholder:"Teams\nSharePoint\nOneDrive",rows:4,style:{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:'monospace',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',resize:'vertical',boxSizing:'border-box'}})
+          allItems.filter(function(s){return s.toLowerCase().indexOf(searchVal.toLowerCase())!==-1 && selected.indexOf(s)===-1;}).length===0
+            ? /*#__PURE__*/React.createElement("div", {style:{padding:'10px 14px',fontSize:11,color:'#999'}}, "\u0418\u043B\u044D\u0440\u0446 \u043E\u043B\u0434\u0441\u043E\u043D\u0433\u04AF\u0439")
+            : allItems.filter(function(s){return s.toLowerCase().indexOf(searchVal.toLowerCase())!==-1 && selected.indexOf(s)===-1;}).map(function(s){
+                return /*#__PURE__*/React.createElement("button", {key:s,type:"button",onClick:function(){setSelected(selected.concat([s]));setSearchVal("");},style:{display:'block',width:'100%',textAlign:'left',padding:'8px 14px',fontSize:12,color:'#1A1A1A',background:'transparent',border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",borderBottom:'1px solid #F5F5F5'}},
+                  /*#__PURE__*/React.createElement("i", {className:"bi bi-plus-circle",style:{marginRight:6,fontSize:11,color:ac}}), s
+                );
+              })
+        )
+      )
+    );
+  };
+
+  /* service category picker section for type modals */
+  var svcPickerSection = function() {
+    return /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:14,padding:'16px 0',borderBottom:'1px solid #F0F0F0'}},
+      /*#__PURE__*/React.createElement("div", {style:{display:'flex',alignItems:'center',gap:8}},
+        /*#__PURE__*/React.createElement("span", {style:{width:26,height:26,borderRadius:7,background:'#F0EFFE',display:'flex',alignItems:'center',justifyContent:'center'}},
+          /*#__PURE__*/React.createElement("i", {className:"bi bi-tags",style:{fontSize:12,color:'#534AB7'}})
+        ),
+        /*#__PURE__*/React.createElement("span", {style:{fontSize:13,fontWeight:700,color:'#1A1A1A'}},"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0430\u043D\u0433\u0438\u043B\u0430\u043B")
+      ),
+      multiSelectDrop("\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0430\u043D\u0433\u0438\u043B\u0430\u043B", allCategories, selectedCats, setSelectedCats, catSearch, setCatSearch, '#534AB7', '#EEEDFE', "\u0410\u043D\u0433\u0438\u043B\u0430\u043B \u0445\u0430\u0439\u0445...")
+    );
+  };
+
+  /* per-category config card with response time + business hours */
+  var catConfigCard = function(catName, idx) {
+    var isOpen = expandedCat === catName;
+    var cfg = typeCatConfigs[catName] || {response:"",resolution:"",bhMode:"business",workDays:"\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D",workHours:"09:00-18:00"};
+    var updateCfg = function(key,val) {
+      var next = Object.assign({}, typeCatConfigs);
+      next[catName] = Object.assign({}, cfg);
+      next[catName][key] = val;
+      setTypeCatConfigs(next);
+    };
+    return /*#__PURE__*/React.createElement("div", {key:catName,style:{border:'1px solid '+(isOpen?'#C4B5FD':'#E5E7EB'),borderRadius:10,background:isOpen?'#FAFAFE':'#fff',overflow:'hidden',transition:'all .15s'}},
+      /*#__PURE__*/React.createElement("button", {type:"button",onClick:function(){setExpandedCat(isOpen?null:catName);},
+        style:{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 14px',background:'none',border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}},
+        /*#__PURE__*/React.createElement("div", {style:{display:'flex',alignItems:'center',gap:8}},
+          /*#__PURE__*/React.createElement("span", {style:{width:22,height:22,borderRadius:6,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center'}},
+            /*#__PURE__*/React.createElement("i", {className:"bi bi-folder2",style:{fontSize:10,color:'#534AB7'}})
           ),
-          /*#__PURE__*/React.createElement(Btn, {icon:"check-circle",full:true,onClick:function(){setCatNewModal(false)}},"\u0410\u043D\u0433\u0438\u043B\u0430\u043B \u043D\u044D\u043C\u044D\u0445")
+          /*#__PURE__*/React.createElement("span", {style:{fontSize:12,fontWeight:600,color:'#1A1A1A'}}, catName)
+        ),
+        /*#__PURE__*/React.createElement("div", {style:{display:'flex',alignItems:'center',gap:6}},
+          cfg.response && /*#__PURE__*/React.createElement("span", {style:{fontSize:10,color:'#6B7280',background:'#F3F4F6',padding:'2px 8px',borderRadius:20}}, cfg.response),
+          /*#__PURE__*/React.createElement("i", {className:"bi bi-chevron-"+(isOpen?"up":"down"),style:{fontSize:11,color:'#9CA3AF',transition:'transform .15s'}})
         )
       ),
-      /*#__PURE__*/React.createElement("div", {className:"rg-4g16"},
-        ticketCategories.map(function(c){return /*#__PURE__*/React.createElement("div", {key:c.id,style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,padding:18}},
-          /*#__PURE__*/React.createElement("div", {style:{display:'flex',alignItems:'center',gap:10,marginBottom:12}},
-            /*#__PURE__*/React.createElement("div", {style:{width:36,height:36,borderRadius:8,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center'}},
-              /*#__PURE__*/React.createElement(Ic, {n:c.icon,s:16,style:{color:'#534AB7'}})
+      isOpen && /*#__PURE__*/React.createElement("div", {style:{padding:'0 14px 14px',display:'flex',flexDirection:'column',gap:12}},
+        /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}},
+          /*#__PURE__*/React.createElement("div", null,
+            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}},"\u0425\u0430\u0440\u0438\u0443 \u04E9\u0433\u04E9\u0445 \u0445\u0443\u0433\u0430\u0446\u0430\u0430"),
+            /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: 2 \u0446\u0430\u0433",value:cfg.response,onChange:function(e){updateCfg("response",e.target.value);}})
+          ),
+          /*#__PURE__*/React.createElement("div", null,
+            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}},"\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445 \u0445\u0443\u0433\u0430\u0446\u0430\u0430"),
+            /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: 1 \u04E9\u0434\u04E9\u0440",value:cfg.resolution,onChange:function(e){updateCfg("resolution",e.target.value);}})
+          )
+        ),
+        /*#__PURE__*/React.createElement("div", {style:{display:'flex',gap:6}},
+          [["business","\u0410\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0430\u0430\u0440","clock"],["24/7","24/7","infinity"]].map(function(m){
+            var isOn = cfg.bhMode === m[0];
+            return /*#__PURE__*/React.createElement("button", {
+              key:m[0],type:"button",onClick:function(){updateCfg("bhMode",m[0]);},
+              style:{flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:5,padding:'7px 10px',borderRadius:8,cursor:'pointer',
+                border:isOn?'1.5px solid #534AB7':'1px solid #D1D5DB',background:isOn?'#F0EFFE':'#fff',color:isOn?'#534AB7':'#666',
+                fontSize:11,fontWeight:600,transition:'all .15s',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}
+            }, /*#__PURE__*/React.createElement("i",{className:"bi bi-"+m[2],style:{fontSize:12}}), m[1]);
+          })
+        ),
+        cfg.bhMode === "business" && /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}},
+          /*#__PURE__*/React.createElement("div", null,
+            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}},"\u0410\u0436\u043B\u044B\u043D \u04E9\u0434\u04E9\u0440"),
+            /*#__PURE__*/React.createElement(Input, {placeholder:"\u0414\u0430\u0432\u0430\u0430-\u0411\u0430\u0430\u0441\u0430\u043D",value:cfg.workDays,onChange:function(e){updateCfg("workDays",e.target.value);}})
+          ),
+          /*#__PURE__*/React.createElement("div", null,
+            /*#__PURE__*/React.createElement("label", {style:{fontSize:11,fontWeight:600,color:'#555',display:'block',marginBottom:4}},"\u0426\u0430\u0433\u0438\u0439\u043D \u0445\u04AF\u0440\u044D\u044D"),
+            /*#__PURE__*/React.createElement(Input, {placeholder:"09:00-18:00",value:cfg.workHours,onChange:function(e){updateCfg("workHours",e.target.value);}})
+          )
+        )
+      )
+    );
+  };
+
+  /* per-category settings section: shows accordion cards for each selected category */
+  var catConfigsSection = function() {
+    if (!selectedCats || selectedCats.length === 0) {
+      return /*#__PURE__*/React.createElement("div", {style:{padding:'16px 0'}},
+        /*#__PURE__*/React.createElement("div", {style:{padding:'14px 16px',background:'#F9FAFB',borderRadius:10,border:'1px dashed #D1D5DB',textAlign:'center'}},
+          /*#__PURE__*/React.createElement("i", {className:"bi bi-info-circle",style:{fontSize:14,color:'#9CA3AF',marginRight:6}}),
+          /*#__PURE__*/React.createElement("span", {style:{fontSize:12,color:'#9CA3AF'}},"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0430\u043D\u0433\u0438\u043B\u0430\u043B \u0441\u043E\u043D\u0433\u043E\u0441\u043D\u043E\u043E\u0440 \u0430\u043D\u0433\u0438\u043B\u0430\u043B \u0442\u0443\u0441 \u0431\u04AF\u0440\u0438\u0439\u043D \u0445\u0443\u0433\u0430\u0446\u0430\u0430 \u0431\u043E\u043B\u043E\u043D \u0430\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0438\u0439\u043D \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E \u0442\u043E\u0445\u0438\u0440\u0443\u0443\u043B\u0430\u0445 \u0431\u043E\u043B\u043E\u043C\u0436\u0442\u043E\u0439.")
+        )
+      );
+    }
+    return /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:10,padding:'16px 0',borderBottom:'1px solid #F0F0F0'}},
+      /*#__PURE__*/React.createElement("div", {style:{display:'flex',alignItems:'center',gap:8}},
+        /*#__PURE__*/React.createElement("span", {style:{width:26,height:26,borderRadius:7,background:'#F0EFFE',display:'flex',alignItems:'center',justifyContent:'center'}},
+          /*#__PURE__*/React.createElement("i", {className:"bi bi-clock-history",style:{fontSize:12,color:'#534AB7'}})
+        ),
+        /*#__PURE__*/React.createElement("span", {style:{fontSize:13,fontWeight:700,color:'#1A1A1A'}},"\u0410\u043D\u0433\u0438\u043B\u0430\u043B \u0442\u0443\u0441 \u0431\u04AF\u0440\u0438\u0439\u043D \u0445\u0443\u0433\u0430\u0446\u0430\u0430 & \u0430\u0436\u043B\u044B\u043D \u0446\u0430\u0433")
+      ),
+      /*#__PURE__*/React.createElement("div", {style:{fontSize:11,color:'#6B7280',marginBottom:2}},"\u0410\u043D\u0433\u0438\u043B\u0430\u043B \u0442\u0443\u0441 \u0431\u04AF\u0440 \u0434\u044D\u044D\u0440 \u0434\u0430\u0440\u0436 \u0445\u0430\u0440\u0438\u0443 \u04E9\u0433\u04E9\u0445 \u0445\u0443\u0433\u0430\u0446\u0430\u0430, \u0448\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445 \u0445\u0443\u0433\u0430\u0446\u0430\u0430, \u0430\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0438\u0439\u043D \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E\u0433 \u0442\u0443\u0441 \u0442\u0443\u0441\u0430\u0434 \u043D\u044C \u0442\u043E\u0445\u0438\u0440\u0443\u0443\u043B\u043D\u0430 \u0443\u0443."),
+      selectedCats.map(function(cat, idx) { return catConfigCard(cat, idx); })
+    );
+  };
+
+  /* ── Төрөл sub-tab rendering ── */
+  var renderTypeTab = function() {
+    return /*#__PURE__*/React.createElement(React.Fragment, null,
+      catNewModal && /*#__PURE__*/React.createElement(Modal, {title:"\u0428\u0438\u043D\u044D \u0442\u04E9\u0440\u04E9\u043B \u04AF\u04AF\u0441\u0433\u044D\u0445",onClose:function(){setCatNewModal(false)},width:560},
+        /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:0,maxHeight:'65vh',overflowY:'auto',paddingRight:4}},
+          /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:14,paddingBottom:16,borderBottom:'1px solid #F0F0F0'}},
+            /*#__PURE__*/React.createElement("div", null,
+              /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0422\u04E9\u0440\u043B\u0438\u0439\u043D \u043D\u044D\u0440 *"),
+              /*#__PURE__*/React.createElement(Input, {placeholder:"\u0416\u0438\u0448\u044D\u044D: Change Request / \u04E8\u04E9\u0440\u0447\u043B\u04E9\u043B\u0442\u0438\u0439\u043D \u0445\u04AF\u0441\u044D\u043B\u0442"})
             ),
             /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("p", {style:{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}},c.name),
-              /*#__PURE__*/React.createElement("p", {style:{margin:0,fontSize:11,color:'#999999'}},c.count," \u0442\u0438\u043A\u0435\u0442")
+              /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0422\u0430\u0439\u043B\u0431\u0430\u0440"),
+              /*#__PURE__*/React.createElement("textarea", {placeholder:"\u042D\u043D\u044D \u0442\u04E9\u0440\u043B\u0438\u0439\u043D \u0442\u0438\u043A\u0435\u0442 \u044F\u043C\u0430\u0440 \u0442\u043E\u0445\u0438\u043E\u043B\u0434\u043E\u043B\u0434 \u04AF\u04AF\u0441\u0433\u044D\u0445\u0438\u0439\u0433 \u0442\u0430\u0439\u043B\u0431\u0430\u0440\u043B\u0430\u043D\u0430 \u0443\u0443...",rows:2,style:{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',resize:'vertical',boxSizing:'border-box'}})
             )
           ),
-          /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:4}},
-            c.subs.map(function(s){return /*#__PURE__*/React.createElement("div", {key:s,style:{display:'flex',alignItems:'center',gap:6,padding:'6px 10px',background:'#F5F5F5',borderRadius:6}},
-              /*#__PURE__*/React.createElement(Ic, {n:"arrow-return-right",s:11,style:{color:'#C8D0D8'}}),
-              /*#__PURE__*/React.createElement("span", {style:{fontSize:12,color:'#555555',flex:1}},s),
-              /*#__PURE__*/React.createElement(Ic, {n:"pencil",s:10,style:{color:'#C8D0D8',cursor:'pointer'}})
-            )})
-          )
+          svcPickerSection(),
+          catConfigsSection(),
+          /*#__PURE__*/React.createElement(Btn, {icon:"check-circle",full:true,onClick:function(){setCatNewModal(false)},style:{marginTop:8}},"\u0422\u04E9\u0440\u04E9\u043B \u04AF\u04AF\u0441\u0433\u044D\u0445")
+        )
+      ),
+      typeEditModal && /*#__PURE__*/React.createElement(Modal, {title:typeEditModal.name+" \u2014 \u0437\u0430\u0441\u0430\u0445",onClose:function(){setTypeEditModal(null)},width:560},
+        /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:0,maxHeight:'65vh',overflowY:'auto',paddingRight:4}},
+          /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexDirection:'column',gap:14,paddingBottom:16,borderBottom:'1px solid #F0F0F0'}},
+            /*#__PURE__*/React.createElement("div", null,
+              /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0422\u04E9\u0440\u043B\u0438\u0439\u043D \u043D\u044D\u0440 *"),
+              /*#__PURE__*/React.createElement(Input, {defaultValue:typeEditModal.name})
+            ),
+            /*#__PURE__*/React.createElement("div", null,
+              /*#__PURE__*/React.createElement("label", {style:{fontSize:12,fontWeight:600,color:'#555555',display:'block',marginBottom:6}},"\u0422\u0430\u0439\u043B\u0431\u0430\u0440"),
+              /*#__PURE__*/React.createElement("textarea", {defaultValue:typeEditModal.desc,rows:2,style:{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',resize:'vertical',boxSizing:'border-box'}})
+            )
+          ),
+          svcPickerSection(),
+          catConfigsSection(),
+          /*#__PURE__*/React.createElement(Btn, {icon:"check-circle",full:true,onClick:function(){setTypeEditModal(null)},style:{marginTop:8}},"\u0425\u0430\u0434\u0433\u0430\u043B\u0430\u0445")
+        )
+      ),
+      /*#__PURE__*/React.createElement("div", {style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,overflow:'hidden'}},
+        /*#__PURE__*/React.createElement("div", {style:{display:'grid',gridTemplateColumns:'2.2fr 3fr auto',padding:'10px 20px',background:'#F5F5F5',borderBottom:'0.5px solid #E8E8E8'}},
+          ["\u0422\u04E9\u0440\u04E9\u043B","\u0422\u0430\u0439\u043B\u0431\u0430\u0440",""].map(function(h){return /*#__PURE__*/React.createElement("span",{key:h||"act",style:{fontSize:10,fontWeight:700,color:'#999',textTransform:'uppercase',letterSpacing:.4}},h)})
+        ),
+        ticketTypes.map(function(t,i){return /*#__PURE__*/React.createElement("div",{key:t.id,style:{display:'grid',gridTemplateColumns:'2.2fr 3fr auto',padding:'14px 20px',borderBottom:i<ticketTypes.length-1?'0.5px solid #EBEBEB':'none',alignItems:'center'}},
+          /*#__PURE__*/React.createElement("div",{style:{display:'flex',alignItems:'center',gap:10}},
+            /*#__PURE__*/React.createElement("div",{style:{width:32,height:32,borderRadius:8,background:t.bg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+              /*#__PURE__*/React.createElement(Ic,{n:t.icon,s:15,style:{color:t.color}})
+            ),
+            /*#__PURE__*/React.createElement("span",{style:{fontSize:13,fontWeight:700,color:'#1A1A1A'}},t.name)
+          ),
+          /*#__PURE__*/React.createElement("span",{style:{fontSize:12,color:'#666'}},t.desc),
+          /*#__PURE__*/React.createElement("button",{onClick:function(){setTypeEditModal(t)},style:{padding:'4px 10px',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,fontSize:11,fontWeight:600,color:'#534AB7',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",width:'fit-content'}},"\u0417\u0430\u0441\u0430\u0445")
         )})
       )
     );
@@ -18998,20 +19065,20 @@ function SLAConfigModule() {
   /*#__PURE__*/React.createElement("div", {style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}},
     /*#__PURE__*/React.createElement("div", null,
       /*#__PURE__*/React.createElement("h2", {style:{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}}, "\u0422\u0438\u043A\u0435\u0442 \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E"),
-      /*#__PURE__*/React.createElement("p", {style:{margin:'4px 0 0',fontSize:13,color:'#666666'}}, "SLA \u0434\u04AF\u0440\u044D\u043C, \u0430\u043D\u0433\u0438\u043B\u0430\u043B, \u0445\u0443\u0433\u0430\u0446\u0430\u0430, \u0448\u0430\u0442 \u0430\u0445\u0438\u0443\u043B\u0430\u0445")
+      /*#__PURE__*/React.createElement("p", {style:{margin:'4px 0 0',fontSize:13,color:'#666666'}}, "SLA \u0434\u04AF\u0440\u044D\u043C, \u0442\u04E9\u0440\u04E9\u043B, \u0445\u0443\u0433\u0430\u0446\u0430\u0430, \u0448\u0430\u0442 \u0430\u0445\u0438\u0443\u043B\u0430\u0445")
     ),
-    /*#__PURE__*/React.createElement(Btn, {icon:"plus-circle-fill",size:"sm",onClick:function(){if(subTab==="sla"){openNew();}else{setCatNewModal(true);}}}, subTab==="sla"?"\u0428\u0438\u043D\u044D \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E":"\u0428\u0438\u043D\u044D \u0430\u043D\u0433\u0438\u043B\u0430\u043B")
+    /*#__PURE__*/React.createElement(Btn, {icon:"plus-circle-fill",size:"sm",onClick:function(){if(subTab==="sla"){openNew();}else{setCatNewModal(true);}}}, subTab==="sla"?"\u0428\u0438\u043D\u044D \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E":"\u0428\u0438\u043D\u044D \u0442\u04E9\u0440\u04E9\u043B")
   ),
 
   /* Sub-tab bar */
   /*#__PURE__*/React.createElement("div", {style:{display:'flex',gap:0,borderBottom:'2px solid #E8ECEF'}},
-    [{key:"sla",label:"SLA \u0434\u04AF\u0440\u044D\u043C",icon:"speedometer2"},{key:"category",label:"\u0410\u043D\u0433\u0438\u043B\u0430\u043B",icon:"tags"}].map(function(t){return /*#__PURE__*/React.createElement("button", {key:t.key,onClick:function(){setSubTab(t.key)},style:{padding:'10px 18px',fontSize:12,fontWeight:600,border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'transparent',color:subTab===t.key?'#534AB7':'#999999',borderBottom:subTab===t.key?'2px solid #534AB7':'2px solid transparent',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap'}},
+    [{key:"sla",label:"SLA \u0434\u04AF\u0440\u044D\u043C",icon:"speedometer2"},{key:"category",label:"\u0422\u04E9\u0440\u04E9\u043B",icon:"bookmark-star"}].map(function(t){return /*#__PURE__*/React.createElement("button", {key:t.key,onClick:function(){setSubTab(t.key)},style:{padding:'10px 18px',fontSize:12,fontWeight:600,border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'transparent',color:subTab===t.key?'#534AB7':'#999999',borderBottom:subTab===t.key?'2px solid #534AB7':'2px solid transparent',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap'}},
       /*#__PURE__*/React.createElement(Ic, {n:t.icon,s:14}), t.label
     )})
   ),
 
   /* Ангилал sub-tab */
-  subTab==="category" && renderCategoryTab(),
+  subTab==="category" && renderTypeTab(),
 
   /* SLA sub-tab content */
   subTab==="sla" && /*#__PURE__*/React.createElement(React.Fragment, null,
@@ -19033,23 +19100,20 @@ function SLAConfigModule() {
     style: {background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,overflow:'hidden'}
   },
     /*#__PURE__*/React.createElement("div", {
-      style: {display:'grid',gridTemplateColumns:'0.7fr 0.6fr 0.7fr 0.6fr 1fr 0.7fr 0.5fr auto',gap:0,padding:'12px 16px',background:'#F5F5F5',borderBottom:'0.5px solid #E8E8E8'}
-    }, ["\u042D\u0440\u044D\u043C\u0431\u044D","\u0425\u0430\u0440\u0438\u0443","\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445","\u042F\u0432\u0446","\u0410\u043D\u0433\u0438\u043B\u0430\u043B","\u0428\u0438\u043B\u0436\u04AF\u04AF\u043B\u044D\u0445","\u0426\u0430\u0433",""].map(function(h){return /*#__PURE__*/React.createElement("span", {
+      style: {display:'grid',gridTemplateColumns:'0.8fr 1.2fr 0.7fr 0.5fr auto',gap:0,padding:'12px 16px',background:'#F5F5F5',borderBottom:'0.5px solid #E8E8E8'}
+    }, ["\u042D\u0440\u044D\u043C\u0431\u044D","\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0442\u04E9\u0440\u04E9\u043B","\u0428\u0438\u043B\u0436\u04AF\u04AF\u043B\u044D\u0445","\u0426\u0430\u0433",""].map(function(h){return /*#__PURE__*/React.createElement("span", {
       key: h||"act",
       style: {fontSize:9,fontWeight:700,color:'#999',textTransform:'uppercase',letterSpacing:.4}
     }, h)})),
     slaRules.map(function(r, i){return /*#__PURE__*/React.createElement("div", {
       key: r.pri,
-      style: {display:'grid',gridTemplateColumns:'0.7fr 0.6fr 0.7fr 0.6fr 1fr 0.7fr 0.5fr auto',gap:0,padding:'12px 16px',borderBottom:i<3?'0.5px solid #EBEBEB':'none',alignItems:'center'}
+      style: {display:'grid',gridTemplateColumns:'0.8fr 1.2fr 0.7fr 0.5fr auto',gap:0,padding:'12px 16px',borderBottom:i<3?'0.5px solid #EBEBEB':'none',alignItems:'center'}
     },
       /*#__PURE__*/React.createElement("span", {style:{fontSize:12,fontWeight:700,color:r.color,display:'flex',alignItems:'center',gap:5}},
         /*#__PURE__*/React.createElement("span", {style:{width:7,height:7,borderRadius:69,background:r.color}}), r.label
       ),
-      /*#__PURE__*/React.createElement("span", {style:{fontSize:12,fontWeight:600,color:'#1A1A1A'}}, r.response),
-      /*#__PURE__*/React.createElement("span", {style:{fontSize:12,fontWeight:600,color:'#1A1A1A'}}, r.resolution),
-      /*#__PURE__*/React.createElement("span", {style:{fontSize:11,color:'#666'}}, r.updateTime),
       /*#__PURE__*/React.createElement("div", {style:{display:'flex',flexWrap:'wrap',gap:3}},
-        (r.categories||[]).map(function(c){return /*#__PURE__*/React.createElement("span", {key:c,style:{padding:'2px 7px',fontSize:9,fontWeight:600,background:r.bg,color:r.color,borderRadius:12}},c)})
+        (r.types||[]).map(function(t){return /*#__PURE__*/React.createElement("span", {key:t,style:{padding:'2px 7px',fontSize:9,fontWeight:600,background:r.bg,color:r.color,borderRadius:12}},t)})
       ),
       /*#__PURE__*/React.createElement("span", {style:{fontSize:11,color:'#555'}}, r.escalate),
       /*#__PURE__*/React.createElement("span", {style:{fontSize:10,color:r.businessHours==="24/7"?"#DC2626":"#059669",fontWeight:600}}, r.businessHours==="24/7"?"24/7":"\u0410\u0436\u043B\u044B\u043D"),
