@@ -10,8 +10,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 <script>const _cw=console.warn;console.warn=function(){if(arguments[0]&&typeof arguments[0]==='string'&&arguments[0].includes('cdn.tailwindcss.com'))return;_cw.apply(console,arguments);};</script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js" crossorigin></script>
+<script>if(typeof React==='undefined'){document.write('<scr'+'ipt src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin><\/scr'+'ipt>')}</script>
+<script>if(typeof React==='undefined'){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin><\/scr'+'ipt>')}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script>if(typeof ReactDOM==='undefined'){document.write('<scr'+'ipt src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin><\/scr'+'ipt>')}</script>
+<script>if(typeof ReactDOM==='undefined'){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin><\/scr'+'ipt>')}</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;background:#F3F3F3}
@@ -107,7 +111,12 @@ window.onerror = function(msg, src, line, col, err) {
 };
 </script>
 
-<script>const {
+<script>
+if(typeof React==='undefined'){
+  document.getElementById("loading").innerHTML='<div style="color:#DC2626;font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:40px;max-width:600px;margin:0 auto;text-align:center"><h2 style="margin:0 0 12px">React ачаалагдсангүй</h2><p style="color:#666;font-size:14px;line-height:1.6">CDN сервертэй холбогдож чадсангүй. Дараах зүйлсийг шалгана уу:</p><ul style="text-align:left;color:#555;font-size:13px;line-height:2"><li>Интернет холболт идэвхтэй эсэх</li><li>VPN холбогдсон эсэх (компанийн сүлжээнд CDN блоклогдсон байж болно)</li><li>Хуудсыг <b>Ctrl+Shift+R</b> дарж дахин ачаалах</li></ul></div>';
+  throw new Error("React not loaded");
+}
+const {
   useState
 } = React;
 
