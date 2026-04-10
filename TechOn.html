@@ -16544,6 +16544,86 @@ function AnalyticsModule() {
   var byType = Object.entries(typeMap).sort(function(a,b){return b[1]-a[1]}).map(function(e){return {cat:e[0],count:e[1],pct:Math.round(e[1]/typeTotal*100)};});
   var catColors = ["#534AB7","#D97706","#059669","#3B82F6","#9CA3AF"];
 
+  /* ── PIVOT ANALYTICS: row dim + break dim ── */
+  var DIMS = [
+    {k:"status",l:"\u0421\u0442\u0430\u0442\u0443\u0441",icon:"bar-chart-line",fn:function(t){return t.status||"\u0411\u0443\u0441\u0430\u0434";}},
+    {k:"cat",l:"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0430\u043D\u0433\u0438\u043B\u0430\u043B",icon:"grid-3x3",fn:function(t){return t.category||"\u0411\u0443\u0441\u0430\u0434";}},
+    {k:"type",l:"\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0442\u04E9\u0440\u04E9\u043B",icon:"tag",fn:function(t){return t.type||"\u0425\u04AF\u0441\u044D\u043B\u0442";}},
+    {k:"team",l:"\u0410\u0436\u043B\u044B\u043D \u0445\u044D\u0441\u044D\u0433",icon:"people",fn:function(t){
+      var s=t.service||"";if(s.includes("Network")||s.includes("\u0441\u04AF\u043B\u0436\u044D\u044D")) return "Network";
+      if(s.includes("Security")||s.includes("\u0430\u044E\u0443\u043B\u0433\u04AF\u0439")) return "Security";
+      if(s.includes("System")||s.includes("\u0441\u0438\u0441\u0442\u0435\u043C")) return "Systems";
+      if(s.includes("IT")) return "IT Support";return "\u0411\u0443\u0441\u0430\u0434";
+    }},
+    {k:"company",l:"\u041A\u043E\u043C\u043F\u0430\u043D\u0438",icon:"building",fn:function(t){return t.company||t.createdBy||"\u0411\u0443\u0441\u0430\u0434";}},
+    {k:"engineer",l:"\u0418\u043D\u0436\u0435\u043D\u0435\u0440",icon:"person-badge",fn:function(t){return t.assigned||"\u0425\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0430\u0433\u04AF\u0439";}}
+  ];
+  var STAT_COLORS={"\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439":"#534AB7","\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430":"#D97706","\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D":"#059669","\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D":"#6B7280","\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D":"#DC2626"};
+  var PALETTE=["#534AB7","#D97706","#059669","#3B82F6","#DC2626","#6B7280","#EC4899","#14B8A6","#F97316","#8B5CF6"];
+  var _rd=useState("cat"); var rowDim=_rd[0]; var setRowDim=_rd[1];
+  var _bd=useState("status"); var breakDim=_bd[0]; var setBreakDim=_bd[1];
+  var _ddOpen=useState(null); var ddOpen=_ddOpen[0]; var setDdOpen=_ddOpen[1];
+
+  /* Build pivot cross-tab */
+  var rowFn=DIMS.find(function(d){return d.k===rowDim}).fn;
+  var breakFn=DIMS.find(function(d){return d.k===breakDim}).fn;
+  var breakVals=[]; var rowMap={};
+  TICKETS.forEach(function(t){
+    var rv=rowFn(t); var bv=breakFn(t);
+    if(breakVals.indexOf(bv)===-1) breakVals.push(bv);
+    if(!rowMap[rv]) rowMap[rv]={}; rowMap[rv][bv]=(rowMap[rv][bv]||0)+1;
+  });
+  if(breakDim==="status"){
+    var so=["\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439","\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430","\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D","\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D","\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"];
+    breakVals=so.filter(function(s){return breakVals.indexOf(s)>-1});
+  }
+  var breakColors={};
+  breakVals.forEach(function(bv,i){breakColors[bv]=(breakDim==="status"&&STAT_COLORS[bv])?STAT_COLORS[bv]:PALETTE[i%PALETTE.length];});
+  var pivotRows=Object.entries(rowMap).map(function(e){
+    var label=e[0],counts=e[1],total=0;
+    breakVals.forEach(function(bv){total+=(counts[bv]||0);});
+    return {label:label,counts:counts,total:total};
+  }).sort(function(a,b){return b.total-a.total});
+  var grandTotal=pivotRows.reduce(function(s,r){return s+r.total},0);
+  var maxRowTotal=pivotRows.length>0?pivotRows[0].total:1;
+  var dimLabel=function(k){var d=DIMS.find(function(x){return x.k===k});return d?d.l:k;};
+  var ff="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif";
+
+  /* Dropdown renderer for pivot selectors */
+  var PivotDD=function(props){
+    var isOpen=ddOpen===props.id;
+    var cur=DIMS.find(function(d){return d.k===props.value});
+    var opts=DIMS.filter(function(d){return d.k!==props.exclude});
+    return ce("div",{style:{position:'relative'}},
+      ce("button",{onClick:function(){setDdOpen(isOpen?null:props.id)},style:{
+        display:'flex',alignItems:'center',gap:8,padding:'7px 14px',
+        background:isOpen?'#EEEDFE':'#fff',border:isOpen?'1.5px solid #534AB7':'1px solid #E0E0E0',
+        borderRadius:8,cursor:'pointer',fontFamily:ff,fontSize:12,fontWeight:600,
+        color:isOpen?'#534AB7':'#555',transition:'all .12s',minWidth:160
+      }},
+        ce(Ic,{n:cur.icon,s:13,style:{color:'#534AB7'}}),cur.l,
+        ce(Ic,{n:isOpen?"chevron-up":"chevron-down",s:11,style:{color:'#999',marginLeft:'auto'}})
+      ),
+      isOpen&&ce("div",{style:{
+        position:'absolute',top:'100%',left:0,marginTop:4,zIndex:99,
+        background:'#fff',border:'1px solid #E0E0E0',borderRadius:10,
+        boxShadow:'0 8px 24px rgba(0,0,0,.12)',minWidth:220,overflow:'hidden',padding:'6px 0'
+      }},
+        opts.map(function(opt){
+          var active=props.value===opt.k;
+          return ce("button",{key:opt.k,onClick:function(){props.onChange(opt.k);setDdOpen(null);},style:{
+            display:'flex',alignItems:'center',gap:8,width:'100%',padding:'9px 16px',
+            border:'none',cursor:'pointer',fontFamily:ff,fontSize:12,fontWeight:active?700:500,
+            background:active?'#EEEDFE':'transparent',color:active?'#534AB7':'#555',textAlign:'left'
+          }},
+            ce(Ic,{n:opt.icon,s:13,style:{color:active?'#534AB7':'#aaa'}}),opt.l,
+            active?ce(Ic,{n:"check2",s:13,style:{color:'#534AB7',marginLeft:'auto'}}):null
+          );
+        })
+      )
+    );
+  };
+
   /* SLA priority distribution */
   var slaPri = [
     {pri:"\u042F\u0430\u0440\u0430\u043B\u0442\u0430\u0439",count:2,pct:"4%",color:"#DC2626"},
@@ -16756,67 +16836,87 @@ function AnalyticsModule() {
       })
     ),
 
-    /* ── MIDDLE ROW: Trend + Category ── */
-    ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}},
-
-      /* Ticket Trend grouped bar */
-      ce(Card,null,
-        ce("p",{style:{margin:'0 0 18px',fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0442\u0440\u044D\u043D\u0434"),
-        ce("div",{style:{display:'flex',gap:trendData.length>5?8:16,alignItems:'flex-end',paddingBottom:6}},
-          trendData.map(function(m){
-            var total = m.open+m.inprog+m.resolved+m.closed+m.cancelled;
-            return ce("div",{key:m.m,style:{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:8}},
-              ce("div",{style:{display:'flex',gap:2,alignItems:'flex-end',width:'100%',justifyContent:'center',height:130}},
-                statKeys.map(function(sk){
-                  var val = m[sk.key];
-                  return ce("div",{key:sk.key,style:{flex:1,maxWidth:18,background:sk.color,borderRadius:'3px 3px 0 0',height:Math.max(Math.round(val/maxBar*120),val>0?6:0)+'px',transition:'height .3s',position:'relative'}},
-                    val>0 ? ce("span",{style:{position:'absolute',top:-15,left:'50%',transform:'translateX(-50%)',fontSize:9,fontWeight:700,color:sk.color}},val) : null
-                  );
-                })
-              ),
-              ce("div",{style:{borderTop:'1px solid #E8E8E8',width:'100%',paddingTop:4,textAlign:'center'}},
-                ce("p",{style:{margin:0,fontSize:10,color:'#888'}},m.m),
-                ce("p",{style:{margin:'1px 0 0',fontSize:11,fontWeight:700,color:'#1A1A1A'}},total)
-              )
-            );
-          })
+    /* ── PIVOT ANALYTICS CHART ── */
+    ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px',boxShadow:'0 1px 3px rgba(0,0,0,.03)'}},
+      /* Header */
+      ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:20}},
+        ce("div",null,
+          ce("p",{style:{margin:0,fontSize:16,fontWeight:700,color:'#1A1A1A'}},"\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0430\u043D\u0430\u043B\u0438\u0442\u0438\u043A"),
+          ce("p",{style:{margin:'4px 0 0',fontSize:12,color:'#888'}},"\u0425\u044D\u043C\u0436\u0438\u0433\u0434\u044D\u0445\u04AF\u04AF\u043D \u0441\u043E\u043D\u0433\u043E\u0436 \u043F\u0438\u0432\u043E\u0442 \u0445\u04AF\u0441\u043D\u044D\u0433\u0442\u044D\u044D\u0440 \u0445\u0430\u0440\u0430\u0445")
         ),
-        ce("div",{style:{display:'flex',gap:12,justifyContent:'center',marginTop:12,flexWrap:'wrap'}},
-          statKeys.map(function(sk){
-            return ce("span",{key:sk.key,style:{fontSize:10,color:'#555',display:'flex',alignItems:'center',gap:4}},
-              ce("span",{style:{width:8,height:8,borderRadius:2,background:sk.color}}),sk.label
-            );
-          })
+        ce("span",{style:{fontSize:12,fontWeight:600,color:'#534AB7',background:'#EEEDFE',padding:'5px 12px',borderRadius:69}},
+          "\u041D\u0438\u0439\u0442 "+grandTotal+" \u0442\u0438\u043A\u0435\u0442"
         )
       ),
-
-      /* Category / Type horizontal bars */
-      ce(Card,null,
-        ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:18}},
-          ce("p",{style:{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0410\u043D\u0433\u0438\u043B\u043B\u0430\u0430\u0440"),
-          ce("div",{style:{display:'flex',gap:4}},
-            [{k:"cat",l:"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D"},{k:"type",l:"\u0422\u04E9\u0440\u04E9\u043B"}].map(function(o){
-              return ce("button",{key:o.k,onClick:function(){setCatView(o.k)},style:{padding:'4px 10px',fontSize:11,fontWeight:600,border:catView===o.k?'1px solid #534AB7':'1px solid #E8E8E8',borderRadius:6,cursor:'pointer',background:catView===o.k?'#EEEDFE':'#fff',color:catView===o.k?'#534AB7':'#888',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}},o.l);
-            })
-          )
+      /* Dimension selectors */
+      ce("div",{style:{display:'flex',alignItems:'center',gap:12,marginBottom:24,flexWrap:'wrap'}},
+        ce("div",{style:{display:'flex',alignItems:'center',gap:8}},
+          ce("span",{style:{fontSize:11,fontWeight:700,color:'#999',textTransform:'uppercase',letterSpacing:.5}},"\u042D\u0440\u044D\u043C\u0431\u044D\u043B\u044D\u0445"),
+          PivotDD({id:"row",value:rowDim,exclude:breakDim,onChange:function(k){setRowDim(k);}})
         ),
-        (function(){
-          var data = catView==="cat" ? byCat : byType;
-          var maxVal = Math.max.apply(null, data.map(function(c){return c.count}));
-          return ce("div",{style:{display:'flex',flexDirection:'column',gap:14}},
-            data.map(function(c,i){
-              return ce("div",{key:c.cat},
-                ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5}},
-                  ce("span",{style:{fontSize:12,color:'#555',fontWeight:500}},c.cat),
-                  ce("span",{style:{fontSize:12,fontWeight:700,color:'#1A1A1A'}},c.count," (",c.pct,"%)")
-                ),
-                ce("div",{style:{height:8,background:'#F0F0F0',borderRadius:4,overflow:'hidden'}},
-                  ce("div",{style:{height:'100%',width:Math.round(c.count/maxVal*100)+"%",background:catColors[i%catColors.length],borderRadius:4,transition:'width .3s'}})
-                )
-              );
-            })
+        ce("div",{style:{width:1,height:24,background:'#E0E0E0'}}),
+        ce("div",{style:{display:'flex',alignItems:'center',gap:8}},
+          ce("span",{style:{fontSize:11,fontWeight:700,color:'#999',textTransform:'uppercase',letterSpacing:.5}},"\u0417\u0430\u0434\u043B\u0430\u0445"),
+          PivotDD({id:"break",value:breakDim,exclude:rowDim,onChange:function(k){setBreakDim(k);}})
+        )
+      ),
+      /* Legend */
+      ce("div",{style:{display:'flex',gap:14,flexWrap:'wrap',marginBottom:20}},
+        breakVals.map(function(bv){
+          return ce("span",{key:bv,style:{display:'flex',alignItems:'center',gap:5,fontSize:11,color:'#555'}},
+            ce("span",{style:{width:10,height:10,borderRadius:3,background:breakColors[bv],flexShrink:0}}),bv
           );
-        })()
+        })
+      ),
+      /* Stacked horizontal bars */
+      ce("div",{style:{display:'flex',flexDirection:'column',gap:14}},
+        pivotRows.map(function(row){
+          var pct=grandTotal>0?Math.round(row.total/grandTotal*100):0;
+          return ce("div",{key:row.label},
+            ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}},
+              ce("span",{style:{fontSize:13,fontWeight:600,color:'#1A1A1A',maxWidth:'60%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},row.label),
+              ce("span",{style:{fontSize:12,fontWeight:700,color:'#333'}},row.total," ",ce("span",{style:{fontWeight:500,color:'#999',fontSize:11}},"("+pct+"%)"))
+            ),
+            ce("div",{style:{display:'flex',height:28,background:'#F5F5F5',borderRadius:6,overflow:'hidden',gap:1}},
+              breakVals.map(function(bv){
+                var val=row.counts[bv]||0;
+                if(val===0) return null;
+                var w=Math.max(Math.round(val/maxRowTotal*100),2);
+                return ce("div",{key:bv,title:bv+": "+val,style:{
+                  width:w+"%",background:breakColors[bv],
+                  display:'flex',alignItems:'center',justifyContent:'center',
+                  fontSize:10,fontWeight:700,color:'#fff',transition:'width .4s ease',
+                  minWidth:val>0?20:0,cursor:'default'
+                }},val>0?val:null);
+              })
+            ),
+            ce("div",{style:{display:'flex',gap:10,marginTop:4,flexWrap:'wrap'}},
+              breakVals.map(function(bv){
+                var val=row.counts[bv]||0;
+                if(val===0) return null;
+                return ce("span",{key:bv,style:{fontSize:10,color:'#777',display:'flex',alignItems:'center',gap:3}},
+                  ce("span",{style:{width:6,height:6,borderRadius:2,background:breakColors[bv]}}),
+                  bv,": ",ce("strong",{style:{color:'#333'}},val)
+                );
+              })
+            )
+          );
+        })
+      ),
+      /* Summary footer */
+      ce("div",{style:{marginTop:20,paddingTop:16,borderTop:'1px solid #F0F0F0',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}},
+        ce("div",{style:{display:'flex',gap:16,flexWrap:'wrap'}},
+          breakVals.map(function(bv){
+            var sum=0;pivotRows.forEach(function(r){sum+=(r.counts[bv]||0);});
+            return ce("div",{key:bv,style:{textAlign:'center'}},
+              ce("p",{style:{margin:0,fontSize:9,color:'#999',fontWeight:600,textTransform:'uppercase'}},bv),
+              ce("p",{style:{margin:'2px 0 0',fontSize:16,fontWeight:700,color:breakColors[bv]}},sum)
+            );
+          })
+        ),
+        ce("div",{style:{textAlign:'right'}},
+          ce("p",{style:{margin:0,fontSize:10,color:'#999'}},"\u042D\u0440\u044D\u043C\u0431\u044D\u043B\u044D\u0445: "+dimLabel(rowDim)+" \u00B7 \u0417\u0430\u0434\u043B\u0430\u0445: "+dimLabel(breakDim))
+        )
       )
     ),
 
