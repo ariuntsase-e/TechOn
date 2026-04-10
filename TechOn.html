@@ -14082,124 +14082,183 @@ const CANCEL_REASONS = [
 ];
 const TICKETS = [{
   id: "TKT-2026-042",
-  title: "Outlook нэвтрэх алдаа гарч байна",
-  category: "Компьютер удирдлага",
+  type: "\u0425\u04AF\u0441\u044D\u043B\u0442",
+  title: "Outlook \u043D\u044D\u0432\u0442\u0440\u044D\u0445 \u0430\u043B\u0434\u0430\u0430 \u0433\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430",
+  category: "\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u0443\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430",
   catCode: "IT2601",
   subcat: "Email & Comm",
   priority: "High",
-  status: "Явж байна",
+  status: "\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",
   createdBy: "\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448",
+  requesterEmail: "tsend-ayush.u@tavanbogd.com",
+  requesterDept: "\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438",
+  requesterPhone: "9911-2233",
   created: "2026/03/14 09:15",
   sla: "2026/03/17 18:00",
-  assigned: "Д. Мөнхбат",
-  service: "IT Support (багц 3)",
-  desc: "Outlook 365 апп-д нэвтрэхэд алдаа гарч, имэйл хүлээж авах боломжгүй болоод байна. Нэвтрэх товчийг дарахад 'Authentication failed' гэсэн алдааны мэдэгдэл гарч байна.",
-  resolved: false
+  assigned: "\u0414. \u041C\u04E9\u043D\u0445\u0431\u0430\u0442",
+  team: "IT \u0414\u044D\u043C\u0436\u043B\u044D\u0433 \u0411\u0430\u0433",
+  service: "IT Support (\u0431\u0430\u0433\u0446 3)",
+  desc: "Outlook 365 \u0430\u043F\u043F-\u0434 \u043D\u044D\u0432\u0442\u0440\u044D\u0445\u044D\u0434 \u0430\u043B\u0434\u0430\u0430 \u0433\u0430\u0440\u0447, \u0438\u043C\u044D\u0439\u043B \u0445\u04AF\u043B\u044D\u044D\u0436 \u0430\u0432\u0430\u0445 \u0431\u043E\u043B\u043E\u043C\u0436\u0433\u04AF\u0439 \u0431\u043E\u043B\u043E\u043E\u0434 \u0431\u0430\u0439\u043D\u0430. \u041D\u044D\u0432\u0442\u0440\u044D\u0445 \u0442\u043E\u0432\u0447\u0438\u0439\u0433 \u0434\u0430\u0440\u0430\u0445\u0430\u0434 'Authentication failed' \u0433\u044D\u0441\u044D\u043D \u0430\u043B\u0434\u0430\u0430\u043D\u044B \u043C\u044D\u0434\u044D\u0433\u0434\u044D\u043B \u0433\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430.",
+  resolved: false,
+  attachments: [{name:"outlook_error.png",size:"245 KB",type:"image"},{name:"event_log.txt",size:"12 KB",type:"text"}],
+  comments: [
+    {user:"\u0414. \u041C\u04E9\u043D\u0445\u0431\u0430\u0442",time:"2026/03/14 10:30",text:"\u0422\u0438\u043A\u0435\u0442 \u0445\u04AF\u043B\u044D\u044D\u043D \u0430\u0432\u043B\u0430\u0430. Azure AD \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E \u0448\u0430\u043B\u0433\u0430\u0436 \u0431\u0430\u0439\u043D\u0430.",role:"engineer"},
+    {user:"\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448",time:"2026/03/14 11:15",text:"\u0411\u0430\u044F\u0440\u043B\u0430\u043B\u0430\u0430, \u044F\u0430\u0440\u0430\u043B\u0442\u0430\u0439 \u0448\u0438\u0439\u0434\u044D\u0436 \u04E9\u0433\u04E9\u04E9\u0447.",role:"requester"}
+  ]
 }, {
   id: "TKT-2026-041",
-  title: "VPN холболт тасарч байна",
-  category: "Сүлжээний үйлчилгээ",
+  type: "\u042D\u0432\u0434\u0440\u044D\u043B",
+  title: "VPN \u0445\u043E\u043B\u0431\u043E\u043B\u0442 \u0442\u0430\u0441\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430",
+  category: "\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",
   catCode: "IT2603",
   subcat: "Network",
   priority: "Critical",
-  status: "Нээлттэй",
+  status: "\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439",
   createdBy: "\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448",
+  requesterEmail: "tsend-ayush.u@tavanbogd.com",
+  requesterDept: "\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438",
+  requesterPhone: "9911-2233",
   created: "2026/03/15 11:30",
   sla: "2026/03/16 18:00",
   assigned: null,
-  service: "Системийн сүлжээ",
-  desc: "Оффисын VPN-д холбогдоход 'Connection timeout' гарч байна. Бусад ажилтнууд ч холбогдож чадахгүй байна.",
-  resolved: false
+  team: "\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u0411\u0430\u0433",
+  service: "\u0421\u0438\u0441\u0442\u0435\u043C\u0438\u0439\u043D \u0441\u04AF\u043B\u0436\u044D\u044D",
+  desc: "\u041E\u0444\u0444\u0438\u0441\u044B\u043D VPN-\u0434 \u0445\u043E\u043B\u0431\u043E\u0433\u0434\u043E\u0445\u043E\u0434 'Connection timeout' \u0433\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430. \u0411\u0443\u0441\u0430\u0434 \u0430\u0436\u0438\u043B\u0442\u043D\u0443\u0443\u0434 \u0447 \u0445\u043E\u043B\u0431\u043E\u0433\u0434\u043E\u0436 \u0447\u0430\u0434\u0430\u0445\u0433\u04AF\u0439 \u0431\u0430\u0439\u043D\u0430.",
+  resolved: false,
+  attachments: [{name:"vpn_screenshot.png",size:"180 KB",type:"image"}],
+  comments: []
 }, {
   id: "TKT-2026-039",
-  title: "Excel файл нээгдэхгүй байна",
-  category: "Үйл ажиллагааны систем",
+  type: "\u042D\u0432\u0434\u0440\u044D\u043B",
+  title: "Excel \u0444\u0430\u0439\u043B \u043D\u044D\u044D\u0433\u0434\u044D\u0445\u0433\u04AF\u0439 \u0431\u0430\u0439\u043D\u0430",
+  category: "\u04AE\u0439\u043B \u0430\u0436\u0438\u043B\u043B\u0430\u0433\u0430\u0430\u043D\u044B \u0441\u0438\u0441\u0442\u0435\u043C",
   catCode: "IT2602",
   subcat: "Office Apps",
   priority: "Medium",
-  status: "Шийдэгдсэн",
+  status: "\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",
   createdBy: "\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",
+  requesterEmail: "amarbayasgalan.b@tavanbogd.com",
+  requesterDept: "\u0421\u0430\u043D\u0445\u04AF\u04AF",
+  requesterPhone: "9922-3344",
   created: "2026/03/12 14:20",
   sla: "2026/03/14 18:00",
-  assigned: "Б. Амарбаясгалан",
-  service: "Систем дэмжлэг",
-  desc: "Excel 2021 программ нээгдэхгүй, 'File is corrupted' гэсэн алдаа гарч байна.",
-  resolved: true
+  assigned: "\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",
+  team: "IT \u0414\u044D\u043C\u0436\u043B\u044D\u0433 \u0411\u0430\u0433",
+  service: "\u0421\u0438\u0441\u0442\u0435\u043C \u0434\u044D\u043C\u0436\u043B\u044D\u0433",
+  desc: "Excel 2021 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C \u043D\u044D\u044D\u0433\u0434\u044D\u0445\u0433\u04AF\u0439, 'File is corrupted' \u0433\u044D\u0441\u044D\u043D \u0430\u043B\u0434\u0430\u0430 \u0433\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430.",
+  resolved: true,
+  attachments: [],
+  comments: [{user:"\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",time:"2026/03/13 09:00",text:"Office repair \u0445\u0438\u0439\u0433\u044D\u044D\u0434 \u0437\u0430\u0441\u0430\u0433\u0434\u043B\u0430\u0430.",role:"engineer"}]
 }, {
   id: "TKT-2026-037",
-  title: "Принтер холбогдохгүй байна",
-  category: "Компьютер удирдлага",
+  type: "\u042D\u0432\u0434\u0440\u044D\u043B",
+  title: "\u041F\u0440\u0438\u043D\u0442\u0435\u0440 \u0445\u043E\u043B\u0431\u043E\u0433\u0434\u043E\u0445\u0433\u04AF\u0439 \u0431\u0430\u0439\u043D\u0430",
+  category: "\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u0443\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430",
   catCode: "IT2601",
   subcat: "Hardware",
   priority: "Low",
-  status: "Хаагдсан",
+  status: "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",
   createdBy: "\u0414. \u041C\u04E9\u043D\u0445\u0431\u0430\u0442",
+  requesterEmail: "munkhbat.d@tavanbogd.com",
+  requesterDept: "\u0425\u04AF\u043D\u0438\u0439 \u043D\u04E9\u04E9\u0446",
+  requesterPhone: "9933-4455",
   created: "2026/03/10 10:00",
   sla: "2026/03/13 18:00",
-  assigned: "Д. Мөнхбат",
-  service: "Тусламж үйлчилгээ",
-  desc: "HP LaserJet принтер компьютерт олдохгүй байна.",
-  resolved: true
+  assigned: "\u0414. \u041C\u04E9\u043D\u0445\u0431\u0430\u0442",
+  team: "IT \u0414\u044D\u043C\u0436\u043B\u044D\u0433 \u0411\u0430\u0433",
+  service: "\u0422\u0443\u0441\u043B\u0430\u043C\u0436 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",
+  desc: "HP LaserJet \u043F\u0440\u0438\u043D\u0442\u0435\u0440 \u043A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440\u0442 \u043E\u043B\u0434\u043E\u0445\u0433\u04AF\u0439 \u0431\u0430\u0439\u043D\u0430.",
+  resolved: true,
+  attachments: [],
+  comments: []
 }, {
   id: "TKT-2026-036",
-  title: "Нууц үг сэргээх хүсэлт",
-  category: "МАБ",
+  type: "\u0425\u04AF\u0441\u044D\u043B\u0442",
+  title: "\u041D\u0443\u0443\u0446 \u04AF\u0433 \u0441\u044D\u0440\u0433\u044D\u044D\u0445 \u0445\u04AF\u0441\u044D\u043B\u0442",
+  category: "\u041C\u0410\u0411",
   catCode: "IT2605",
   subcat: "Security",
   priority: "Medium",
-  status: "Хаагдсан",
+  status: "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",
   createdBy: "\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448",
+  requesterEmail: "tsend-ayush.u@tavanbogd.com",
+  requesterDept: "\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438",
+  requesterPhone: "9911-2233",
   created: "2026/03/09 08:45",
   sla: "2026/03/11 18:00",
-  assigned: "Б. Амарбаясгалан",
-  service: "МАБ үйлчилгээ",
-  desc: "Системийн нэвтрэх нууц үг мартагдсан.",
-  resolved: true
+  assigned: "\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",
+  team: "\u041C\u0410\u0411 \u0411\u0430\u0433",
+  service: "\u041C\u0410\u0411 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",
+  desc: "\u0421\u0438\u0441\u0442\u0435\u043C\u0438\u0439\u043D \u043D\u044D\u0432\u0442\u0440\u044D\u0445 \u043D\u0443\u0443\u0446 \u04AF\u0433 \u043C\u0430\u0440\u0442\u0430\u0433\u0434\u0441\u0430\u043D.",
+  resolved: true,
+  attachments: [],
+  comments: []
 }, {
   id: "TKT-2026-035",
-  title: "Нэмэлт нэвтрэх эрх хүсэлт",
-  category: "Компьютер удирдлага",
+  type: "\u0425\u04AF\u0441\u044D\u043B\u0442",
+  title: "\u041D\u044D\u043C\u044D\u043B\u0442 \u043D\u044D\u0432\u0442\u0440\u044D\u0445 \u044D\u0440\u0445 \u0445\u04AF\u0441\u044D\u043B\u0442",
+  category: "\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u0443\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430",
   catCode: "IT2601",
   subcat: "User Access",
   priority: "High",
-  status: "Нээлттэй",
+  status: "\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439",
   createdBy: "\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448",
+  requesterEmail: "tsend-ayush.u@tavanbogd.com",
+  requesterDept: "\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438",
+  requesterPhone: "9911-2233",
   created: "2026/03/15 13:00",
   sla: "2026/03/17 18:00",
   assigned: null,
-  service: "IT Support (багц 3)",
-  desc: "Нягтлан бодох нэмэлт модулийн эрх хүсч байна.",
-  resolved: false
+  team: "IT \u0414\u044D\u043C\u0436\u043B\u044D\u0433 \u0411\u0430\u0433",
+  service: "IT Support (\u0431\u0430\u0433\u0446 3)",
+  desc: "\u041D\u044F\u0433\u0442\u043B\u0430\u043D \u0431\u043E\u0434\u043E\u0445 \u043D\u044D\u043C\u044D\u043B\u0442 \u043C\u043E\u0434\u0443\u043B\u0438\u0439\u043D \u044D\u0440\u0445 \u0445\u04AF\u0441\u0447 \u0431\u0430\u0439\u043D\u0430.",
+  resolved: false,
+  attachments: [{name:"access_request_form.pdf",size:"89 KB",type:"pdf"}],
+  comments: []
 }, {
   id: "TKT-2026-034",
-  title: "Интернэт удаан ажиллаж байна",
-  category: "Интернэт үйлчилгээ",
+  type: "\u042D\u0432\u0434\u0440\u044D\u043B",
+  title: "\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442 \u0443\u0434\u0430\u0430\u043D \u0430\u0436\u0438\u043B\u043B\u0430\u0436 \u0431\u0430\u0439\u043D\u0430",
+  category: "\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",
   catCode: "IT2608",
   subcat: "Internet",
   priority: "Medium",
-  status: "Явж байна",
+  status: "\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",
   createdBy: "\u0413. \u0411\u0430\u0442\u0431\u043E\u043B\u0434",
+  requesterEmail: "batbold.g@tavanbogd.com",
+  requesterDept: "\u041C\u0430\u0440\u043A\u0435\u0442\u0438\u043D\u0433",
+  requesterPhone: "9944-5566",
   created: "2026/03/13 15:30",
   sla: "2026/03/16 18:00",
-  assigned: "Г. Батболд",
-  service: "Интернэтийн төлбөр",
-  desc: "Интернэтийн хурд маш удаашираад байна — ажлын цагт 1-2 Mbps л гарч байна.",
-  resolved: false
+  assigned: "\u0413. \u0411\u0430\u0442\u0431\u043E\u043B\u0434",
+  team: "\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u0411\u0430\u0433",
+  service: "\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442\u0438\u0439\u043D \u0442\u04E9\u043B\u0431\u04E9\u0440",
+  desc: "\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442\u0438\u0439\u043D \u0445\u0443\u0440\u0434 \u043C\u0430\u0448 \u0443\u0434\u0430\u0430\u0448\u0438\u0440\u0430\u0430\u0434 \u0431\u0430\u0439\u043D\u0430 \u2014 \u0430\u0436\u043B\u044B\u043D \u0446\u0430\u0433\u0442 1-2 Mbps \u043B \u0433\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430.",
+  resolved: false,
+  attachments: [{name:"speed_test.png",size:"95 KB",type:"image"}],
+  comments: [{user:"\u0413. \u0411\u0430\u0442\u0431\u043E\u043B\u0434",time:"2026/03/14 09:00",text:"ISP-\u0442\u044D\u0439 \u0445\u043E\u043B\u0431\u043E\u0433\u0434\u043E\u0436 \u0431\u0430\u0439\u043D\u0430. \u0425\u0430\u0440\u0438\u0443 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0430\u0439\u043D\u0430.",role:"engineer"}]
 }, {
   id: "TKT-2026-033",
-  title: "Cloud storage quota хэтэрсэн",
-  category: "Дата менежмент",
+  type: "\u0425\u04AF\u0441\u044D\u043B\u0442",
+  title: "Cloud storage quota \u0445\u044D\u0442\u044D\u0440\u0441\u044D\u043D",
+  category: "\u0414\u0430\u0442\u0430 \u043C\u0435\u043D\u0435\u0436\u043C\u0435\u043D\u0442",
   catCode: "IT2606",
   subcat: "Storage",
   priority: "High",
-  status: "Шийдэгдсэн",
+  status: "\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",
   createdBy: "\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448",
+  requesterEmail: "tsend-ayush.u@tavanbogd.com",
+  requesterDept: "\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438",
+  requesterPhone: "9911-2233",
   created: "2026/03/11 09:00",
   sla: "2026/03/13 18:00",
-  assigned: "Б. Амарбаясгалан",
-  service: "Дата менежмент",
-  desc: "Cloud хадгалалтын зай дүүрч, файл upload хийх боломжгүй болсон.",
-  resolved: true
+  assigned: "\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",
+  team: "\u0414\u0430\u0442\u0430 \u0411\u0430\u0433",
+  service: "\u0414\u0430\u0442\u0430 \u043C\u0435\u043D\u0435\u0436\u043C\u0435\u043D\u0442",
+  desc: "Cloud \u0445\u0430\u0434\u0433\u0430\u043B\u0430\u043B\u0442\u044B\u043D \u0437\u0430\u0439 \u0434\u04AF\u04AF\u0440\u0447, \u0444\u0430\u0439\u043B upload \u0445\u0438\u0439\u0445 \u0431\u043E\u043B\u043E\u043C\u0436\u0433\u04AF\u0439 \u0431\u043E\u043B\u0441\u043E\u043D.",
+  resolved: true,
+  attachments: [],
+  comments: [{user:"\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",time:"2026/03/12 14:00",text:"Quota 50GB \u0431\u043E\u043B\u0433\u043E\u0436 \u04E9\u0441\u0433\u04E9\u0441\u04E9\u043D.",role:"engineer"}]
 }];
 const KB_SECTIONS = [
   {key:"docs",label:"Баримт бичиг",icon:"file-earmark-text",color:"#534AB7",bg:"#EEEDFE",vis:"platform",desc:"Зөвхөн Платформ талд харагдана"},
@@ -14273,8 +14332,8 @@ const PRIORITY_META = {
     label: "Яаралтай"
   },
   "High": {
-    bg: "#FAEEDA",
-    color: "#633806",
+    bg: "#FEE2E2",
+    color: "#DC2626",
     label: "Өндөр"
   },
   "Medium": {
@@ -14360,399 +14419,293 @@ function TicketDetailPage({
   onEdit,
   isCreator,
   isAdmin,
-  activityLog
+  activityLog,
+  allTickets
 }) {
-  const timeline = [{
-    icon: "plus-circle",
-    color: "#534AB7",
-    text: "Тикет үүсгэгдсэн",
-    time: ticket.created,
-    note: "Та тикет үүсгэсэн"
-  }, ...(ticket.assigned ? [{
-    icon: "person-check",
-    color: "#7C3AED",
-    text: `${ticket.assigned} инженерт хуваарилагдсан`,
-    time: ticket.created.split(" ")[0] + " 09:30",
-    note: "AI автоматаар хуваарилсан"
-  }] : []), ...(ticket.status === "Явж байна" ? [{
-    icon: "play-circle",
-    color: "#D97706",
-    text: "Ажил эхэлсэн",
-    time: ticket.created.split(" ")[0] + " 10:00",
-    note: "Инженер тикет авсан"
-  }] : []), ...(ticket.resolved ? [{
-    icon: "check-circle",
-    color: "#059669",
-    text: "Шийдэлд хүрсэн",
-    time: ticket.sla.split(" ")[0] + " 15:22",
-    note: "Инженер resolved болгосон — баталгаажуулалт хүлээж байна"
-  }] : []), ...(ticket.status === "Хаагдсан" ? [{
-    icon: "lock",
-    color: "#666666",
-    text: "Тикет хаагдсан",
-    time: ticket.sla.split(" ")[0] + " 16:00",
-    note: "Хэрэглэгч баталгаажуулсан"
-  }] : [])];
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 16,
-      padding: '20px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 12,
-      flexWrap: 'wrap',
-      marginBottom: 8
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: onBack,
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      padding: '6px 14px',
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      fontSize: 13,
-      fontWeight: 600,
-      cursor: 'pointer',
-      color: '#555',
-      fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "arrow-left",
-    s: 14
-  }), " \u0411\u0443\u0446\u0430\u0445"), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      margin: 0,
-      fontSize: 20,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, ticket.id), /*#__PURE__*/React.createElement(TBadge, {
-    status: ticket.status
-  }), /*#__PURE__*/React.createElement(PBadge, {
-    priority: ticket.priority
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 360px',
-      gap: 20,
-      alignItems: 'start'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 12,
-      padding: '20px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("h3", {
-    style: {
-      margin: '0 0 12px',
-      fontSize: 16,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, ticket.title), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 16px',
-      fontSize: 13,
-      color: '#555',
-      lineHeight: 1.7,
-      background: '#F9FAFB',
-      padding: 14,
-      borderRadius: 8
-    }
-  }, ticket.desc), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr',
-      gap: 10
-    }
-  }, [["\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D", ticket.service], ["\u0410\u043D\u0433\u0438\u043B\u0430\u043B", ticket.category], ["\u0414\u044D\u0434 \u0430\u043D\u0433\u0438\u043B\u0430\u043B", ticket.subcat], ["SLA \u0434\u0443\u0443\u0441\u0430\u0445", ticket.sla], ["\u0425\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0433\u0434\u0441\u0430\u043D", ticket.assigned || "\u0425\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0430\u0433\u04AF\u0439"], ["\u04AE\u04AF\u0441\u0433\u044D\u0441\u044D\u043D", ticket.created]].map(function(kv) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: kv[0],
-      style: {
-        background: '#F5F5F5',
-        borderRadius: 8,
-        padding: '8px 12px'
-      }
-    }, /*#__PURE__*/React.createElement("p", {
-      style: {
-        margin: 0,
-        fontSize: 10,
-        color: '#999',
-        fontWeight: 700,
-        textTransform: 'uppercase',
-        letterSpacing: .4
-      }
-    }, kv[0]), /*#__PURE__*/React.createElement("p", {
-      style: {
-        margin: '3px 0 0',
-        fontSize: 12,
-        fontWeight: 600,
-        color: '#1A1A1A'
-      }
-    }, kv[1]))
-  })), ticket.status === "\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#ECFDF5',
-      border: '0.5px solid #BBF7D0',
-      borderRadius: 8,
-      padding: 14,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 6px',
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#3B6D11'
-    }
-  }, "\u0410\u0441\u0443\u0443\u0434\u0430\u043B \u0448\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D \u0433\u044D\u0436 \u0431\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445 \u0443\u0443?"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 12px',
-      fontSize: 12,
-      color: '#047857'
-    }
-  }, "\u0422\u0430 48 \u0446\u0430\u0433\u0438\u0439\u043D \u0434\u043E\u0442\u043E\u0440 \u0445\u0430\u0440\u0438\u0443 \u04E9\u0433\u04E9\u0445\u0433\u04AF\u0439 \u0431\u043E\u043B \u0441\u0438\u0441\u0442\u0435\u043C \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0445\u0430\u0430\u043D\u0430 (BR-06)."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement(Btn, {
-    variant: "success",
-    icon: "check2",
-    onClick: onConfirm,
-    full: true
-  }, "\u0411\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445 \u2014 \u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D"), /*#__PURE__*/React.createElement(Btn, {
-    variant: "ghost",
-    icon: "arrow-counterclockwise",
-    onClick: onReopen,
-    full: true
-  }, "\u0414\u0430\u0445\u0438\u043D \u043D\u044D\u044D\u0445"))), isCreator && ticket.status !== "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D" && ticket.status !== "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#FEF2F2',
-      border: '0.5px solid #FECACA',
-      borderRadius: 8,
-      padding: 14,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 8px',
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#991B1B'
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442 \u0446\u0443\u0446\u043B\u0430\u0445"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 10px',
-      fontSize: 12,
-      color: '#B91C1C'
-    }
-  }, "\u0422\u0430 \u044D\u043D\u044D \u0442\u0438\u043A\u0435\u0442\u0438\u0439\u0433 \u0446\u0443\u0446\u043B\u0430\u0445 \u0431\u043E\u043B\u043E\u043C\u0436\u0442\u043E\u0439. \u0428\u0430\u043B\u0442\u0433\u0430\u0430\u043D \u0437\u0430\u0430\u0432\u0430\u043B \u0431\u04E9\u0433\u043B\u04E9\u043D\u04E9."), /*#__PURE__*/React.createElement(Btn, {
-    variant: "danger",
-    icon: "x-circle",
-    onClick: function() {
-      onCancel(ticket)
-    },
-    full: true
-  }, "\u0426\u0443\u0446\u043B\u0430\u0445")), isAdmin && ticket.status !== "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D" && ticket.status !== "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement(Btn, {
-    variant: "ghost",
-    icon: "pencil-square",
-    onClick: function() {
-      onEdit(ticket)
-    },
-    full: true
-  }, "\u0410\u0434\u043C\u0438\u043D \u0437\u0430\u0441\u0432\u0430\u0440\u043B\u0430\u0445")), ticket.status === "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#FEF2F2',
-      border: '0.5px solid #FECACA',
-      borderRadius: 8,
-      padding: 14,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 4px',
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#991B1B'
-    }
-  }, "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"), ticket.cancelReason && /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '2px 0',
-      fontSize: 12,
-      color: '#B91C1C'
-    }
-  }, "\u0428\u0430\u043B\u0442\u0433\u0430\u0430\u043D: ", ticket.cancelReason), ticket.cancelDesc && /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '2px 0',
-      fontSize: 12,
-      color: '#B91C1C'
-    }
-  }, ticket.cancelDesc), ticket.cancelTime && /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '4px 0 0',
-      fontSize: 11,
-      color: '#999'
-    }
-  }, ticket.cancelTime)))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 12,
-      padding: '20px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 16px',
-      fontSize: 11,
-      fontWeight: 700,
-      color: '#555',
-      textTransform: 'uppercase',
-      letterSpacing: .5
-    }
-  }, "\u042F\u0432\u0446\u044B\u043D \u0442\u04AF\u04AF\u0445"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: 16
-    }
-  }, timeline.map((t, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: 'flex',
-      gap: 12,
-      alignItems: 'flex-start',
-      marginBottom: 10,
-      paddingLeft: 4
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 28,
-      height: 28,
-      borderRadius: 69,
-      background: t.color + '22',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: t.icon,
-    s: 13,
-    style: {
-      color: t.color
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 13,
-      fontWeight: 600,
-      color: '#1A1A1A'
-    }
-  }, t.text), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '1px 0 0',
-      fontSize: 11,
-      color: '#999999'
-    }
-  }, t.time, " \xB7 ", t.note))))), activityLog && activityLog.length > 0 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 12,
-      padding: '20px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 16px',
-      fontSize: 11,
-      fontWeight: 700,
-      color: '#555',
-      textTransform: 'uppercase',
-      letterSpacing: .5
-    }
-  }, "\u04AE\u0439\u043B \u0430\u0436\u0438\u043B\u043B\u0430\u0433\u0430\u0430\u043D\u044B \u043B\u043E\u0433"), activityLog.filter(function(l) {
-    return l.ticket === ticket.id
-  }).slice(0, 5).map(function(l, i) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      style: {
-        display: 'flex',
-        gap: 10,
-        alignItems: 'flex-start',
-        marginBottom: 8,
-        paddingLeft: 4
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        width: 24,
-        height: 24,
-        borderRadius: 69,
-        background: l.action === "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" ? '#FEE2E2' : '#DBEAFE',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0
-      }
-    }, /*#__PURE__*/React.createElement(Ic, {
-      n: l.action === "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" ? "x-circle" : "pencil",
-      s: 11,
-      style: {
-        color: l.action === "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" ? '#991B1B' : '#2563EB'
-      }
-    })), /*#__PURE__*/React.createElement("div", {
-      style: {
-        flex: 1
-      }
-    }, /*#__PURE__*/React.createElement("p", {
-      style: {
-        margin: 0,
-        fontSize: 12,
-        fontWeight: 600,
-        color: '#1A1A1A'
-      }
-    }, l.action, " \u2014 ", l.user), l.reason && /*#__PURE__*/React.createElement("p", {
-      style: {
-        margin: '1px 0 0',
-        fontSize: 11,
-        color: '#991B1B'
-      }
-    }, "\u0428\u0430\u043B\u0442\u0433\u0430\u0430\u043D: ", l.reason), /*#__PURE__*/React.createElement("p", {
-      style: {
-        margin: '1px 0 0',
-        fontSize: 10,
-        color: '#999'
-      }
-    }, l.time)))
-  }))))));
+  var ce = React.createElement;
+  var useState = React.useState;
+  var _commentState = useState("");
+  var newComment = _commentState[0];
+  var setNewComment = _commentState[1];
+
+  /* file icon helper */
+  var fileIcon = function(type){
+    if(type==="image") return {icon:"file-earmark-image",color:"#7C3AED",bg:"#EDE9FE"};
+    if(type==="pdf") return {icon:"file-earmark-pdf",color:"#DC2626",bg:"#FEE2E2"};
+    return {icon:"file-earmark-text",color:"#2563EB",bg:"#DBEAFE"};
+  };
+
+  /* requester's previous tickets (exclude current) */
+  var prevTickets = (allTickets||[]).filter(function(t){
+    return t.createdBy === ticket.createdBy && t.id !== ticket.id;
+  }).slice(0,3);
+
+  /* timeline */
+  var timeline = [{
+    icon:"plus-circle",color:"#534AB7",
+    text:"\u0422\u0438\u043A\u0435\u0442 \u04AF\u04AF\u0441\u0433\u044D\u0433\u0434\u0441\u044D\u043D",
+    time:ticket.created,note:"\u0422\u0430 \u0442\u0438\u043A\u0435\u0442 \u04AF\u04AF\u0441\u0433\u044D\u0441\u044D\u043D"
+  }].concat(ticket.assigned?[{
+    icon:"person-check",color:"#7C3AED",
+    text:ticket.assigned+" \u0438\u043D\u0436\u0435\u043D\u0435\u0440\u0442 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0433\u0434\u0441\u0430\u043D",
+    time:ticket.created.split(" ")[0]+" 09:30",note:"AI \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0441\u0430\u043D"
+  }]:[]).concat(ticket.status==="\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430"?[{
+    icon:"play-circle",color:"#D97706",
+    text:"\u0410\u0436\u0438\u043B \u044D\u0445\u043B\u044D\u0441\u044D\u043D",
+    time:ticket.created.split(" ")[0]+" 10:00",note:"\u0418\u043D\u0436\u0435\u043D\u0435\u0440 \u0442\u0438\u043A\u0435\u0442 \u0430\u0432\u0441\u0430\u043D"
+  }]:[]).concat(ticket.resolved?[{
+    icon:"check-circle",color:"#059669",
+    text:"\u0428\u0438\u0439\u0434\u044D\u043B\u0434 \u0445\u04AF\u0440\u0441\u044D\u043D",
+    time:ticket.sla.split(" ")[0]+" 15:22",note:"\u0418\u043D\u0436\u0435\u043D\u0435\u0440 resolved \u0431\u043E\u043B\u0433\u043E\u0441\u043E\u043D"
+  }]:[]).concat(ticket.status==="\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D"?[{
+    icon:"lock",color:"#666666",
+    text:"\u0422\u0438\u043A\u0435\u0442 \u0445\u0430\u0430\u0433\u0434\u0441\u0430\u043D",
+    time:ticket.sla.split(" ")[0]+" 16:00",note:"\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447 \u0431\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0441\u0430\u043D"
+  }]:[]);
+
+  /* section card helper */
+  var Card = function(props){
+    return ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px',display:'flex',flexDirection:'column',gap:props.gap||16}},props.children);
+  };
+  var SectionTitle = function(props){
+    return ce("p",{style:{margin:0,fontSize:11,fontWeight:700,color:'#888',textTransform:'uppercase',letterSpacing:.5}},props.children);
+  };
+
+  /* ═══ MAIN RETURN ═══ */
+  return ce("div",{style:{display:'flex',flexDirection:'column',gap:24,padding:'32px 40px',maxWidth:1320,margin:'0 auto',width:'100%',boxSizing:'border-box'}},
+
+    /* ── HEADER: Back + ID + badges ── */
+    ce("div",{style:{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}},
+      ce("button",{onClick:onBack,style:{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,fontSize:13,fontWeight:600,cursor:'pointer',color:'#555',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}},
+        ce(Ic,{n:"arrow-left",s:14})," \u0411\u0443\u0446\u0430\u0445"),
+      ce("h2",{style:{margin:0,fontSize:22,fontWeight:700,color:'#1A1A1A'}},ticket.id),
+      ce(TBadge,{status:ticket.status}),
+      ce(PBadge,{priority:ticket.priority})
+    ),
+
+    /* ── TWO-COLUMN GRID ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 400px',gap:28,alignItems:'start'}},
+
+      /* ════════ LEFT COLUMN ════════ */
+      ce("div",{style:{display:'flex',flexDirection:'column',gap:20}},
+
+        /* ── 1. TICKET INFO CARD ── */
+        ce(Card,{gap:20},
+          ce(SectionTitle,null,"\u0422\u0418\u041A\u0415\u0422\u0418\u0419\u041D \u041C\u042D\u0414\u042D\u042D\u041B\u042D\u041B"),
+          ce("h3",{style:{margin:0,fontSize:18,fontWeight:700,color:'#1A1A1A',lineHeight:1.4}},ticket.title),
+          ce("div",{style:{background:'#F9FAFB',padding:'16px 20px',borderRadius:10,fontSize:13.5,color:'#555',lineHeight:1.8}},ticket.desc),
+          ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12}},
+            [["\u0422\u04E9\u0440\u04E9\u043B",ticket.type||"\u0425\u04AF\u0441\u044D\u043B\u0442"],["\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",ticket.service],["\u0410\u043D\u0433\u0438\u043B\u0430\u043B",ticket.category],["\u0414\u044D\u0434 \u0430\u043D\u0433\u0438\u043B\u0430\u043B",ticket.subcat],["SLA \u0434\u0443\u0443\u0441\u0430\u0445",ticket.sla],["\u04AE\u04AF\u0441\u0433\u044D\u0441\u044D\u043D",ticket.created]].map(function(kv){
+              return ce("div",{key:kv[0],style:{background:'#F5F5F5',borderRadius:10,padding:'12px 16px'}},
+                ce("p",{style:{margin:0,fontSize:10,color:'#999',fontWeight:700,textTransform:'uppercase',letterSpacing:.4}},kv[0]),
+                ce("p",{style:{margin:'5px 0 0',fontSize:13,fontWeight:600,color:'#1A1A1A'}},kv[1]))
+            })
+          )
+        ),
+
+        /* ── 2. REQUESTER INFO CARD ── */
+        ce(Card,{gap:16},
+          ce(SectionTitle,null,"\u0425\u04AE\u0421\u042D\u041B\u0422 \u0413\u0410\u0420\u0413\u0410\u0413\u0427"),
+          ce("div",{style:{display:'flex',alignItems:'center',gap:16}},
+            ce("div",{style:{width:48,height:48,borderRadius:69,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:18,fontWeight:700,color:'#534AB7'}},ticket.createdBy?ticket.createdBy.charAt(0):"\u0422"),
+            ce("div",{style:{flex:1}},
+              ce("p",{style:{margin:0,fontSize:15,fontWeight:700,color:'#1A1A1A'}},ticket.createdBy||"\u0422\u0441\u044D\u043D\u0434-\u0410\u044E\u0443\u0448"),
+              ce("p",{style:{margin:'2px 0 0',fontSize:12,color:'#888'}},ticket.requesterDept||"\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438")
+            )
+          ),
+          ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
+            ce("div",{style:{display:'flex',alignItems:'center',gap:8,background:'#F9FAFB',borderRadius:8,padding:'10px 14px'}},
+              ce(Ic,{n:"envelope",s:13,style:{color:'#888'}}),
+              ce("span",{style:{fontSize:12,color:'#555'}},ticket.requesterEmail||"tsend-ayush.u@tavanbogd.com")
+            ),
+            ce("div",{style:{display:'flex',alignItems:'center',gap:8,background:'#F9FAFB',borderRadius:8,padding:'10px 14px'}},
+              ce(Ic,{n:"telephone",s:13,style:{color:'#888'}}),
+              ce("span",{style:{fontSize:12,color:'#555'}},ticket.requesterPhone||"9911-2233")
+            )
+          )
+        ),
+
+        /* ── 3. RESPONSIBILITY TEAM + ASSIGNEE ── */
+        ce(Card,{gap:16},
+          ce(SectionTitle,null,"\u0425\u0410\u0420\u0418\u0423\u0426\u0410\u0425 \u0411\u0410\u0413 & \u0418\u041D\u0416\u0415\u041D\u0415\u0420"),
+          ce("div",{style:{display:'flex',alignItems:'center',gap:12,background:'#F0EFFF',borderRadius:10,padding:'14px 18px'}},
+            ce("div",{style:{width:40,height:40,borderRadius:10,background:'#534AB7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+              ce(Ic,{n:"people",s:18,style:{color:'#fff'}})
+            ),
+            ce("div",{style:{flex:1}},
+              ce("p",{style:{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}},ticket.team||"IT \u0414\u044D\u043C\u0436\u043B\u044D\u0433 \u0411\u0430\u0433"),
+              ce("p",{style:{margin:'2px 0 0',fontSize:11,color:'#666'}},ticket.service)
+            )
+          ),
+          ce("div",{style:{display:'flex',alignItems:'center',gap:12,background:ticket.assigned?'#F9FAFB':'#FEF3C7',borderRadius:10,padding:'14px 18px'}},
+            ce("div",{style:{width:40,height:40,borderRadius:69,background:ticket.assigned?'#DBEAFE':'#FDE68A',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+              ce(Ic,{n:ticket.assigned?"person-check":"person-exclamation",s:18,style:{color:ticket.assigned?'#2563EB':'#D97706'}})
+            ),
+            ce("div",{style:{flex:1}},
+              ce("p",{style:{margin:0,fontSize:11,color:'#999',fontWeight:600,textTransform:'uppercase',letterSpacing:.3}},"\u0425\u0430\u0440\u0438\u0443\u0446\u0441\u0430\u043D \u0438\u043D\u0436\u0435\u043D\u0435\u0440"),
+              ce("p",{style:{margin:'3px 0 0',fontSize:14,fontWeight:700,color:ticket.assigned?'#1A1A1A':'#D97706'}},ticket.assigned||"\u0425\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0430\u0433\u04AF\u0439")
+            )
+          )
+        ),
+
+        /* ── 4. ATTACHED FILES ── */
+        ce(Card,{gap:14},
+          ce("div",{style:{display:'flex',alignItems:'center',justifyContent:'space-between'}},
+            ce(SectionTitle,null,"\u0425\u0410\u0412\u0421\u0410\u0420\u0413\u0410\u0414\u0421\u0410\u041D \u0424\u0410\u0419\u041B"),
+            ce("span",{style:{fontSize:11,color:'#999',fontWeight:600}},(ticket.attachments||[]).length+" \u0444\u0430\u0439\u043B")
+          ),
+          (ticket.attachments||[]).length>0 ? ce("div",{style:{display:'flex',flexDirection:'column',gap:8}},
+            (ticket.attachments||[]).map(function(f,i){
+              var fi = fileIcon(f.type);
+              return ce("div",{key:i,style:{display:'flex',alignItems:'center',gap:12,background:'#F9FAFB',borderRadius:10,padding:'12px 16px',cursor:'pointer',transition:'all .15s'},
+                onMouseEnter:function(e){e.currentTarget.style.background='#F0F0F0'},
+                onMouseLeave:function(e){e.currentTarget.style.background='#F9FAFB'}},
+                ce("div",{style:{width:36,height:36,borderRadius:8,background:fi.bg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+                  ce(Ic,{n:fi.icon,s:16,style:{color:fi.color}})
+                ),
+                ce("div",{style:{flex:1}},
+                  ce("p",{style:{margin:0,fontSize:13,fontWeight:600,color:'#1A1A1A'}},f.name),
+                  ce("p",{style:{margin:'2px 0 0',fontSize:11,color:'#999'}},f.size)
+                ),
+                ce(Ic,{n:"download",s:14,style:{color:'#888'}})
+              )
+            })
+          ) : ce("div",{style:{textAlign:'center',padding:'20px 0',color:'#C8D0D8',fontSize:12}},
+            ce(Ic,{n:"paperclip",s:20,style:{color:'#DDD',display:'block',margin:'0 auto 6px'}}),
+            "\u0425\u0430\u0432\u0441\u0430\u0440\u0433\u0430\u0434\u0441\u0430\u043D \u0444\u0430\u0439\u043B \u0431\u0430\u0439\u0445\u0433\u04AF\u0439"
+          )
+        ),
+
+        /* ── 5. REQUESTER PREVIOUS TICKETS (last 3) ── */
+        prevTickets.length > 0 && ce(Card,{gap:14},
+          ce(SectionTitle,null,"\u0425\u04AE\u0421\u042D\u041B\u0422 \u0413\u0410\u0420\u0413\u0410\u0413\u0427\u0418\u0419\u041D \u04E8\u041C\u041D\u04E8\u0425 \u0422\u0418\u041A\u0415\u0422\u04AE\u04AE\u0414"),
+          ce("div",{style:{display:'flex',flexDirection:'column',gap:8}},
+            prevTickets.map(function(pt){
+              return ce("div",{key:pt.id,style:{display:'flex',alignItems:'center',gap:12,background:'#F9FAFB',borderRadius:10,padding:'12px 16px'}},
+                ce("span",{style:{fontFamily:'monospace',fontSize:11,fontWeight:700,color:'#534AB7',minWidth:56}},pt.id.split("-").pop()),
+                ce("div",{style:{flex:1,overflow:'hidden'}},
+                  ce("p",{style:{margin:0,fontSize:13,fontWeight:600,color:'#1A1A1A',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}},pt.title),
+                  ce("p",{style:{margin:'2px 0 0',fontSize:11,color:'#999'}},pt.created.split(" ")[0])
+                ),
+                ce(TBadge,{status:pt.status})
+              )
+            })
+          )
+        ),
+
+        /* ── 6. COMMENTS SECTION ── */
+        ce(Card,{gap:16},
+          ce("div",{style:{display:'flex',alignItems:'center',justifyContent:'space-between'}},
+            ce(SectionTitle,null,"\u0421\u042D\u0422\u0413\u042D\u0413\u0414\u042D\u041B"),
+            ce("span",{style:{fontSize:11,color:'#999',fontWeight:600}},(ticket.comments||[]).length+" \u0441\u044D\u0442\u0433\u044D\u0433\u0434\u044D\u043B")
+          ),
+          (ticket.comments||[]).length > 0 && ce("div",{style:{display:'flex',flexDirection:'column',gap:12}},
+            (ticket.comments||[]).map(function(c,i){
+              var isReq = c.role === "requester";
+              return ce("div",{key:i,style:{display:'flex',gap:12,alignItems:'flex-start'}},
+                ce("div",{style:{width:32,height:32,borderRadius:69,background:isReq?'#EEEDFE':'#DBEAFE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:12,fontWeight:700,color:isReq?'#534AB7':'#2563EB'}},c.user?c.user.charAt(0):"\u0422"),
+                ce("div",{style:{flex:1,background:'#F9FAFB',borderRadius:10,padding:'12px 16px'}},
+                  ce("div",{style:{display:'flex',alignItems:'center',gap:8,marginBottom:6}},
+                    ce("span",{style:{fontSize:12,fontWeight:700,color:'#1A1A1A'}},c.user),
+                    ce("span",{style:{fontSize:10,color:isReq?'#534AB7':'#2563EB',fontWeight:600,background:isReq?'#F0EFFF':'#EFF6FF',padding:'2px 8px',borderRadius:4}},isReq?"\u0425\u04AF\u0441\u044D\u043B\u0442 \u0433\u0430\u0440\u0433\u0430\u0433\u0447":"\u0418\u043D\u0436\u0435\u043D\u0435\u0440"),
+                    ce("span",{style:{fontSize:10,color:'#999',marginLeft:'auto'}},c.time)
+                  ),
+                  ce("p",{style:{margin:0,fontSize:13,color:'#555',lineHeight:1.6}},c.text)
+                )
+              )
+            })
+          ),
+          /* comment input */
+          ce("div",{style:{display:'flex',gap:10,alignItems:'flex-end',background:'#F9FAFB',borderRadius:10,padding:'12px 14px',border:'1px solid #E8ECEF'}},
+            ce("textarea",{value:newComment,onChange:function(e){setNewComment(e.target.value)},placeholder:"\u0421\u044D\u0442\u0433\u044D\u0433\u0434\u044D\u043B \u0431\u0438\u0447\u0438\u0445...",rows:2,style:{flex:1,padding:'8px 12px',fontSize:13,border:'none',background:'transparent',resize:'vertical',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",outline:'none',color:'#1A1A1A',lineHeight:1.5}}),
+            ce("button",{disabled:!newComment.trim(),style:{padding:'8px 18px',background:newComment.trim()?'#534AB7':'#E8ECEF',color:newComment.trim()?'#fff':'#C8D0D8',border:'none',borderRadius:8,fontSize:12,fontWeight:700,cursor:newComment.trim()?'pointer':'not-allowed',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",whiteSpace:'nowrap',flexShrink:0}},
+              ce(Ic,{n:"send",s:13,style:{marginRight:4}}),"\u0418\u043B\u0433\u044D\u044D\u0445")
+          )
+        )
+      ),
+
+      /* ════════ RIGHT COLUMN ════════ */
+      ce("div",{style:{display:'flex',flexDirection:'column',gap:20,position:'sticky',top:20}},
+
+        /* ── ACTIONS CARD ── */
+        (ticket.status !== "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D" && ticket.status !== "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D") && ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px',display:'flex',flexDirection:'column',gap:14}},
+          ce(SectionTitle,null,"\u04AE\u0419\u041B\u0414\u042D\u041B"),
+
+          /* Resolve confirm */
+          ticket.status === "\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D" && ce(React.Fragment,null,
+            ce("div",{style:{background:'#ECFDF5',border:'0.5px solid #BBF7D0',borderRadius:10,padding:'14px 16px'}},
+              ce("p",{style:{margin:'0 0 8px',fontSize:13,fontWeight:700,color:'#3B6D11'}},"\u0411\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445 \u0443\u0443?"),
+              ce("p",{style:{margin:'0 0 10px',fontSize:11,color:'#047857'}},"\u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0433\u0434\u0441\u044D\u043D \u0433\u044D\u0436 \u0431\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445 \u0443\u0443, \u044D\u0441\u0432\u044D\u043B \u0434\u0430\u0445\u0438\u043D \u043D\u044D\u044D\u0445 \u04AF\u04AF?")
+            ),
+            ce("div",{style:{display:'flex',gap:8}},
+              ce(Btn,{variant:"success",icon:"check2",onClick:onConfirm,full:true},"\u0411\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445"),
+              ce(Btn,{variant:"ghost",icon:"arrow-counterclockwise",onClick:onReopen,full:true},"\u0414\u0430\u0445\u0438\u043D \u043D\u044D\u044D\u0445")
+            )
+          ),
+
+          /* Cancel button (creator only) */
+          isCreator && ce("button",{onClick:function(){onCancel(ticket)},style:{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',padding:'12px 16px',background:'#FEF2F2',border:'1px solid #FECACA',borderRadius:10,fontSize:13,fontWeight:700,color:'#DC2626',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",transition:'all .15s'},
+            onMouseEnter:function(e){e.currentTarget.style.background='#FEE2E2'},
+            onMouseLeave:function(e){e.currentTarget.style.background='#FEF2F2'}},
+            ce(Ic,{n:"x-circle",s:14}),"\u0422\u0438\u043A\u0435\u0442 \u0446\u0443\u0446\u043B\u0430\u0445"
+          ),
+
+          /* Admin edit button */
+          isAdmin && ce("button",{onClick:function(){onEdit(ticket)},style:{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',padding:'12px 16px',background:'#F9FAFB',border:'1px solid #E8ECEF',borderRadius:10,fontSize:13,fontWeight:600,color:'#555',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",transition:'all .15s'},
+            onMouseEnter:function(e){e.currentTarget.style.background='#F0F0F0'},
+            onMouseLeave:function(e){e.currentTarget.style.background='#F9FAFB'}},
+            ce(Ic,{n:"pencil-square",s:14}),"\u0410\u0434\u043C\u0438\u043D \u0437\u0430\u0441\u0432\u0430\u0440\u043B\u0430\u0445"
+          )
+        ),
+
+        /* ── CANCELLED INFO ── */
+        ticket.status === "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D" && ce("div",{style:{background:'#FEF2F2',border:'0.5px solid #FECACA',borderRadius:12,padding:'20px 24px'}},
+          ce("p",{style:{margin:'0 0 8px',fontSize:13,fontWeight:700,color:'#991B1B'}},"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"),
+          ticket.cancelReason && ce("p",{style:{margin:'2px 0',fontSize:12,color:'#B91C1C'}},"\u0428\u0430\u043B\u0442\u0433\u0430\u0430\u043D: ",ticket.cancelReason),
+          ticket.cancelDesc && ce("p",{style:{margin:'2px 0',fontSize:12,color:'#B91C1C'}},ticket.cancelDesc),
+          ticket.cancelTime && ce("p",{style:{margin:'4px 0 0',fontSize:11,color:'#999'}},ticket.cancelTime)
+        ),
+
+        /* ── ACTIVITY TIMELINE CARD ── */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px'}},
+          ce(SectionTitle,null,"\u042F\u0412\u0426\u042B\u041D \u0422\u04AE\u04AE\u0425"),
+          ce("div",{style:{marginTop:16}},
+            timeline.map(function(t,i){
+              return ce("div",{key:i,style:{display:'flex',gap:14,alignItems:'flex-start',marginBottom:i<timeline.length-1?18:0,position:'relative'}},
+                i<timeline.length-1 && ce("div",{style:{position:'absolute',left:15,top:36,width:1,height:'calc(100% - 12px)',background:'#E8ECEF'}}),
+                ce("div",{style:{width:32,height:32,borderRadius:69,background:t.color+'18',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,position:'relative',zIndex:1}},
+                  ce(Ic,{n:t.icon,s:14,style:{color:t.color}})
+                ),
+                ce("div",{style:{flex:1,paddingTop:2}},
+                  ce("p",{style:{margin:0,fontSize:13,fontWeight:600,color:'#1A1A1A'}},t.text),
+                  ce("p",{style:{margin:'3px 0 0',fontSize:11,color:'#999'}},t.time," \xB7 ",t.note)
+                )
+              )
+            })
+          )
+        ),
+
+        /* ── ACTIVITY LOG CARD ── */
+        activityLog && activityLog.filter(function(l){return l.ticket===ticket.id}).length > 0 && ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px'}},
+          ce(SectionTitle,null,"\u04AE\u0419\u041B \u0410\u0416\u0418\u041B\u041B\u0410\u0413\u0410\u0410\u041D\u042B \u041B\u041E\u0413"),
+          ce("div",{style:{marginTop:16}},
+            activityLog.filter(function(l){return l.ticket===ticket.id}).slice(0,5).map(function(l,i){
+              return ce("div",{key:i,style:{display:'flex',gap:10,alignItems:'flex-start',marginBottom:10,paddingLeft:4}},
+                ce("div",{style:{width:26,height:26,borderRadius:69,background:l.action==="\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"?'#FEE2E2':'#DBEAFE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+                  ce(Ic,{n:l.action==="\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"?"x-circle":"pencil",s:11,style:{color:l.action==="\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"?'#991B1B':'#2563EB'}})
+                ),
+                ce("div",{style:{flex:1}},
+                  ce("p",{style:{margin:0,fontSize:12,fontWeight:600,color:'#1A1A1A'}},l.action),
+                  ce("p",{style:{margin:'2px 0 0',fontSize:11,color:'#888'}},l.detail),
+                  ce("p",{style:{margin:'2px 0 0',fontSize:10,color:'#999'}},l.time)
+                )
+              )
+            })
+          )
+        )
+      )
+    )
+  );
 }
 
 // ── TICKET DASHBOARD ─────────────────────────────────────────
@@ -15419,6 +15372,7 @@ function MyTicketsModule() {
   const [showFilters, setShowFilters] = useState(false);
   const [filterDrop, setFilterDrop] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
+  const [myOnly, setMyOnly] = useState(false);
   const tabs = ["\u0411\u04AF\u0433\u0434", "\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439", "\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430", "\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D", "\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D", "\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"];
   const [cancelModal, setCancelModal] = useState(null);
   const [cancelReason, setCancelReason] = useState("");
@@ -15449,6 +15403,7 @@ function MyTicketsModule() {
       const created = t.created.replace(/\//g, "-").slice(0, 10);
       if (created > dateTo) return false;
     }
+    if (myOnly && t.createdBy !== CURRENT_USER) return false;
     return true;
   });
   const confirm = () => {
@@ -15563,7 +15518,7 @@ function MyTicketsModule() {
       flexDirection: 'column',
       gap: 16
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, !sel && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -16130,7 +16085,7 @@ function MyTicketsModule() {
       fontSize: 10,
       color: '#C8D0D8'
     }
-  }, "- \u0417\u0443\u0440\u0430\u0433, PDF, \u0431\u0430\u0440\u0438\u043C\u0442 \u0431\u0438\u0447\u0438\u0433")))))), !showNew && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, "- \u0417\u0443\u0440\u0430\u0433, PDF, \u0431\u0430\u0440\u0438\u043C\u0442 \u0431\u0438\u0447\u0438\u0433")))))), !showNew && !sel && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: 8,
@@ -16174,7 +16129,11 @@ function MyTicketsModule() {
     },
     onFocus: e => e.target.style.borderColor = '#534AB7',
     onBlur: e => e.target.style.borderColor = '#E8E8E8'
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React.createElement("button",{onClick:function(){setMyOnly(!myOnly)},style:{display:'flex',alignItems:'center',gap:8,padding:'8px 16px',background:myOnly?'#534AB7':'#fff',color:myOnly?'#fff':'#555',border:myOnly?'1.5px solid #534AB7':'1px solid #E8E8E8',borderRadius:69,fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",whiteSpace:'nowrap',transition:'all .15s'}},
+    /*#__PURE__*/React.createElement(Ic,{n:"person",s:14}),
+    "\u041C\u0438\u043D\u0438\u0439 \u0442\u0438\u043A\u0435\u0442",
+    myOnly && /*#__PURE__*/React.createElement(Ic,{n:"x-circle",s:13,style:{marginLeft:2}})
+  ), /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowFilters(!showFilters),
     style: {
       padding: '8px 12px',
@@ -16410,25 +16369,6 @@ function MyTicketsModule() {
     tab, counts[tab]>0&&/*#__PURE__*/React.createElement("span",{style:{minWidth:18,height:18,background:filter===tab?'#EEEDFE':'#E8ECEF',color:filter===tab?'#3C3489':'#667788',borderRadius:69,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,padding:'0 4px'}},counts[tab]))})
 ),
 /*#__PURE__*/React.createElement("div",{style:{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}},
-  /*#__PURE__*/React.createElement("div",{style:{position:'relative'}},
-    /*#__PURE__*/React.createElement("button",{onClick:function(){setFilterDrop(!filterDrop)},style:{padding:'6px 14px',fontSize:12,fontWeight:600,color:'#534AB7',background:'#fff',border:'1px dashed #AFA9EC',borderRadius:8,cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",display:'flex',alignItems:'center',gap:5}},
-      /*#__PURE__*/React.createElement(Ic,{n:"plus-lg",s:12}), "+ \u0428\u04AF\u04AF\u043B\u0442\u04AF\u04AF\u0440 \u043D\u044D\u043C\u044D\u0445"),
-    filterDrop&&/*#__PURE__*/React.createElement("div",{style:{position:'absolute',top:'100%',left:0,marginTop:4,background:'#fff',border:'1px solid #E8ECEF',borderRadius:10,boxShadow:'0 8px 24px rgba(0,0,0,.12)',zIndex:99,width:200,padding:'6px 0',maxHeight:320,overflowY:'auto'}},
-      [{k:"status",i:"circle",l:"\u0421\u0442\u0430\u0442\u0443\u0441"},{k:"priority",i:"arrow-up",l:"\u042D\u0440\u044D\u043C\u0431\u044D"},{k:"agent",i:"person",l:"\u0425\u0430\u0440\u0438\u0443\u0446\u0430\u0433\u0447"},{k:"category",i:"tag",l:"\u0410\u043D\u0433\u0438\u043B\u0430\u043B"},{k:"date",i:"calendar3",l:"\u04AE\u04AF\u0441\u0433\u044D\u0441\u044D\u043D \u043E\u0433\u043D\u043E\u043E"},{k:"source",i:"globe2",l:"\u042D\u0445 \u04AF\u04AF\u0441\u0432\u044D\u0440"},{k:"sla",i:"clock-history",l:"SLA"}].map(function(f){
-        var isActive=activeFilters.indexOf(f.k)>=0;
-        return /*#__PURE__*/React.createElement("button",{key:f.k,onClick:function(){
-          if(isActive){setActiveFilters(activeFilters.filter(function(x){return x!==f.k}))}
-          else{setActiveFilters(activeFilters.concat([f.k]))}
-          setFilterDrop(false);
-          if(f.k==="status")setShowFilters(true);
-          if(f.k==="priority")setShowFilters(true);
-          if(f.k==="agent")setShowFilters(true);
-          if(f.k==="category")setShowFilters(true);
-          if(f.k==="date")setShowFilters(true);
-        },style:{display:'flex',alignItems:'center',gap:10,width:'100%',padding:'9px 14px',fontSize:13,color:isActive?'#534AB7':'#333',background:isActive?'#F5F3FF':'transparent',border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",textAlign:'left'}},
-          /*#__PURE__*/React.createElement(Ic,{n:f.i,s:14,style:{color:isActive?'#534AB7':'#999'}}),f.l)})
-    )
-  ),
   hasFilters&&/*#__PURE__*/React.createElement("div",{style:{display:'flex',gap:6,flexWrap:'wrap',alignItems:'center'}},
     catFilter&&/*#__PURE__*/React.createElement("span",{style:{display:'inline-flex',alignItems:'center',gap:4,padding:'4px 10px',background:'#EEEDFE',color:'#3C3489',borderRadius:69,fontSize:11,fontWeight:600}},"\u0410\u043D\u0433\u0438\u043B\u0430\u043B: ",catFilter,/*#__PURE__*/React.createElement("button",{onClick:function(){setCatFilter("")},style:{background:'none',border:'none',cursor:'pointer',color:'#3C3489',fontSize:13,padding:0,lineHeight:1}},"\u00D7")),
     priFilter&&/*#__PURE__*/React.createElement("span",{style:{display:'inline-flex',alignItems:'center',gap:4,padding:'4px 10px',background:'#FEF3C7',color:'#92400E',borderRadius:69,fontSize:11,fontWeight:600}},"\u042D\u0440\u044D\u043C\u0431\u044D: ",PRIORITY_META[priFilter]?.label||priFilter,/*#__PURE__*/React.createElement("button",{onClick:function(){setPriFilter("")},style:{background:'none',border:'none',cursor:'pointer',color:'#92400E',fontSize:13,padding:0,lineHeight:1}},"\u00D7")),
@@ -16437,32 +16377,7 @@ function MyTicketsModule() {
     /*#__PURE__*/React.createElement("button",{onClick:clearFilters,style:{fontSize:11,color:'#DC2626',background:'none',border:'none',cursor:'pointer',fontWeight:600,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}},"\u0411\u04AF\u0433\u0434\u0438\u0439\u0433 \u0446\u044D\u0432\u044D\u0440\u043B\u044D\u0445")
   )
 ),
-showFilters&&/*#__PURE__*/React.createElement("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:8,padding:'14px 16px',boxShadow:'0 1px 3px rgba(0,0,0,.04)'}},
-  /*#__PURE__*/React.createElement("div",{style:{display:'flex',gap:10,flexWrap:'wrap',alignItems:'flex-end'}},
-    /*#__PURE__*/React.createElement("div",{style:{minWidth:140}},
-      /*#__PURE__*/React.createElement("label",{style:{fontSize:10,fontWeight:700,color:'#999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}},"\u0421\u0442\u0430\u0442\u0443\u0441"),
-      /*#__PURE__*/React.createElement("select",{value:filter,onChange:function(e){setFilter(e.target.value)},style:{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:filter!=="\u0411\u04AF\u0433\u0434"?'#1A1A1A':'#999'}},
-        tabs.map(function(t){return /*#__PURE__*/React.createElement("option",{key:t},t)}))),
-    /*#__PURE__*/React.createElement("div",{style:{minWidth:120}},
-      /*#__PURE__*/React.createElement("label",{style:{fontSize:10,fontWeight:700,color:'#999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}},"\u042D\u0440\u044D\u043C\u0431\u044D"),
-      /*#__PURE__*/React.createElement("select",{value:priFilter,onChange:function(e){setPriFilter(e.target.value)},style:{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:priFilter?'#1A1A1A':'#999'}},
-        /*#__PURE__*/React.createElement("option",{value:""},"\u0411\u04AF\u0433\u0434"),priorities.map(function(p){return /*#__PURE__*/React.createElement("option",{key:p,value:p},PRIORITY_META[p]?.label||p)}))),
-    /*#__PURE__*/React.createElement("div",{style:{minWidth:140}},
-      /*#__PURE__*/React.createElement("label",{style:{fontSize:10,fontWeight:700,color:'#999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}},"\u0425\u0430\u0440\u0438\u0443\u0446\u0430\u0433\u0447"),
-      /*#__PURE__*/React.createElement("select",{value:assignFilter,onChange:function(e){setAssignFilter(e.target.value)},style:{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:assignFilter?'#1A1A1A':'#999'}},
-        /*#__PURE__*/React.createElement("option",{value:""},"\u0411\u04AF\u0433\u0434"),/*#__PURE__*/React.createElement("option",{value:"unassigned"},"\u0425\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0430\u0433\u04AF\u0439"),engineers.map(function(e){return /*#__PURE__*/React.createElement("option",{key:e,value:e},e)}))),
-    /*#__PURE__*/React.createElement("div",{style:{minWidth:130}},
-      /*#__PURE__*/React.createElement("label",{style:{fontSize:10,fontWeight:700,color:'#999',display:'block',marginBottom:4,textTransform:'uppercase',letterSpacing:.4}},"\u0410\u043D\u0433\u0438\u043B\u0430\u043B"),
-      /*#__PURE__*/React.createElement("select",{value:catFilter,onChange:function(e){setCatFilter(e.target.value)},style:{width:'100%',padding:'7px 8px',fontSize:12,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:catFilter?'#1A1A1A':'#999'}},
-        /*#__PURE__*/React.createElement("option",{value:""},"\u0411\u04AF\u0433\u0434"),categories.map(function(c){return /*#__PURE__*/React.createElement("option",{key:c,value:c},c)}))),
-    /*#__PURE__*/React.createElement("div",{style:{display:'flex',gap:6,alignItems:'center'}},
-      /*#__PURE__*/React.createElement("input",{type:"date",value:dateFrom,onChange:function(e){setDateFrom(e.target.value)},style:{padding:'6px 6px',fontSize:11,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:dateFrom?'#1A1A1A':'#999'}}),
-      /*#__PURE__*/React.createElement("span",{style:{color:'#999',fontSize:11}},"\u2014"),
-      /*#__PURE__*/React.createElement("input",{type:"date",value:dateTo,onChange:function(e){setDateTo(e.target.value)},style:{padding:'6px 6px',fontSize:11,fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,outline:'none',color:dateTo?'#1A1A1A':'#999'}})),
-    /*#__PURE__*/React.createElement("button",{onClick:function(){setShowFilters(false)},style:{padding:'7px 12px',fontSize:11,fontWeight:600,color:'#667788',background:'#F5F5F5',border:'0.5px solid #E8E8E8',borderRadius:6,cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}},"\u0425\u0430\u0430\u0445")
-  )
-),
-/*#__PURE__*/React.createElement("p",{style:{margin:0,fontSize:12,color:'#999'}},list.length," \u0442\u0438\u043A\u0435\u0442 ",hasFilters?"(\u0448\u04AF\u04AF\u043B\u0442\u04AF\u04AF\u0440\u0442\u044D\u0439)":""),
+/*#__PURE__*/React.createElement("p",{style:{margin:0,fontSize:12,color:'#999'}},list.length," \u0442\u0438\u043A\u0435\u0442 ",hasFilters?"(\u0448\u04AF\u04AF\u043B\u0442\u04AF\u04AF\u0440\u0442\u044D\u0439)":"")),
 !sel ? /*#__PURE__*/React.createElement("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:10,overflow:'hidden'}},
   /*#__PURE__*/React.createElement("table",{style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
     /*#__PURE__*/React.createElement("thead",null,
@@ -16509,7 +16424,8 @@ showFilters&&/*#__PURE__*/React.createElement("div",{style:{background:'#fff',bo
     onEdit: openEdit,
     isCreator: sel.createdBy === CURRENT_USER,
     isAdmin: IS_ADMIN,
-    activityLog: activityLog
+    activityLog: activityLog,
+    allTickets: tList
   }),
   cancelModal && /*#__PURE__*/React.createElement(Modal, {title:"\u0422\u0438\u043A\u0435\u0442 \u0446\u0443\u0446\u043B\u0430\u0445",onClose:function(){setCancelModal(null);setCancelReason("");setCancelDesc("")},width:440},
     /*#__PURE__*/React.createElement("p",{style:{margin:'0 0 4px',fontSize:12,fontWeight:600,color:'#1A1A1A'}},cancelModal.id," \u2014 ",cancelModal.title),
@@ -16548,7 +16464,7 @@ showFilters&&/*#__PURE__*/React.createElement("div",{style:{background:'#fff',bo
       /*#__PURE__*/React.createElement(Btn,{variant:"ghost",onClick:function(){setEditModal(null)}},"\u0411\u043E\u043B\u0438\u0445"),
       /*#__PURE__*/React.createElement(Btn,{icon:"check2",onClick:saveEdit},"\u0425\u0430\u0434\u0433\u0430\u043B\u0430\u0445")
     )
-  )));
+  ));
 }
 
 // ── KNOWLEDGE BASE ────────────────────────────────────────────
