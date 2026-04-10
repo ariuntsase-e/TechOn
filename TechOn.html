@@ -3343,7 +3343,8 @@ function StackedBarChart({
 // ── MODULE 1: Dashboard ────────────────────────────────────────
 function DashboardModule({
   onNavigate = () => {},
-  onNavigateToOrder = () => {}
+  onNavigateToOrder = () => {},
+  portal = "client"
 }) {
   const kpis = [{
     label: "Идэвхтэй үйлчилгээ",
@@ -3456,116 +3457,6 @@ function DashboardModule({
       cursor: 'pointer'
     }
   }))), /*#__PURE__*/React.createElement("div", {
-    className: "rg-4",
-    style: {
-      gap: 10
-    }
-  }, [{
-    label: "Нээлттэй тикет",
-    value: TICKETS.filter(t => t.status === "Нээлттэй").length,
-    icon: "exclamation-circle",
-    iconBg: "#EEEDFE",
-    iconColor: "#3C3489",
-    sub: "Инженер хүлээж байна",
-    subColor: "#3C3489",
-    navTo: "t-list"
-  }, {
-    label: "Явж байна",
-    value: TICKETS.filter(t => t.status === "Явж байна").length,
-    icon: "arrow-repeat",
-    iconBg: "#FEF3C7",
-    iconColor: "#D97706",
-    sub: "Идэвхтэй ажиллаж байна",
-    subColor: "#92400E",
-    navTo: "t-list"
-  }, {
-    label: "Баталгаажуулах",
-    value: TICKETS.filter(t => t.status === "Шийдэгдсэн").length,
-    icon: "check-circle",
-    iconBg: "#D1FAE5",
-    iconColor: "#059669",
-    sub: "Шийдэгдсэн — баталгаажуулна уу",
-    subColor: "#065F46",
-    navTo: "t-list"
-  }, {
-    label: "Хаагдсан",
-    value: TICKETS.filter(t => t.status === "Хаагдсан").length,
-    icon: "lock",
-    iconBg: "#F4F6F8",
-    iconColor: "#666666",
-    sub: "Амжилттай шийдэгдсэн",
-    subColor: "#667788",
-    navTo: "t-list"
-  }].map(k => /*#__PURE__*/React.createElement("div", {
-    key: k.label,
-    onClick: () => onNavigate(k.navTo),
-    style: {
-      background: k.isAI ? '#FDFCFF' : '#FFFFFF',
-      border: `0.5px solid ${k.isAI ? '#EDE9FE' : '#EBEBEB'}`,
-      borderRadius: 8,
-      padding: '14px 16px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 10,
-      cursor: 'pointer',
-      transition: 'all .12s'
-    },
-    onMouseEnter: e => {
-      e.currentTarget.style.borderColor = k.isAI ? '#C4B5FD' : '#AFA9EC';
-      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,.06)';
-    },
-    onMouseLeave: e => {
-      e.currentTarget.style.borderColor = k.isAI ? '#E9E4FD' : '#E8E8E8';
-      e.currentTarget.style.boxShadow = 'none';
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 11,
-      color: '#999999',
-      fontWeight: 500,
-      letterSpacing: .2,
-      lineHeight: 1.4
-    }
-  }, k.label), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 28,
-      height: 28,
-      borderRadius: 6,
-      background: k.iconBg,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: k.icon,
-    s: 13,
-    style: {
-      color: k.iconColor
-    }
-  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 3px',
-      fontSize: 22,
-      fontWeight: 600,
-      color: '#1A1A1A',
-      lineHeight: 1
-    }
-  }, k.value), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 11,
-      color: k.subColor,
-      fontWeight: 500
-    }
-  }, k.sub))))), /*#__PURE__*/React.createElement("div", {
     className: "rg-4"
   }, kpis.map(k => /*#__PURE__*/React.createElement("div", {
     key: k.label,
@@ -3669,7 +3560,7 @@ function DashboardModule({
       fontWeight: 700,
       color: '#1A1A1A'
     }
-  }, "\u0417\u0430\u0440\u0434\u043B\u044B\u043D \u0442\u043E\u0439\u043C"), /*#__PURE__*/React.createElement("span", {
+  }, portal === "admin" ? "\u041E\u0440\u043B\u043E\u0433\u044B\u043D \u0442\u043E\u0439\u043C" : "\u0417\u0430\u0440\u0434\u043B\u044B\u043D \u0442\u043E\u0439\u043C"), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 11,
       color: '#999999'
@@ -14807,26 +14698,7 @@ function TicketDashboardModule({
       )
     ),
 
-    /* ── KPI CARDS ROW ── */
-    ce("div",{style:{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:14}},
-      [{label:"\u041D\u0438\u0439\u0442 \u0442\u0438\u043A\u0435\u0442",value:all.length,icon:"ticket-detailed",iconBg:"#EEEDFE",iconColor:"#534AB7",sub:"\u0411\u04AF\u0440\u0442\u0433\u044D\u0433\u0434\u0441\u044D\u043D",subC:"#888"},
-       {label:"\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439",value:open,icon:"exclamation-circle",iconBg:"#EEEDFE",iconColor:"#3C3489",sub:"\u0425\u04AF\u043B\u044D\u044D\u0436 \u0431\u0430\u0439\u043D\u0430",subC:"#534AB7"},
-       {label:"\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",value:inprog,icon:"arrow-repeat",iconBg:"#FEF3C7",iconColor:"#D97706",sub:"\u0418\u0434\u044D\u0432\u0445\u0442\u044D\u0439",subC:"#D97706"},
-       {label:"\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",value:resolved,icon:"check-circle",iconBg:"#D1FAE5",iconColor:"#059669",sub:"\u0411\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445",subC:"#059669"},
-       {label:"\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",value:closed,icon:"lock",iconBg:"#F3F4F6",iconColor:"#6B7280",sub:"\u0414\u0443\u0443\u0441\u0441\u0430\u043D",subC:"#6B7280"}
-      ].map(function(k){
-        return ce("div",{key:k.label,style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'20px 22px',display:'flex',gap:14,alignItems:'center'}},
-          ce("div",{style:{width:44,height:44,background:k.iconBg,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
-            ce(Ic,{n:k.icon,s:20,style:{color:k.iconColor}})
-          ),
-          ce("div",null,
-            ce("p",{style:{margin:0,fontSize:10,color:'#999',fontWeight:700,textTransform:'uppercase',letterSpacing:.4}},k.label),
-            ce("p",{style:{margin:'4px 0 2px',fontSize:28,fontWeight:700,color:'#1A1A1A',lineHeight:1}},k.value),
-            ce("p",{style:{margin:0,fontSize:11,color:k.subC,fontWeight:600}},k.sub)
-          )
-        )
-      })
-    ),
+    /* KPI cards moved to Analytics */
 
     /* ── CHARTS ROW: Status + Category + Type ── */
     ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16}},
@@ -15010,399 +14882,259 @@ function TicketDashboardModule({
 function NewTicketModule({
   setTModule
 }) {
-  const [desc, setDesc] = useState("");
-  const [ai, setAi] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
-  const [manCat, setManCat] = useState("");
-  const [manPri, setManPri] = useState("");
-  const aiSuggest = () => {
-    if (desc.length < 10) return;
-    setLoading(true);
-    setAi(null);
-    setTimeout(() => {
-      const d = desc.toLowerCase();
-      const cat = d.includes("vpn") || d.includes("сүлжээ") || d.includes("интернэт") ? "Сүлжээний үйлчилгээ" : d.includes("outlook") || d.includes("имэйл") || d.includes("excel") ? "Үйл ажиллагааны систем" : d.includes("нууц үг") || d.includes("эрх") ? "МАБ" : "Компьютер удирдлага";
-      const pri = d.includes("яаралтай") || d.includes("унасан") || d.includes("тасарч") ? "Critical" : d.includes("нэвтрэх") || d.includes("ажиллахгүй") ? "High" : "Medium";
-      setAi({
-        cat,
-        pri,
-        subcat: cat === "Сүлжээний үйлчилгээ" ? "Network" : "General IT"
-      });
-      setLoading(false);
-    }, 1200);
+  var ce = React.createElement;
+  var useState = React.useState;
+
+  /* State */
+  var _cat = useState(""); var mainCat = _cat[0]; var setMainCat = _cat[1];
+  var _sub = useState(""); var subCat = _sub[0]; var setSubCat = _sub[1];
+  var _svc = useState(""); var service = _svc[0]; var setService = _svc[1];
+  var _typ = useState(""); var ticketType = _typ[0]; var setTicketType = _typ[1];
+  var _ttl = useState(""); var title = _ttl[0]; var setTitle = _ttl[1];
+  var _dsc = useState(""); var desc = _dsc[0]; var setDesc = _dsc[1];
+  var _files = useState([]); var files = _files[0]; var setFiles = _files[1];
+  var _done = useState(false); var done = _done[0]; var setDone = _done[1];
+  var _err = useState(""); var err = _err[0]; var setErr = _err[1];
+
+  /* ── Service catalog (3-level hierarchy) ── */
+  var catalog = [
+    {name:"\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u0443\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430",subs:[
+      {name:"Email & Comm",services:["\u0418\u043C\u044D\u0439\u043B \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E","\u0418\u043C\u044D\u0439\u043B \u0430\u043B\u0434\u0430\u0430 \u0437\u0430\u0441\u0430\u0445","Teams / Zoom \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E"]},
+      {name:"\u0422\u04E9\u0445\u04E9\u04E9\u0440\u04E9\u043C\u0436",services:["\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u043D\u044D\u044D\u0445","OS \u0441\u044D\u0440\u0433\u044D\u044D\u0445","Driver \u0441\u0443\u0443\u043B\u0433\u0430\u0445"]},
+      {name:"\u041F\u0440\u0438\u043D\u0442\u0435\u0440 / \u0421\u043A\u0430\u043D\u043D\u0435\u0440",services:["\u041F\u0440\u0438\u043D\u0442\u0435\u0440 \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E","\u0421\u043A\u0430\u043D\u043D\u0435\u0440 \u0437\u0430\u0441\u0432\u0430\u0440"]}
+    ]},
+    {name:"\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",subs:[
+      {name:"\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442 / VPN",services:["\u0418\u043D\u0442\u0435\u0440\u043D\u044D\u0442 \u0445\u043E\u043B\u0431\u043E\u043B\u0442","VPN \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E","VPN \u0430\u043B\u0434\u0430\u0430 \u0437\u0430\u0441\u0430\u0445"]},
+      {name:"\u0414\u043E\u0442\u043E\u043E\u0434 \u0441\u04AF\u043B\u0436\u044D\u044D",services:["\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u043E\u043D\u043E\u0448\u043B\u043E\u0433\u043E","\u041A\u0430\u0431\u0435\u043B\u044C \u0437\u0430\u0441\u0432\u0430\u0440"]},
+      {name:"WiFi",services:["WiFi \u0445\u043E\u043B\u0431\u043E\u0445","WiFi \u0430\u043B\u0434\u0430\u0430 \u0437\u0430\u0441\u0430\u0445"]}
+    ]},
+    {name:"\u04AE\u0439\u043B \u0430\u0436\u0438\u043B\u043B\u0430\u0433\u0430\u0430\u043D\u044B \u0441\u0438\u0441\u0442\u0435\u043C",subs:[
+      {name:"ERP / Odoo",services:["Odoo \u0430\u043B\u0434\u0430\u0430 \u0437\u0430\u0441\u0430\u0445","Odoo \u043C\u043E\u0434\u0443\u043B\u044C \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E","Odoo \u044D\u0440\u0445 \u043D\u044D\u044D\u0445"]},
+      {name:"CRM",services:["CRM \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E","CRM \u0430\u043B\u0434\u0430\u0430"]},
+      {name:"1C / \u0421\u0430\u043D\u0445\u04AF\u04AF",services:["1C \u043D\u044D\u0432\u0442\u0440\u044D\u0445 \u0430\u043B\u0434\u0430\u0430","1C \u043C\u043E\u0434\u0443\u043B\u044C \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E"]}
+    ]},
+    {name:"\u041C\u0410\u0411 (\u041C\u044D\u0434\u044D\u044D\u043B\u043B\u0438\u0439\u043D \u0430\u044E\u0443\u043B\u0433\u04AF\u0439 \u0431\u0430\u0439\u0434\u0430\u043B)",subs:[
+      {name:"\u042D\u0440\u0445 \u0445\u0430\u043D\u0434\u0430\u043B\u0442",services:["\u041D\u044D\u0432\u0442\u0440\u044D\u0445 \u044D\u0440\u0445 \u043D\u044D\u044D\u0445","\u041D\u0443\u0443\u0446 \u04AF\u0433 \u0441\u044D\u0440\u0433\u044D\u044D\u0445","\u0425\u0430\u043D\u0434\u0430\u043B\u0442 \u0445\u0430\u0430\u0445"]},
+      {name:"\u0410\u044E\u0443\u043B\u0433\u04AF\u0439 \u0431\u0430\u0439\u0434\u0430\u043B",services:["\u0412\u0438\u0440\u0443\u0441 \u0448\u0430\u043B\u0433\u0430\u0445","Firewall \u0442\u043E\u0445\u0438\u0440\u0433\u043E\u043E"]}
+    ]},
+    {name:"\u0411\u0443\u0441\u0430\u0434",subs:[
+      {name:"\u0411\u0443\u0441\u0430\u0434",services:["\u0411\u0443\u0441\u0430\u0434 \u0445\u04AF\u0441\u044D\u043B\u0442","\u0417\u04E9\u0432\u043B\u04E9\u0433\u04E9\u04E9 \u0430\u0432\u0430\u0445"]}
+    ]}
+  ];
+
+  var ticketTypes = ["\u0425\u04AF\u0441\u044D\u043B\u0442","\u0410\u0441\u0443\u0443\u0434\u0430\u043B","\u04E8\u04E9\u0440\u0447\u043B\u04E9\u043B\u0442","\u0417\u04E9\u0432\u043B\u04E9\u0433\u04E9\u04E9"];
+
+  /* Derived options */
+  var curMain = catalog.find(function(c){return c.name===mainCat});
+  var subOptions = curMain ? curMain.subs : [];
+  var curSub = subOptions.find(function(s){return s.name===subCat});
+  var svcOptions = curSub ? curSub.services : [];
+
+  /* Reset cascading */
+  var onMainChange = function(v){setMainCat(v);setSubCat("");setService("");};
+  var onSubChange = function(v){setSubCat(v);setService("");};
+
+  /* File handling */
+  var handleFiles = function(e){
+    var newFiles = Array.prototype.slice.call(e.target.files);
+    setFiles(function(prev){return prev.concat(newFiles);});
   };
-  const submit = () => {
+  var removeFile = function(idx){
+    setFiles(function(prev){return prev.filter(function(_,i){return i!==idx;});});
+  };
+
+  /* Submit */
+  var submit = function(){
+    if(!mainCat||!subCat||!service||!ticketType||!title.trim()){
+      setErr("\u0411\u04AF\u0445 \u0448\u0430\u0430\u0440\u0434\u043B\u0430\u0433\u0430\u0442\u0430\u0439 \u0442\u0430\u043B\u0431\u0430\u0440\u044B\u0433 \u0431\u04E9\u0433\u043B\u04E9\u043D\u04E9 \u04AF\u04AF"); return;
+    }
+    setErr("");
     setDone(true);
-    setTimeout(() => {
-      setDone(false);
-      setDesc("");
-      setAi(null);
+    setTimeout(function(){
+      setDone(false); setTitle(""); setDesc(""); setMainCat(""); setSubCat(""); setService(""); setTicketType(""); setFiles([]);
       setTModule("t-list");
-    }, 2000);
+    },2000);
   };
-  if (done) return /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: 300,
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 56,
-      height: 56,
-      background: '#EAF3DE',
-      borderRadius: 69,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "check-lg",
-    s: 24,
-    style: {
-      color: '#059669'
-    }
-  })), /*#__PURE__*/React.createElement("h3", {
-    style: {
-      margin: 0,
-      fontSize: 18,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442 \u0430\u043C\u0436\u0438\u043B\u0442\u0442\u0430\u0439 \u0431\u04AF\u0440\u0442\u0433\u044D\u0433\u0434\u043B\u044D\u044D!"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 13,
-      color: '#666666'
-    }
-  }, "AI \u0438\u043D\u0436\u0435\u043D\u0435\u0440\u0442 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0436 \u0431\u0430\u0439\u043D\u0430..."));
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 20,
-      maxWidth: 680
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 12
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setTModule("dashboard"),
-    style: {
-      background: 'none',
-      border: 'none',
-      cursor: 'pointer',
-      color: '#999999',
-      display: 'flex',
-      padding: 0
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "arrow-left",
-    s: 16
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      margin: 0,
-      fontSize: 20,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442 \u04AF\u04AF\u0441\u0433\u044D\u0445"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '3px 0 0',
-      fontSize: 13,
-      color: '#666666'
-    }
-  }, "AI \u0442\u0430\u043D\u044B \u0442\u0430\u0439\u043B\u0431\u0430\u0440\u0430\u0430\u0441 \u0430\u043D\u0433\u0438\u043B\u0430\u043B, \u044D\u0440\u044D\u043C\u0431\u0438\u0439\u0433 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0442\u043E\u0434\u043E\u0440\u0445\u043E\u0439\u043B\u043D\u043E"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: 24,
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: 16
-    }
-  }, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 8
-    }
-  }, "\u0410\u0441\u0443\u0443\u0434\u043B\u044B\u043D \u0442\u0430\u0439\u043B\u0431\u0430\u0440 *"), /*#__PURE__*/React.createElement("textarea", {
-    rows: 5,
-    value: desc,
-    onChange: e => setDesc(e.target.value),
-    placeholder: "\u0410\u0441\u0443\u0443\u0434\u043B\u0430\u0430 \u0434\u044D\u043B\u0433\u044D\u0440\u044D\u043D\u0433\u04AF\u0439 \u0431\u0438\u0447\u043D\u044D \u04AF\u04AF... (\u0436\u0438\u0448\u044D\u044D: Outlook \u043D\u044D\u0432\u0442\u0440\u044D\u0445\u044D\u0434 Authentication failed \u0430\u043B\u0434\u0430\u0430 \u0433\u0430\u0440\u0447 \u0431\u0430\u0439\u043D\u0430)",
-    style: {
-      width: '100%',
-      padding: '10px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#F5F5F5',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      resize: 'vertical',
-      color: '#1A1A1A',
-      boxSizing: 'border-box',
-      lineHeight: 1.6
-    },
-    onFocus: e => e.target.style.borderColor = '#534AB7',
-    onBlur: e => e.target.style.borderColor = '#E8E8E8'
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: 8
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      color: '#999999'
-    }
-  }, desc.length, " \u0442\u044D\u043C\u0434\u044D\u0433\u0442"), /*#__PURE__*/React.createElement("button", {
-    onClick: aiSuggest,
-    disabled: desc.length < 10 || loading,
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      padding: '7px 14px',
-      background: desc.length < 10 || loading ? '#F4F6F8' : '#7C3AED',
-      color: desc.length < 10 || loading ? '#C8D0D8' : '#fff',
-      border: 'none',
-      borderRadius: 8,
-      cursor: desc.length < 10 ? 'not-allowed' : 'pointer',
-      fontSize: 12,
-      fontWeight: 700,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      transition: 'all .15s'
-    }
-  }, loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 12,
-      height: 12,
-      border: '2px solid #fff5',
-      borderTopColor: '#fff',
-      borderRadius: 69,
-      animation: 'spin .6s linear infinite'
-    }
-  }), " \u0428\u0438\u043D\u0436\u0438\u043B\u0436 \u0431\u0430\u0439\u043D\u0430...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Ic, {
-    n: "stars",
-    s: 13
-  }), "AI \u0448\u0438\u043D\u0436\u043B\u044D\u0445")))), ai && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#F5F3FF',
-      border: '0.5px solid #E9E4FD',
-      borderRadius: 8,
-      padding: 14,
-      marginBottom: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      marginBottom: 10
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "stars",
-    s: 14,
-    style: {
-      color: '#7C3AED'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#5B21B6'
-    }
-  }, "AI-\u0438\u0439\u043D \u0441\u0430\u043D\u0430\u043B \u0431\u043E\u043B\u0433\u043E\u0441\u043E\u043D \u0430\u043D\u0433\u0438\u043B\u0430\u043B"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 10,
-      color: '#7C3AED',
-      background: '#EDE9FE',
-      padding: '1px 7px',
-      borderRadius: 69,
-      marginLeft: 4
-    }
-  }, "\u0417\u0430\u0441\u0430\u0445 \u0431\u043E\u043B\u043E\u043C\u0436\u0442\u043E\u0439")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr',
-      gap: 8
-    }
-  }, [["Ангилал", ai.cat], ["Дэд ангилал", ai.subcat], ["Эрэмбэ", ai.pri]].map(([k, v]) => /*#__PURE__*/React.createElement("div", {
-    key: k,
-    style: {
-      background: '#fff',
-      borderRadius: 8,
-      padding: '8px 10px',
-      border: '0.5px solid #E9E4FD'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 3px',
-      fontSize: 10,
-      color: '#7C3AED',
-      fontWeight: 700,
-      textTransform: 'uppercase'
-    }
-  }, k), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, v))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 14,
-      marginBottom: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u0413\u0430\u0440\u0447\u0438\u0433 *"), /*#__PURE__*/React.createElement(Input, {
-    placeholder: "\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0433\u0430\u0440\u0447\u0438\u0433",
-    onChange: () => {}
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u0410\u043D\u0433\u0438\u043B\u0430\u043B"), /*#__PURE__*/React.createElement("select", {
-    value: ai?.cat || manCat,
-    onChange: e => setManCat(e.target.value),
-    style: {
-      width: '100%',
-      padding: '8px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#F5F5F5',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      color: '#1A1A1A'
-    }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "\u0421\u043E\u043D\u0433\u043E\u0445..."), ["Компьютер удирдлага", "Үйл ажиллагааны систем", "Сүлжээний үйлчилгээ", "МАБ", "Дата менежмент", "Интернэт үйлчилгээ"].map(c => /*#__PURE__*/React.createElement("option", {
-    key: c
-  }, c)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u042D\u0440\u044D\u043C\u0431\u044D"), /*#__PURE__*/React.createElement("select", {
-    value: ai?.pri || manPri,
-    onChange: e => setManPri(e.target.value),
-    style: {
-      width: '100%',
-      padding: '8px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#F5F5F5',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      color: '#1A1A1A'
-    }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "\u0421\u043E\u043D\u0433\u043E\u0445..."), /*#__PURE__*/React.createElement("option", {
-    value: "Critical"
-  }, "\u042F\u0430\u0440\u0430\u043B\u0442\u0430\u0439 (Critical)"), /*#__PURE__*/React.createElement("option", {
-    value: "High"
-  }, "\u04E8\u043D\u0434\u04E9\u0440 (High)"), /*#__PURE__*/React.createElement("option", {
-    value: "Medium"
-  }, "\u0414\u0443\u043D\u0434 (Medium)"), /*#__PURE__*/React.createElement("option", {
-    value: "Low"
-  }, "\u0411\u0430\u0433\u0430 (Low)"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u0425\u0430\u0432\u0441\u0440\u0430\u043B\u0442 \u0444\u0430\u0439\u043B"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      border: '2px dashed #E8ECEF',
-      borderRadius: 8,
-      padding: '14px 12px',
-      textAlign: 'center',
-      cursor: 'pointer',
-      transition: 'border-color .12s'
-    },
-    onMouseEnter: e => e.currentTarget.style.borderColor = '#AFA9EC',
-    onMouseLeave: e => e.currentTarget.style.borderColor = '#E8ECEF'
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 12,
-      color: '#999999'
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "cloud-upload",
-    s: 14
-  }), " \xA0\u0424\u0430\u0439\u043B \u043E\u0440\u0443\u0443\u043B\u0430\u0445 (\u226425MB)")))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#EEEDFE',
-      borderRadius: 8,
-      padding: '10px 14px',
-      marginBottom: 16,
-      fontSize: 12,
-      color: '#3C3489'
-    }
-  }, /*#__PURE__*/React.createElement("strong", null, "BR-01:"), " \u0422\u0438\u043A\u0435\u0442 \u0438\u043B\u0433\u044D\u044D\u0441\u043D\u0438\u0439 \u0434\u0430\u0440\u0430\u0430 AI \u0430\u0433\u0443\u0443\u043B\u0433\u044B\u0433 \u0448\u0438\u043D\u0436\u043B\u044D\u043D \u0437\u043E\u0445\u0438\u0445 \u0438\u043D\u0436\u0435\u043D\u0435\u0440\u0442 \u22643 \u0441\u0435\u043A\u0443\u043D\u0434\u044D\u0434 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u043D\u0430."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement(Btn, {
-    variant: "ghost",
-    onClick: () => setTModule("dashboard"),
-    full: true
-  }, "\u0411\u043E\u043B\u0438\u0445"), /*#__PURE__*/React.createElement(Btn, {
-    onClick: submit,
-    full: true,
-    icon: "send"
-  }, "\u0422\u0438\u043A\u0435\u0442 \u0438\u043B\u0433\u044D\u044D\u0445"))));
+
+  /* Style helpers */
+  var ff = "-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif";
+  var selStyle = {width:'100%',padding:'10px 12px',fontSize:13,fontFamily:ff,background:'#FAFAFA',border:'1px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box',appearance:'none',WebkitAppearance:'none',backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E\")",backgroundRepeat:'no-repeat',backgroundPosition:'right 12px center',paddingRight:32,cursor:'pointer'};
+  var labelStyle = {fontSize:12,fontWeight:700,color:'#555',display:'block',marginBottom:6};
+  var reqDot = function(){return ce("span",{style:{color:'#DC2626',marginLeft:4}},"\u25CF");};
+
+  /* Success screen */
+  if(done) return ce("div",{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:300,gap:16}},
+    ce("div",{style:{width:56,height:56,background:'#D1FAE5',borderRadius:69,display:'flex',alignItems:'center',justifyContent:'center'}},
+      ce(Ic,{n:"check-lg",s:24,style:{color:'#059669'}})
+    ),
+    ce("h3",{style:{margin:0,fontSize:18,fontWeight:700,color:'#1A1A1A'}},"\u0422\u0438\u043A\u0435\u0442 \u0430\u043C\u0436\u0438\u043B\u0442\u0442\u0430\u0439 \u0431\u04AF\u0440\u0442\u0433\u044D\u0433\u0434\u043B\u044D\u044D!"),
+    ce("p",{style:{margin:0,fontSize:13,color:'#666'}},"\u0418\u043D\u0436\u0435\u043D\u0435\u0440\u0442 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0436 \u0431\u0430\u0439\u043D\u0430...")
+  );
+
+  /* ═══ MAIN RETURN ═══ */
+  return ce("div",{style:{display:'flex',flexDirection:'column',gap:20}},
+
+    /* ── Back button + Header ── */
+    ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+      ce("div",{style:{display:'flex',alignItems:'center',gap:12}},
+        ce("button",{onClick:function(){setTModule("t-list")},style:{display:'flex',alignItems:'center',justifyContent:'center',width:36,height:36,borderRadius:8,border:'1px solid #E8E8E8',background:'#fff',cursor:'pointer',flexShrink:0}},
+          ce(Ic,{n:"arrow-left",s:16,style:{color:'#555'}})
+        ),
+        ce("div",null,
+          ce("h2",{style:{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}},"\u0422\u0438\u043A\u0435\u0442 \u04AF\u04AF\u0441\u0433\u044D\u0445"),
+          ce("p",{style:{margin:'2px 0 0',fontSize:13,color:'#888'}},"\u0428\u0438\u043D\u044D \u0445\u04AF\u0441\u044D\u043B\u0442 \u0431\u04AF\u0440\u0442\u0433\u044D\u0445")
+        )
+      ),
+      ce("div",{style:{display:'flex',gap:8}},
+        ce("button",{onClick:function(){setTModule("t-list")},style:{padding:'8px 18px',fontSize:13,fontWeight:600,border:'1px solid #E0E0E0',borderRadius:8,background:'#fff',color:'#555',cursor:'pointer',fontFamily:ff}},"\u0411\u043E\u043B\u0438\u0445"),
+        ce("button",{onClick:submit,style:{padding:'8px 22px',fontSize:13,fontWeight:700,border:'none',borderRadius:8,background:'#534AB7',color:'#fff',cursor:'pointer',fontFamily:ff,display:'flex',alignItems:'center',gap:6}},
+          ce(Ic,{n:"send",s:13}),"\u0422\u0438\u043A\u0435\u0442 \u0438\u043B\u0433\u044D\u044D\u0445"
+        )
+      )
+    ),
+
+    /* Error */
+    err && ce("div",{style:{background:'#FEE2E2',border:'1px solid #FECACA',borderRadius:8,padding:'10px 14px',fontSize:12,color:'#DC2626',fontWeight:600}},err),
+
+    /* ── FORM CARD ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 340px',gap:20}},
+
+      /* LEFT COLUMN - main form */
+      ce("div",{style:{display:'flex',flexDirection:'column',gap:16}},
+
+        /* Section: Service classification */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px'}},
+          ce("div",{style:{display:'flex',alignItems:'center',gap:8,marginBottom:20}},
+            ce(Ic,{n:"globe2",s:16,style:{color:'#534AB7'}}),
+            ce("span",{style:{fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0425\u04AF\u0441\u044D\u043B\u0442\u0438\u0439\u043D \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B"),
+            ce("span",{style:{fontSize:11,color:'#999',marginLeft:8}},"\u0422\u04E9\u0440\u04E9\u043B, \u0430\u043D\u0433\u0438\u043B\u0430\u043B")
+          ),
+
+          /* Row: Main cat + Sub cat */
+          ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16}},
+            ce("div",null,
+              ce("label",{style:labelStyle},"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u04AF\u043D\u0434\u0441\u044D\u043D \u0430\u043D\u0433\u0438\u043B\u0430\u043B",reqDot()),
+              ce("select",{value:mainCat,onChange:function(e){onMainChange(e.target.value)},style:selStyle},
+                ce("option",{value:""},"-- \u0441\u043E\u043D\u0433\u043E\u0445 --"),
+                catalog.map(function(c){return ce("option",{key:c.name,value:c.name},c.name);})
+              )
+            ),
+            ce("div",null,
+              ce("label",{style:labelStyle},"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D\u043D\u0438\u0439 \u0434\u044D\u0434 \u0430\u043D\u0433\u0438\u043B\u0430\u043B",reqDot()),
+              ce("select",{value:subCat,onChange:function(e){onSubChange(e.target.value)},disabled:!mainCat,style:Object.assign({},selStyle,!mainCat?{opacity:.5}:{})},
+                ce("option",{value:""},"-- \u0441\u043E\u043D\u0433\u043E\u0445 --"),
+                subOptions.map(function(s){return ce("option",{key:s.name,value:s.name},s.name);})
+              )
+            )
+          ),
+
+          /* Row: Service + Ticket type */
+          ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}},
+            ce("div",null,
+              ce("label",{style:labelStyle},"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",reqDot()),
+              ce("select",{value:service,onChange:function(e){setService(e.target.value)},disabled:!subCat,style:Object.assign({},selStyle,!subCat?{opacity:.5}:{})},
+                ce("option",{value:""},"-- \u0441\u043E\u043D\u0433\u043E\u0445 --"),
+                svcOptions.map(function(s){return ce("option",{key:s,value:s},s);})
+              )
+            ),
+            ce("div",null,
+              ce("label",{style:labelStyle},"\u0422\u0438\u043A\u0435\u0442 \u0442\u04E9\u0440\u04E9\u043B",reqDot()),
+              ce("select",{value:ticketType,onChange:function(e){setTicketType(e.target.value)},style:selStyle},
+                ce("option",{value:""},"-- \u0441\u043E\u043D\u0433\u043E\u0445 --"),
+                ticketTypes.map(function(t){return ce("option",{key:t,value:t},t);})
+              )
+            )
+          )
+        ),
+
+        /* Section: Title */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px'}},
+          ce("label",{style:labelStyle},"\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0433\u0430\u0440\u0447\u0438\u0433",reqDot()),
+          ce("input",{type:"text",value:title,onChange:function(e){setTitle(e.target.value)},placeholder:"\u0425\u04AF\u0441\u044D\u043B\u0442\u0438\u0439\u043D \u0433\u0430\u0440\u0447\u0438\u0433 \u043E\u0440\u0443\u0443\u043B\u043D\u0430 \u0443\u0443",style:{width:'100%',padding:'10px 12px',fontSize:13,fontFamily:ff,background:'#FAFAFA',border:'1px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'},onFocus:function(e){e.target.style.borderColor='#534AB7'},onBlur:function(e){e.target.style.borderColor='#E8E8E8'}})
+        ),
+
+        /* Section: Description */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'24px 28px'}},
+          ce("div",{style:{display:'flex',alignItems:'center',gap:8,marginBottom:12}},
+            ce(Ic,{n:"text-left",s:16,style:{color:'#534AB7'}}),
+            ce("span",{style:{fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0414\u044D\u043B\u0433\u044D\u0440\u044D\u043D\u0433\u04AF\u0439 \u0442\u0430\u0439\u043B\u0431\u0430\u0440")
+          ),
+          ce("textarea",{rows:6,value:desc,onChange:function(e){setDesc(e.target.value)},placeholder:"\u0410\u0441\u0443\u0443\u0434\u043B\u0430\u0430 \u0434\u044D\u043B\u0433\u044D\u0440\u044D\u043D\u0433\u04AF\u0439 \u0431\u0438\u0447\u043D\u044D \u04AF\u04AF...",style:{width:'100%',padding:'12px 14px',fontSize:13,fontFamily:ff,background:'#FAFAFA',border:'1px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box',resize:'vertical',lineHeight:1.6},onFocus:function(e){e.target.style.borderColor='#534AB7'},onBlur:function(e){e.target.style.borderColor='#E8E8E8'}}),
+          ce("p",{style:{margin:'6px 0 0',fontSize:11,color:'#999'}},desc.length," \u0442\u044D\u043C\u0434\u044D\u0433\u0442")
+        )
+      ),
+
+      /* RIGHT COLUMN - sidebar */
+      ce("div",{style:{display:'flex',flexDirection:'column',gap:16}},
+
+        /* Progress indicator */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'20px 24px'}},
+          (function(){
+            var filled = [mainCat,subCat,service,ticketType,title.trim()].filter(Boolean).length;
+            var pct = Math.round(filled/5*100);
+            return ce("div",null,
+              ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}},
+                ce("span",{style:{fontSize:12,fontWeight:700,color:'#555'}},"\u0411\u04E9\u0433\u043B\u04E9\u043B\u0442"),
+                ce("span",{style:{fontSize:12,fontWeight:700,color:pct===100?'#059669':'#D97706'}},pct+"% \u00B7 ",filled," / 5 \u0442\u0430\u043B\u0431\u0430\u0440")
+              ),
+              ce("div",{style:{height:6,background:'#F0F0F0',borderRadius:3,overflow:'hidden'}},
+                ce("div",{style:{height:'100%',width:pct+"%",background:pct===100?'#059669':'#534AB7',borderRadius:3,transition:'width .3s'}})
+              )
+            );
+          })()
+        ),
+
+        /* Contact */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'20px 24px'}},
+          ce("div",{style:{display:'flex',alignItems:'center',gap:8,marginBottom:12}},
+            ce(Ic,{n:"telephone",s:15,style:{color:'#534AB7'}}),
+            ce("span",{style:{fontSize:13,fontWeight:700,color:'#1A1A1A'}},"\u0425\u043E\u043B\u0431\u043E\u043E \u0431\u0430\u0440\u0438\u0445")
+          ),
+          ce("label",{style:{fontSize:11,fontWeight:600,color:'#888',display:'block',marginBottom:4}},"\u0423\u0442\u0430\u0441\u043D\u044B \u0434\u0443\u0433\u0430\u0430\u0440"),
+          ce("input",{type:"tel",defaultValue:"75007777",style:{width:'100%',padding:'8px 12px',fontSize:13,fontFamily:ff,background:'#FAFAFA',border:'1px solid #E8E8E8',borderRadius:8,outline:'none',color:'#1A1A1A',boxSizing:'border-box'}})
+        ),
+
+        /* File upload */
+        ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'20px 24px'}},
+          ce("div",{style:{display:'flex',alignItems:'center',gap:8,marginBottom:12}},
+            ce(Ic,{n:"paperclip",s:15,style:{color:'#534AB7'}}),
+            ce("span",{style:{fontSize:13,fontWeight:700,color:'#1A1A1A'}},"\u0425\u0430\u0432\u0441\u0430\u0440\u0433\u0430\u0445 \u0444\u0430\u0439\u043B")
+          ),
+
+          /* Upload area */
+          ce("label",{style:{display:'flex',flexDirection:'column',alignItems:'center',gap:8,padding:'20px 16px',border:'2px dashed #E0E0E0',borderRadius:10,cursor:'pointer',background:'#FAFAFA',transition:'all .15s',textAlign:'center'},onMouseEnter:function(e){e.currentTarget.style.borderColor='#534AB7';e.currentTarget.style.background='#F8F7FF'},onMouseLeave:function(e){e.currentTarget.style.borderColor='#E0E0E0';e.currentTarget.style.background='#FAFAFA'}},
+            ce(Ic,{n:"cloud-arrow-up",s:24,style:{color:'#999'}}),
+            ce("span",{style:{fontSize:12,fontWeight:600,color:'#555'}},"\u0424\u0430\u0439\u043B \u0441\u043E\u043D\u0433\u043E\u0445"),
+            ce("span",{style:{fontSize:10,color:'#999'}},"\u0417\u0443\u0440\u0430\u0433, PDF, \u0431\u0430\u0440\u0438\u043C\u0442 \u0431\u0438\u0447\u0438\u0433"),
+            ce("input",{type:"file",multiple:true,onChange:handleFiles,style:{display:'none'}})
+          ),
+
+          /* File list */
+          files.length>0 && ce("div",{style:{marginTop:10,display:'flex',flexDirection:'column',gap:6}},
+            files.map(function(f,i){
+              return ce("div",{key:i,style:{display:'flex',alignItems:'center',gap:8,padding:'6px 10px',background:'#F5F5F5',borderRadius:6}},
+                ce(Ic,{n:"file-earmark",s:13,style:{color:'#534AB7',flexShrink:0}}),
+                ce("span",{style:{flex:1,fontSize:11,color:'#555',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},f.name),
+                ce("span",{style:{fontSize:10,color:'#999',flexShrink:0}},Math.round(f.size/1024)+" KB"),
+                ce("button",{onClick:function(){removeFile(i)},style:{border:'none',background:'none',cursor:'pointer',padding:0,display:'flex'}},
+                  ce(Ic,{n:"x",s:14,style:{color:'#DC2626'}})
+                )
+              );
+            })
+          )
+        )
+      )
+    )
+  );
 }
 
+
 // ── MY TICKETS LIST ───────────────────────────────────────────
-function MyTicketsModule() {
+function MyTicketsModule({onNavigate = function(){}}) {
   const [filter, setFilter] = useState("Бүгд");
   const [q, setQ] = useState("");
   const [sel, setSel] = useState(null);
   const [tList, setTList] = useState(TICKETS);
-  const [showNew, setShowNew] = useState(false);
   const [catFilter, setCatFilter] = useState("");
   const [priFilter, setPriFilter] = useState("");
   const [assignFilter, setAssignFilter] = useState("");
@@ -15498,59 +15230,6 @@ function MyTicketsModule() {
     setDateTo("");
   };
 
-  // ── Inline new ticket form ──
-  const [desc, setDesc] = useState("");
-  const [ai, setAi] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
-  const [manTitle, setManTitle] = useState("");
-  const [manCat, setManCat] = useState("");
-  const [manPri, setManPri] = useState("");
-  const aiSuggest = () => {
-    if (desc.length < 10) return;
-    setLoading(true);
-    setAi(null);
-    setTimeout(() => {
-      const d = desc.toLowerCase();
-      const cat = d.includes("vpn") || d.includes("сүлжээ") || d.includes("интернэт") ? "Сүлжээний үйлчилгээ" : d.includes("outlook") || d.includes("имэйл") || d.includes("excel") ? "Үйл ажиллагааны систем" : d.includes("нууц үг") || d.includes("эрх") ? "МАБ" : "Компьютер удирдлага";
-      const pri = d.includes("яаралтай") || d.includes("унасан") || d.includes("тасарч") ? "Critical" : d.includes("нэвтрэх") || d.includes("ажиллахгүй") ? "High" : "Medium";
-      setAi({
-        cat,
-        pri,
-        subcat: cat === "Сүлжээний үйлчилгээ" ? "Network" : "General IT"
-      });
-      setLoading(false);
-    }, 1200);
-  };
-  const submitTicket = () => {
-    const newT = {
-      id: "TKT-2026-" + (43 + Math.floor(Math.random() * 100)),
-      title: manTitle || "\u0428\u0438\u043D\u044D \u0442\u0438\u043A\u0435\u0442",
-      createdBy: CURRENT_USER,
-      category: ai?.cat || manCat || "Компьютер удирдлага",
-      catCode: "IT2601",
-      subcat: ai?.subcat || "General IT",
-      priority: ai?.pri || manPri || "Medium",
-      status: "Нээлттэй",
-      created: new Date().toISOString().slice(0, 10).replace(/-/g, "/") + " " + new Date().toTimeString().slice(0, 5),
-      sla: new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 10).replace(/-/g, "/") + " 18:00",
-      assigned: null,
-      service: "IT Support",
-      desc: desc,
-      resolved: false
-    };
-    setTList(p => [newT, ...p]);
-    setDone(true);
-    setTimeout(() => {
-      setDone(false);
-      setShowNew(false);
-      setDesc("");
-      setAi(null);
-      setManTitle("");
-      setManCat("");
-      setManPri("");
-    }, 1500);
-  };
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -15572,559 +15251,16 @@ function MyTicketsModule() {
       fontWeight: 700,
       color: '#1A1A1A'
     }
-  }, showNew ? "Тикет үүсгэх" : "Тикет"), /*#__PURE__*/React.createElement("p", {
+  }, "\u0422\u0438\u043A\u0435\u0442"), /*#__PURE__*/React.createElement("p", {
     style: {
       margin: '4px 0 0',
       fontSize: 13,
       color: '#666666'
     }
-  }, showNew ? "Шинэ хүсэлт бүртгэх" : `Нийт ${tList.length} тикет · ${counts["Нээлттэй"] || 0} нээлттэй`)), showNew ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowNew(false),
-    style: {
-      padding: '8px 18px',
-      background: '#fff',
-      color: '#555555',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      fontSize: 13,
-      fontWeight: 600,
-      cursor: 'pointer',
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'
-    }
-  }, "\u0411\u043E\u043B\u0438\u0445"), /*#__PURE__*/React.createElement("button", {
-    onClick: submitTicket,
-    disabled: !manTitle.trim(),
-    style: {
-      padding: '8px 22px',
-      background: manTitle.trim() ? '#534AB7' : '#E8ECEF',
-      color: manTitle.trim() ? '#fff' : '#C8D0D8',
-      border: 'none',
-      borderRadius: 8,
-      fontSize: 13,
-      fontWeight: 700,
-      cursor: manTitle.trim() ? 'pointer' : 'not-allowed',
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif'
-    }
-  }, "\u04AE\u04AF\u0441\u0433\u044D\u0445")) : /*#__PURE__*/React.createElement(Btn, {
+  }, `Нийт ${tList.length} тикет · ${counts["Нээлттэй"] || 0} нээлттэй`)), /*#__PURE__*/React.createElement(Btn, {
     icon: "plus-lg",
-    onClick: () => setShowNew(true)
-  }, "\u0428\u0438\u043D\u044D \u0442\u0438\u043A\u0435\u0442")), showNew && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 16
-    }
-  }, done ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: 300,
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 56,
-      height: 56,
-      background: '#D1FAE5',
-      borderRadius: 69,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "check-lg",
-    s: 24,
-    style: {
-      color: '#059669'
-    }
-  })), /*#__PURE__*/React.createElement("h3", {
-    style: {
-      margin: 0,
-      fontSize: 18,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442 \u0430\u043C\u0436\u0438\u043B\u0442\u0442\u0430\u0439 \u0431\u04AF\u0440\u0442\u0433\u044D\u0433\u0434\u043B\u044D\u044D!"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 13,
-      color: '#666666'
-    }
-  }, "AI \u0438\u043D\u0436\u0435\u043D\u0435\u0440\u0442 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0436 \u0431\u0430\u0439\u043D\u0430...")) : /*#__PURE__*/React.createElement("div", {
-    className: "rg-detail3"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 8,
-      marginBottom: 16
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "ticket-detailed",
-    s: 16,
-    style: {
-      color: '#534AB7'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0425\u04AF\u0441\u044D\u043B\u0442\u0438\u0439\u043D \u043C\u044D\u0434\u044D\u044D\u043B\u044D\u043B"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      color: '#999999'
-    }
-  }, "\xB7 \u0422\u04E9\u0440\u04E9\u043B, \u0433\u0430\u0440\u0447\u0438\u0433")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 14,
-      marginBottom: 14
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442 \u0442\u04E9\u0440\u04E9\u043B ", /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: '#DC2626'
-    }
-  }, "\u25CF")), /*#__PURE__*/React.createElement("select", {
-    value: ai?.cat || manCat,
-    onChange: e => setManCat(e.target.value),
-    style: {
-      width: '100%',
-      padding: '10px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      color: manCat || ai?.cat ? '#1A1A1A' : '#999999'
-    }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "--\u0441\u043E\u043D\u0433\u043E\u0445--"), ["Компьютер удирдлага", "Үйл ажиллагааны систем", "Сүлжээний үйлчилгээ", "МАБ", "Дата менежмент", "Интернэт үйлчилгээ"].map(c => /*#__PURE__*/React.createElement("option", {
-    key: c
-  }, c)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442 \u0434\u044D\u0434 \u0442\u04E9\u0440\u04E9\u043B"), /*#__PURE__*/React.createElement("select", {
-    style: {
-      width: '100%',
-      padding: '10px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      color: '#999999'
-    }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "--\u0441\u043E\u043D\u0433\u043E\u0445--"), /*#__PURE__*/React.createElement("option", null, "Email & Comm"), /*#__PURE__*/React.createElement("option", null, "Network"), /*#__PURE__*/React.createElement("option", null, "Hardware"), /*#__PURE__*/React.createElement("option", null, "Security"), /*#__PURE__*/React.createElement("option", null, "Storage"), /*#__PURE__*/React.createElement("option", null, "User Access")))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: 14
-    }
-  }, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 6
-    }
-  }, "\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0442\u043E\u0432\u0447 \u0442\u0430\u0439\u043B\u0431\u0430\u0440 ", /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: '#DC2626'
-    }
-  }, "\u25CF")), /*#__PURE__*/React.createElement("input", {
-    value: manTitle,
-    onChange: e => setManTitle(e.target.value),
-    placeholder: "\u0425\u04AF\u0441\u044D\u043B\u0442\u0438\u0439\u043D \u0433\u0430\u0440\u0447\u0438\u0433 \u043E\u0440\u0443\u0443\u043B\u043D\u0430 \u0443\u0443",
-    style: {
-      width: '100%',
-      padding: '10px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      color: '#1A1A1A',
-      boxSizing: 'border-box'
-    },
-    onFocus: e => e.target.style.borderColor = '#534AB7',
-    onBlur: e => e.target.style.borderColor = '#E8E8E8'
-  }))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 8,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "text-paragraph",
-    s: 16,
-    style: {
-      color: '#534AB7'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0414\u044D\u043B\u0433\u044D\u0440\u044D\u043D\u0433\u04AF\u0439 \u0442\u0430\u0439\u043B\u0431\u0430\u0440")), /*#__PURE__*/React.createElement("textarea", {
-    rows: 8,
-    value: desc,
-    onChange: e => setDesc(e.target.value),
-    placeholder: "\u0410\u0441\u0443\u0443\u0434\u043B\u0430\u0430 \u0434\u044D\u043B\u0433\u044D\u0440\u044D\u043D\u0433\u04AF\u0439 \u0431\u0438\u0447\u043D\u044D \u04AF\u04AF...",
-    style: {
-      width: '100%',
-      padding: '12px 14px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      resize: 'vertical',
-      color: '#1A1A1A',
-      boxSizing: 'border-box',
-      lineHeight: 1.7
-    },
-    onFocus: e => e.target.style.borderColor = '#534AB7',
-    onBlur: e => e.target.style.borderColor = '#E8E8E8'
-  }), desc.length >= 10 && /*#__PURE__*/React.createElement("button", {
-    onClick: aiSuggest,
-    disabled: loading,
-    style: {
-      marginTop: 8,
-      padding: '7px 14px',
-      background: '#7C3AED',
-      color: '#fff',
-      border: 'none',
-      borderRadius: 8,
-      cursor: 'pointer',
-      fontSize: 12,
-      fontWeight: 700,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 5
-    }
-  }, loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 10,
-      height: 10,
-      border: '2px solid #fff5',
-      borderTopColor: '#fff',
-      borderRadius: 69,
-      animation: 'spin .6s linear infinite'
-    }
-  }), " AI \u0448\u0438\u043D\u0436\u0438\u043B\u0436 \u0431\u0430\u0439\u043D\u0430...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Ic, {
-    n: "stars",
-    s: 12
-  }), "AI-\u0430\u0430\u0440 \u0430\u043D\u0433\u0438\u043B\u0430\u043B, \u044D\u0440\u044D\u043C\u0431\u044D \u0442\u043E\u0434\u043E\u0440\u0445\u043E\u0439\u043B\u043E\u0445"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 8,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "flag",
-    s: 16,
-    style: {
-      color: '#534AB7'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u042D\u0440\u044D\u043C\u0431\u044D")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 8,
-      flexWrap: 'wrap'
-    }
-  }, [{
-    v: "Critical",
-    l: "Маш яаралтай",
-    c: "#DC2626"
-  }, {
-    v: "High",
-    l: "Яаралтай",
-    c: "#D97706"
-  }, {
-    v: "Medium",
-    l: "Дунд",
-    c: "#534AB7"
-  }, {
-    v: "Low",
-    l: "Бага",
-    c: "#059669"
-  }].map(p => /*#__PURE__*/React.createElement("button", {
-    key: p.v,
-    onClick: () => setManPri(p.v),
-    style: {
-      padding: '8px 16px',
-      borderRadius: 69,
-      fontSize: 12,
-      fontWeight: 600,
-      border: `1.5px solid ${(ai?.pri || manPri) === p.v ? p.c : '#E8E8E8'}`,
-      background: (ai?.pri || manPri) === p.v ? p.c + '18' : '#fff',
-      color: (ai?.pri || manPri) === p.v ? p.c : '#667788',
-      cursor: 'pointer',
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      transition: 'all .12s'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      width: 7,
-      height: 7,
-      borderRadius: 69,
-      background: p.c
-    }
-  }), p.l))), ai && /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '10px 0 0',
-      fontSize: 11,
-      color: '#7C3AED',
-      fontWeight: 600
-    }
-  }, "AI \u0441\u0430\u043D\u0430\u043B: ", PRIORITY_META[ai.pri]?.label))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '16px 18px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 38,
-      height: 38,
-      borderRadius: 69,
-      background: `conic-gradient(#534AB7 ${(manTitle ? 1 : 0) * 20 + (manCat || ai?.cat ? 1 : 0) * 20 + (desc ? 1 : 0) * 20 + (manPri || ai?.pri ? 1 : 0) * 20}%,#E8ECEF 0)`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 28,
-      height: 28,
-      borderRadius: 69,
-      background: '#fff',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: 10,
-      fontWeight: 700,
-      color: '#534AB7'
-    }
-  }, (manTitle ? 1 : 0) * 20 + (manCat || ai?.cat ? 1 : 0) * 20 + (desc ? 1 : 0) * 20 + (manPri || ai?.pri ? 1 : 0) * 20, "%")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 10,
-      color: '#999999',
-      fontWeight: 700,
-      textTransform: 'uppercase',
-      letterSpacing: .4
-    }
-  }, "\u0411\u04E9\u0433\u043B\u04E9\u043B\u0442"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, [manTitle, manCat || ai?.cat, desc, manPri || ai?.pri].filter(Boolean).length, " / 5 \u0442\u0430\u043B\u0431\u0430\u0440")))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '16px 18px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "telephone",
-    s: 14,
-    style: {
-      color: '#534AB7'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0425\u043E\u043B\u0431\u043E\u043E \u0431\u0430\u0440\u0438\u0445")), /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontSize: 11,
-      fontWeight: 600,
-      color: '#555555',
-      display: 'block',
-      marginBottom: 4
-    }
-  }, "\u0423\u0442\u0430\u0441\u043D\u044B \u0434\u0443\u0433\u0430\u0430\u0440 ", /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: '#DC2626'
-    }
-  }, "\u25CF")), /*#__PURE__*/React.createElement("input", {
-    defaultValue: "75007777",
-    style: {
-      width: '100%',
-      padding: '8px 12px',
-      fontSize: 13,
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      background: '#F5F5F5',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      outline: 'none',
-      color: '#1A1A1A',
-      boxSizing: 'border-box'
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '16px 18px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 6
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "paperclip",
-    s: 14,
-    style: {
-      color: '#534AB7'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0425\u0430\u0432\u0441\u0430\u0440\u0433\u0430\u0445 \u0444\u0430\u0439\u043B"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      border: '2px dashed #E8ECEF',
-      borderRadius: 8,
-      padding: '18px 14px',
-      textAlign: 'center',
-      cursor: 'pointer',
-      transition: 'border-color .12s'
-    },
-    onMouseEnter: e => e.currentTarget.style.borderColor = '#AFA9EC',
-    onMouseLeave: e => e.currentTarget.style.borderColor = '#E8ECEF'
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "cloud-upload",
-    s: 20,
-    style: {
-      color: '#AFA9EC',
-      marginBottom: 4
-    }
-  }), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 12,
-      color: '#999999'
-    }
-  }, "\u0424\u0430\u0439\u043B \u0441\u043E\u043D\u0433\u043E\u0445"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '2px 0 0',
-      fontSize: 10,
-      color: '#C8D0D8'
-    }
-  }, "- \u0417\u0443\u0440\u0430\u0433, PDF, \u0431\u0430\u0440\u0438\u043C\u0442 \u0431\u0438\u0447\u0438\u0433")))))), !showNew && !sel && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    onClick: () => onNavigate("t-new")
+  }, "\u0428\u0438\u043D\u044D \u0442\u0438\u043A\u0435\u0442")), !sel && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: 8,
@@ -17268,74 +16404,338 @@ function HelpOnChatbotModule({
 // ── AGENT DASHBOARD (Платформ Админ) ──────────────────────────
 function AnalyticsModule() {
   var ce = React.createElement;
-  var agents = [{
-    name: "\u0414. \u041C\u04E9\u043D\u0445\u0431\u0430\u0442",
-    avatar: "\u0414\u041C",
-    open: 2,
-    inprog: 1,
-    resolved: 1,
-    avgTime: "2\u0446 15\u043C\u0438\u043D",
-    csat: 4.6,
-    color: "#DC2626"
-  }, {
-    name: "\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",
-    avatar: "\u0411\u0410",
-    open: 1,
-    inprog: 1,
-    resolved: 2,
-    avgTime: "1\u0446 45\u043C\u0438\u043D",
-    csat: 4.8,
-    color: "#059669"
-  }, {
-    name: "\u0413. \u0411\u0430\u0442\u0431\u043E\u043B\u0434",
-    avatar: "\u0413\u0411",
-    open: 1,
-    inprog: 1,
-    resolved: 0,
-    avgTime: "3\u0446 20\u043C\u0438\u043D",
-    csat: 4.2,
-    color: "#D97706"
-  }];
-  var monthly = [{m:"1-\u0440 \u0441\u0430\u0440",created:32,resolved:28},{m:"2-\u0440 \u0441\u0430\u0440",created:41,resolved:38},{m:"3-\u0440 \u0441\u0430\u0440",created:47,resolved:42}];
-  var byCat = [{cat:"\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u0443\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430",count:18,pct:38},{cat:"\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",count:10,pct:21},{cat:"\u04AE\u0439\u043B \u0430\u0436\u0438\u043B\u043B\u0430\u0433\u0430\u0430\u043D\u044B \u0441\u0438\u0441\u0442\u0435\u043C",count:8,pct:17},{cat:"\u041C\u0410\u0411",count:6,pct:13},{cat:"\u0411\u0443\u0441\u0430\u0434",count:5,pct:11}];
-  var catColors = ["#534AB7","#D97706","#059669","#3B82F6","#9CA3AF"];
-  var maxBar = Math.max.apply(null, monthly.map(function(m){return Math.max(m.created,m.resolved)}));
-  var maxCat = Math.max.apply(null, byCat.map(function(c){return c.count}));
+  var useState = React.useState;
 
-  /* ── KPI data ── */
-  var kpis = [
-    {label:"SLA \u0425\u0430\u0440\u0438\u0443",value:"94%",sub:"/32 \u043C\u0438\u043D",target:"\u0417\u043E\u0440\u0438\u043B\u0442: 95% /30 \u043C\u0438\u043D",ok:false,icon:"clock",iconBg:"#FEF3C7",iconColor:"#D97706"},
-    {label:"SLA \u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445",value:"89%",sub:"/72 \u043C\u0438\u043D",target:"\u0417\u043E\u0440\u0438\u043B\u0442: 90% /70 \u043C\u0438\u043D",ok:false,icon:"check-circle",iconBg:"#FEE2E2",iconColor:"#DC2626"},
-    {label:"\u0414\u0443\u043D\u0434\u0430\u0436 \u0448\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445",value:"2.4\u0446",sub:"",target:"\u0417\u043E\u0440\u0438\u043B\u0442: 4\u0446",ok:true,icon:"speedometer2",iconBg:"#D1FAE5",iconColor:"#059669"},
-    {label:"CSAT \u0434\u0443\u043D\u0434\u0430\u0436",value:"4.5/5",sub:"",target:"\u04E8\u043C\u043D\u04E9\u0445 \u0441\u0430\u0440\u0430\u0430\u0441 +0.2",ok:true,icon:"star",iconBg:"#D1FAE5",iconColor:"#059669"},
-    {label:"\u0422\u0438\u043A\u0435\u0442\u0433\u04AF\u0439 \u0448\u0438\u0439\u0434\u0441\u044D\u043D",value:"38%",sub:"",target:"KB-\u0430\u0430\u0441 \u0448\u0438\u0439\u0434\u04AF\u04AF\u043B\u0441\u044D\u043D",ok:true,icon:"shield-check",iconBg:"#EDE9FE",iconColor:"#7C3AED"},
-    {label:"\u0410\u0432\u0442\u043E-\u0447\u0438\u0433\u043B\u04AF\u04AF\u043B\u044D\u043B\u0442",value:"87%",sub:"",target:"\u0417\u04E9\u0432 \u0442\u0430\u0430\u0436 \u0434 \u043E\u043D\u043E\u043E\u0441\u043E\u043D",ok:true,icon:"arrow-left-right",iconBg:"#D1FAE5",iconColor:"#059669"}
+  /* ── State ── */
+  var _per = useState("q"); var period = _per[0]; var setPeriod = _per[1];
+  var _dp = useState(false); var dpOpen = _dp[0]; var setDpOpen = _dp[1];
+  var _cf = useState(""); var customFrom = _cf[0]; var setCustomFrom = _cf[1];
+  var _ct = useState(""); var customTo = _ct[0]; var setCustomTo = _ct[1];
+  var _cv = useState("cat"); var catView = _cv[0]; var setCatView = _cv[1];
+  var _cm = useState(new Date().getMonth()); var calMonth = _cm[0]; var setCalMonth = _cm[1];
+  var _cy = useState(new Date().getFullYear()); var calYear = _cy[0]; var setCalYear = _cy[1];
+  var _selS = useState(null); var selStart = _selS[0]; var setSelStart = _selS[1];
+  var _selE = useState(null); var selEnd = _selE[0]; var setSelEnd = _selE[1];
+
+  /* ── Preset handlers ── */
+  var presets = [
+    {k:"\u04E9\u043D\u04E9\u04E9\u0434\u04E9\u0440",l:"\u04E8\u043D\u04E9\u04E9\u0434\u04E9\u0440"},
+    {k:"\u04E9\u0447\u0438\u0433\u0434\u04E9\u0440",l:"\u04E8\u0447\u0438\u0433\u0434\u04E9\u0440"},
+    {k:"7d",l:"\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D 7 \u0445\u043E\u043D\u043E\u0433"},
+    {k:"1m",l:"\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D \u0441\u0430\u0440"},
+    {k:"q",l:"\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D \u0443\u043B\u0438\u0440\u0430\u043B"},
+    {k:"custom",l:"Custom"}
   ];
+
+  /* Compute display label */
+  var periodLabel = (function(){
+    if(period==="\u04E9\u043D\u04E9\u04E9\u0434\u04E9\u0440") return "\u04E8\u043D\u04E9\u04E9\u0434\u04E9\u0440";
+    if(period==="\u04E9\u0447\u0438\u0433\u0434\u04E9\u0440") return "\u04E8\u0447\u0438\u0433\u0434\u04E9\u0440";
+    if(period==="7d") return "\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D 7 \u0445\u043E\u043D\u043E\u0433";
+    if(period==="1m") return "\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D \u0441\u0430\u0440";
+    if(period==="q") return "\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D \u0443\u043B\u0438\u0440\u0430\u043B";
+    if(period==="custom" && customFrom && customTo) return customFrom+" \u2014 "+customTo;
+    return "\u0425\u0443\u0433\u0430\u0446\u0430\u0430 \u0441\u043E\u043D\u0433\u043E\u0445";
+  })();
+
+  /* ── Calendar helpers ── */
+  var monthNames = ["\u0425\u0443\u043B\u0433\u0430\u043D\u0430 1-\u0440 \u0441\u0430\u0440","\u0425\u0443\u043B\u0433\u0430\u043D\u0430 2-\u0440 \u0441\u0430\u0440","3-\u0440 \u0441\u0430\u0440","4-\u0440 \u0441\u0430\u0440","5-\u0440 \u0441\u0430\u0440","6-\u0440 \u0441\u0430\u0440","7-\u0440 \u0441\u0430\u0440","8-\u0440 \u0441\u0430\u0440","9-\u0440 \u0441\u0430\u0440","10-\u0440 \u0441\u0430\u0440","11-\u0440 \u0441\u0430\u0440","12-\u0440 \u0441\u0430\u0440"];
+  var dayNames = ["\u041D\u044F","\u0414\u0430","\u041C\u044F","\u041B\u0445","\u041F\u04AF","\u0411\u0430","\u0411\u044F"];
+  var daysInMonth = function(y,m){return new Date(y,m+1,0).getDate();};
+  var firstDow = function(y,m){return new Date(y,m,1).getDay();};
+  var pad = function(n){return n<10?"0"+n:""+n;};
+  var fmtDate = function(y,m,d){return y+"-"+pad(m+1)+"-"+pad(d);};
+
+  var handleDayClick = function(y,m,d){
+    var ds = fmtDate(y,m,d);
+    if(!selStart || (selStart && selEnd)){
+      setSelStart(ds); setSelEnd(null);
+    } else {
+      if(ds < selStart){ setSelEnd(selStart); setSelStart(ds); }
+      else { setSelEnd(ds); }
+    }
+  };
+
+  var applyCustom = function(){
+    if(selStart && selEnd){
+      setCustomFrom(selStart); setCustomTo(selEnd);
+      setPeriod("custom"); setDpOpen(false);
+    }
+  };
+
+  var selectPreset = function(k){
+    if(k==="custom"){
+      /* just highlight custom, keep calendar open */
+    } else {
+      setPeriod(k); setDpOpen(false);
+      setSelStart(null); setSelEnd(null);
+    }
+  };
+
+  /* ── Period-dependent data ── */
+  var statKeys = [
+    {key:"open",label:"\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439",color:"#534AB7"},
+    {key:"inprog",label:"\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",color:"#D97706"},
+    {key:"resolved",label:"\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",color:"#059669"},
+    {key:"closed",label:"\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",color:"#6B7280"},
+    {key:"cancelled",label:"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D",color:"#DC2626"}
+  ];
+  var allTrend = {
+    "\u04E9\u043D\u04E9\u04E9\u0434\u04E9\u0440": [
+      {m:"\u04E8\u043D\u04E9\u04E9\u0434\u04E9\u0440",open:3,inprog:1,resolved:2,closed:1,cancelled:0}
+    ],
+    "\u04E9\u0447\u0438\u0433\u0434\u04E9\u0440": [
+      {m:"\u04E8\u0447\u0438\u0433\u0434\u04E9\u0440",open:2,inprog:2,resolved:3,closed:1,cancelled:1}
+    ],
+    "7d": [
+      {m:"04/04",open:1,inprog:1,resolved:3,closed:2,cancelled:0},
+      {m:"04/05",open:2,inprog:0,resolved:2,closed:1,cancelled:1},
+      {m:"04/06",open:0,inprog:2,resolved:1,closed:1,cancelled:0},
+      {m:"04/07",open:1,inprog:1,resolved:2,closed:0,cancelled:1},
+      {m:"04/08",open:2,inprog:1,resolved:3,closed:2,cancelled:0},
+      {m:"04/09",open:1,inprog:2,resolved:1,closed:1,cancelled:1},
+      {m:"04/10",open:3,inprog:1,resolved:2,closed:1,cancelled:0}
+    ],
+    "1m": [
+      {m:"1-\u0440 \u0434\u043E\u043B\u043E\u043E",open:2,inprog:2,resolved:5,closed:3,cancelled:1},
+      {m:"2-\u0440 \u0434\u043E\u043B\u043E\u043E",open:3,inprog:1,resolved:4,closed:2,cancelled:2},
+      {m:"3-\u0440 \u0434\u043E\u043B\u043E\u043E",open:2,inprog:3,resolved:6,closed:3,cancelled:1},
+      {m:"4-\u0440 \u0434\u043E\u043B\u043E\u043E",open:1,inprog:1,resolved:3,closed:2,cancelled:0}
+    ],
+    "q": [
+      {m:"1-\u0440 \u0441\u0430\u0440",open:5,inprog:4,resolved:12,closed:8,cancelled:3},
+      {m:"2-\u0440 \u0441\u0430\u0440",open:6,inprog:5,resolved:15,closed:10,cancelled:5},
+      {m:"3-\u0440 \u0441\u0430\u0440",open:8,inprog:7,resolved:18,closed:10,cancelled:4}
+    ],
+    "custom": [
+      {m:"1-\u0440 \u0441\u0430\u0440",open:5,inprog:4,resolved:12,closed:8,cancelled:3},
+      {m:"2-\u0440 \u0441\u0430\u0440",open:6,inprog:5,resolved:15,closed:10,cancelled:5},
+      {m:"3-\u0440 \u0441\u0430\u0440",open:8,inprog:7,resolved:18,closed:10,cancelled:4}
+    ]
+  };
+  var trendData = allTrend[period] || allTrend["q"];
+  var maxBar = Math.max.apply(null, trendData.map(function(m){return m.open+m.inprog+m.resolved+m.closed+m.cancelled}))||1;
+
+  /* KPI data per period */
+  var kpiSets = {
+    "\u04E9\u043D\u04E9\u04E9\u0434\u04E9\u0440":{slaR:"96%",slaRs:"89%",avg:"1.8\u0446",csat:"4.7/5",kb:"42%",auto:"90%"},
+    "\u04E9\u0447\u0438\u0433\u0434\u04E9\u0440":{slaR:"93%",slaRs:"87%",avg:"2.6\u0446",csat:"4.4/5",kb:"35%",auto:"85%"},
+    "7d":{slaR:"95%",slaRs:"90%",avg:"2.1\u0446",csat:"4.6/5",kb:"40%",auto:"88%"},
+    "1m":{slaR:"94%",slaRs:"89%",avg:"2.4\u0446",csat:"4.5/5",kb:"38%",auto:"87%"},
+    "q":{slaR:"94%",slaRs:"89%",avg:"2.4\u0446",csat:"4.5/5",kb:"38%",auto:"87%"},
+    "custom":{slaR:"94%",slaRs:"89%",avg:"2.4\u0446",csat:"4.5/5",kb:"38%",auto:"87%"}
+  };
+  var kd = kpiSets[period] || kpiSets["q"];
+
+  var kpis = [
+    {label:"SLA \u0425\u0430\u0440\u0438\u0443",value:kd.slaR,sub:"/32 \u043C\u0438\u043D",target:"\u0417\u043E\u0440\u0438\u043B\u0442: 95% /30 \u043C\u0438\u043D",ok:parseInt(kd.slaR)>=95,icon:"clock",iconBg:"#FEF3C7",iconColor:"#D97706"},
+    {label:"SLA \u0428\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445",value:kd.slaRs,sub:"/72 \u043C\u0438\u043D",target:"\u0417\u043E\u0440\u0438\u043B\u0442: 90% /70 \u043C\u0438\u043D",ok:parseInt(kd.slaRs)>=90,icon:"check-circle",iconBg:"#FEE2E2",iconColor:"#DC2626"},
+    {label:"\u0414\u0443\u043D\u0434\u0430\u0436 \u0448\u0438\u0439\u0434\u0432\u044D\u0440\u043B\u044D\u0445",value:kd.avg,sub:"",target:"\u0417\u043E\u0440\u0438\u043B\u0442: 4\u0446",ok:true,icon:"speedometer2",iconBg:"#D1FAE5",iconColor:"#059669"},
+    {label:"CSAT \u0434\u0443\u043D\u0434\u0430\u0436",value:kd.csat,sub:"",target:"\u04E8\u043C\u043D\u04E9\u0445 \u0441\u0430\u0440\u0430\u0430\u0441 +0.2",ok:true,icon:"star",iconBg:"#D1FAE5",iconColor:"#059669"},
+    {label:"\u0422\u0438\u043A\u0435\u0442\u0433\u04AF\u0439 \u0448\u0438\u0439\u0434\u0441\u044D\u043D",value:kd.kb,sub:"",target:"KB-\u0430\u0430\u0441 \u0448\u0438\u0439\u0434\u04AF\u04AF\u043B\u0441\u044D\u043D",ok:true,icon:"shield-check",iconBg:"#EDE9FE",iconColor:"#7C3AED"},
+    {label:"\u0410\u0432\u0442\u043E-\u0447\u0438\u0433\u043B\u04AF\u04AF\u043B\u044D\u043B\u0442",value:kd.auto,sub:"",target:"\u0417\u04E9\u0432 \u0442\u0430\u0430\u0436 \u043E\u043D\u043E\u043E\u0441\u043E\u043D",ok:true,icon:"arrow-left-right",iconBg:"#D1FAE5",iconColor:"#059669"}
+  ];
+
+  /* Category & Type data */
+  var byCat = [{cat:"\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440 \u0443\u0434\u0438\u0440\u0434\u043B\u0430\u0433\u0430",count:18,pct:38},{cat:"\u0421\u04AF\u043B\u0436\u044D\u044D\u043D\u0438\u0439 \u04AF\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D",count:10,pct:21},{cat:"\u04AE\u0439\u043B \u0430\u0436\u0438\u043B\u043B\u0430\u0433\u0430\u0430\u043D\u044B \u0441\u0438\u0441\u0442\u0435\u043C",count:8,pct:17},{cat:"\u041C\u0410\u0411",count:6,pct:13},{cat:"\u0411\u0443\u0441\u0430\u0434",count:5,pct:11}];
+  var typeMap = {};
+  TICKETS.forEach(function(t){var tp=t.type||"\u0425\u04AF\u0441\u044D\u043B\u0442"; typeMap[tp]=(typeMap[tp]||0)+1;});
+  var typeTotal = TICKETS.length;
+  var byType = Object.entries(typeMap).sort(function(a,b){return b[1]-a[1]}).map(function(e){return {cat:e[0],count:e[1],pct:Math.round(e[1]/typeTotal*100)};});
+  var catColors = ["#534AB7","#D97706","#059669","#3B82F6","#9CA3AF"];
 
   /* SLA priority distribution */
   var slaPri = [
-    {pri:"P0",count:2,pct:"4%",color:"#DC2626"},
-    {pri:"P1",count:8,pct:"17%",color:"#D97706"},
-    {pri:"P2",count:22,pct:"47%",color:"#534AB7"},
-    {pri:"P3",count:15,pct:"32%",color:"#059669"}
+    {pri:"\u042F\u0430\u0440\u0430\u043B\u0442\u0430\u0439",count:2,pct:"4%",color:"#DC2626"},
+    {pri:"\u04E8\u043D\u0434\u04E9\u0440",count:8,pct:"17%",color:"#D97706"},
+    {pri:"\u0414\u0443\u043D\u0434",count:22,pct:"47%",color:"#534AB7"},
+    {pri:"\u0411\u0430\u0433\u0430",count:15,pct:"32%",color:"#059669"}
   ];
+
+  /* Engineers */
+  var agents = [{
+    name:"\u0414. \u041C\u04E9\u043D\u0445\u0431\u0430\u0442",avatar:"\u0414\u041C",open:2,inprog:1,resolved:1,avgTime:"2\u0446 15\u043C\u0438\u043D",csat:4.6,color:"#DC2626"
+  },{
+    name:"\u0411. \u0410\u043C\u0430\u0440\u0431\u0430\u044F\u0441\u0433\u0430\u043B\u0430\u043D",avatar:"\u0411\u0410",open:1,inprog:1,resolved:2,avgTime:"1\u0446 45\u043C\u0438\u043D",csat:4.8,color:"#059669"
+  },{
+    name:"\u0413. \u0411\u0430\u0442\u0431\u043E\u043B\u0434",avatar:"\u0413\u0411",open:1,inprog:1,resolved:0,avgTime:"3\u0446 20\u043C\u0438\u043D",csat:4.2,color:"#D97706"
+  }];
 
   /* Card helper */
   var Card = function(props){
     return ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:props.p||'20px 24px',boxShadow:'0 1px 3px rgba(0,0,0,.03)'}},props.children);
   };
 
+  /* ═══ BUILD CALENDAR ═══ */
+  var buildCal = function(mo,yr){
+    var dim = daysInMonth(yr,mo);
+    var fd = firstDow(yr,mo);
+    var cells = [];
+    for(var i=0;i<fd;i++) cells.push(null);
+    for(var d=1;d<=dim;d++) cells.push(d);
+    var rows = [];
+    for(var i=0;i<cells.length;i+=7) rows.push(cells.slice(i,i+7));
+    /* pad last row */
+    while(rows.length>0 && rows[rows.length-1].length<7) rows[rows.length-1].push(null);
+    return rows;
+  };
+
+  var isInRange = function(y,m,d){
+    if(!selStart) return false;
+    var ds = fmtDate(y,m,d);
+    if(!selEnd) return ds===selStart;
+    return ds>=selStart && ds<=selEnd;
+  };
+  var isStart = function(y,m,d){ return selStart===fmtDate(y,m,d); };
+  var isEnd = function(y,m,d){ return selEnd===fmtDate(y,m,d); };
+
+  var calRows = buildCal(calMonth, calYear);
+  var calMName = (calMonth+1)+"-\u0440 \u0441\u0430\u0440 "+calYear;
+
+  var prevMonth = function(){ if(calMonth===0){setCalMonth(11);setCalYear(calYear-1);}else{setCalMonth(calMonth-1);} };
+  var nextMonth = function(){ if(calMonth===11){setCalMonth(0);setCalYear(calYear+1);}else{setCalMonth(calMonth+1);} };
+
+  /* ═══ RETURN ═══ */
   return ce("div",{style:{display:'flex',flexDirection:'column',gap:20}},
 
-    /* ── HEADER ── */
-    ce("div",null,
-      ce("h2",{style:{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}},"\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A"),
-      ce("p",{style:{margin:'4px 0 0',fontSize:13,color:'#666'}},
-        "IT \u0438\u043D\u0436\u0435\u043D\u0435\u0440\u04AF\u04AF\u0434\u0438\u0439\u043D \u0430\u0447\u0430\u0430\u043B\u0430\u043B, \u0433\u04AF\u0439\u0446\u044D\u0442\u0433\u044D\u043B, SLA, AI \u04AF\u0440 \u0430\u0448\u0438\u0433"
+    /* ── HEADER with date picker ── */
+    ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}},
+      ce("div",null,
+        ce("h2",{style:{margin:0,fontSize:20,fontWeight:700,color:'#1A1A1A'}},"\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A"),
+        ce("p",{style:{margin:'4px 0 0',fontSize:13,color:'#666'}},
+          "IT \u0438\u043D\u0436\u0435\u043D\u0435\u0440\u04AF\u04AF\u0434\u0438\u0439\u043D \u0430\u0447\u0430\u0430\u043B\u0430\u043B, \u0433\u04AF\u0439\u0446\u044D\u0442\u0433\u044D\u043B, SLA"
+        )
+      ),
+      /* Date picker trigger */
+      ce("div",{style:{position:'relative'}},
+        ce("button",{onClick:function(){setDpOpen(!dpOpen)},style:{
+          display:'flex',alignItems:'center',gap:8,padding:'8px 16px',
+          background:'#fff',border:'1px solid #E0E0E0',borderRadius:8,cursor:'pointer',
+          fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",
+          fontSize:13,fontWeight:600,color:'#1A1A1A',boxShadow:'0 1px 3px rgba(0,0,0,.06)'
+        }},
+          ce(Ic,{n:"calendar3",s:15,style:{color:'#534AB7'}}),
+          periodLabel,
+          ce(Ic,{n:dpOpen?"chevron-up":"chevron-down",s:12,style:{color:'#999',marginLeft:4}})
+        ),
+
+        /* ── DROPDOWN PANEL ── */
+        dpOpen && ce("div",{style:{
+          position:'absolute',top:'100%',right:0,marginTop:8,zIndex:999,
+          background:'#fff',border:'1px solid #E0E0E0',borderRadius:12,
+          boxShadow:'0 10px 40px rgba(0,0,0,.15)',width:480,overflow:'hidden'
+        }},
+
+          /* Selected range display */
+          (selStart || customFrom) && ce("div",{style:{padding:'12px 20px',borderBottom:'1px solid #F0F0F0',textAlign:'center',fontSize:13,fontWeight:600,color:'#534AB7'}},
+            selStart && selEnd ? selStart+" \u2014 "+selEnd :
+            customFrom && customTo ? customFrom+" \u2014 "+customTo :
+            selStart ? selStart+" \u2014 ..." : ""
+          ),
+
+          ce("div",{style:{display:'flex'}},
+
+            /* Left: presets */
+            ce("div",{style:{width:160,borderRight:'1px solid #F0F0F0',padding:'12px 0'}},
+              presets.map(function(p){
+                var active = period===p.k || (p.k==="custom" && period==="custom");
+                return ce("button",{key:p.k,onClick:function(){
+                  if(p.k==="custom"){ setPeriod("custom"); }
+                  else { selectPreset(p.k); }
+                },style:{
+                  display:'block',width:'100%',padding:'8px 20px',
+                  textAlign:'left',border:'none',cursor:'pointer',
+                  fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",
+                  fontSize:12,fontWeight:active?700:500,
+                  background:active?'#EEEDFE':'transparent',
+                  color:active?'#534AB7':'#555'
+                }},p.l);
+              })
+            ),
+
+            /* Right: calendar */
+            ce("div",{style:{flex:1,padding:'14px 18px'}},
+              /* Month nav */
+              ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+                ce("button",{onClick:prevMonth,style:{border:'none',background:'#F5F5F5',borderRadius:6,width:28,height:28,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}},
+                  ce(Ic,{n:"chevron-left",s:14,style:{color:'#555'}})
+                ),
+                ce("span",{style:{fontSize:13,fontWeight:700,color:'#1A1A1A'}},calMName),
+                ce("button",{onClick:nextMonth,style:{border:'none',background:'#F5F5F5',borderRadius:6,width:28,height:28,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}},
+                  ce(Ic,{n:"chevron-right",s:14,style:{color:'#555'}})
+                )
+              ),
+
+              /* Day headers */
+              ce("div",{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:2,marginBottom:4}},
+                dayNames.map(function(dn){
+                  return ce("div",{key:dn,style:{textAlign:'center',fontSize:10,fontWeight:700,color:'#999',padding:'4px 0'}},dn);
+                })
+              ),
+
+              /* Day grid */
+              calRows.map(function(row,ri){
+                return ce("div",{key:ri,style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:2}},
+                  row.map(function(d,ci){
+                    if(!d) return ce("div",{key:"e"+ci,style:{width:36,height:32}});
+                    var inR = isInRange(calYear,calMonth,d);
+                    var isS = isStart(calYear,calMonth,d);
+                    var isE = isEnd(calYear,calMonth,d);
+                    return ce("button",{key:d,onClick:function(){handleDayClick(calYear,calMonth,d)},style:{
+                      width:36,height:32,border:'none',borderRadius:isS||isE?8:inR?0:8,
+                      cursor:'pointer',fontSize:12,fontWeight:inR?700:500,
+                      background:isS||isE?'#534AB7':inR?'#EEEDFE':'transparent',
+                      color:isS||isE?'#fff':inR?'#534AB7':'#333',
+                      fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",
+                      transition:'all .1s'
+                    }},d);
+                  })
+                );
+              }),
+
+              /* Apply button */
+              ce("div",{style:{marginTop:14,display:'flex',justifyContent:'flex-end',gap:8}},
+                ce("button",{onClick:function(){setDpOpen(false);setSelStart(null);setSelEnd(null);},style:{
+                  padding:'7px 16px',fontSize:12,fontWeight:600,border:'1px solid #E0E0E0',
+                  borderRadius:8,cursor:'pointer',background:'#fff',color:'#555',
+                  fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"
+                }},"\u0411\u043E\u043B\u0438\u0445"),
+                ce("button",{onClick:applyCustom,style:{
+                  padding:'7px 20px',fontSize:12,fontWeight:700,border:'none',
+                  borderRadius:8,cursor:'pointer',
+                  background:selStart&&selEnd?'#534AB7':'#E0E0E0',
+                  color:selStart&&selEnd?'#fff':'#999',
+                  fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"
+                }},"\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0445")
+              )
+            )
+          )
+        )
       )
     ),
 
-    /* ── KPI CARDS (6 cards in a row) ── */
+    /* ── STATUS CARDS (5 cards) ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:12}},
+      [{label:"\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439 \u0442\u0438\u043A\u0435\u0442",value:TICKETS.filter(function(t){return t.status==="\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439"}).length,icon:"exclamation-circle",iconBg:"#EEEDFE",iconColor:"#534AB7",sub:"\u0418\u043D\u0436\u0435\u043D\u0435\u0440 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0430\u0439\u043D\u0430",subC:"#534AB7",border:"#534AB7"},
+       {label:"\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",value:TICKETS.filter(function(t){return t.status==="\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430"}).length,icon:"arrow-repeat",iconBg:"#FEF3C7",iconColor:"#D97706",sub:"\u0418\u0434\u044D\u0432\u0445\u0442\u044D\u0439 \u0430\u0436\u0438\u043B\u043B\u0430\u0436 \u0431\u0430\u0439\u043D\u0430",subC:"#D97706",border:"#D97706"},
+       {label:"\u0411\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445",value:TICKETS.filter(function(t){return t.status==="\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D"}).length,icon:"check-circle",iconBg:"#D1FAE5",iconColor:"#059669",sub:"\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D \u2014 \u0431\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u043D\u0430 \u0443\u0443",subC:"#059669",border:"#059669"},
+       {label:"\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",value:TICKETS.filter(function(t){return t.status==="\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D"}).length,icon:"lock",iconBg:"#F3F4F6",iconColor:"#6B7280",sub:"\u0410\u043C\u0436\u0438\u043B\u0442\u0442\u0430\u0439 \u0448\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",subC:"#6B7280",border:"#6B7280"},
+       {label:"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D",value:TICKETS.filter(function(t){return t.status==="\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"}).length,icon:"x-circle",iconBg:"#FEE2E2",iconColor:"#DC2626",sub:"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D \u0442\u0438\u043A\u0435\u0442",subC:"#DC2626",border:"#DC2626"}
+      ].map(function(k){
+        return ce("div",{key:k.label,style:{background:'#fff',borderTop:'3px solid '+k.border,border:'0.5px solid #E8E8E8',borderRadius:12,padding:'18px 20px',display:'flex',gap:12,alignItems:'center'}},
+          ce("div",{style:{width:40,height:40,background:k.iconBg,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+            ce(Ic,{n:k.icon,s:18,style:{color:k.iconColor}})
+          ),
+          ce("div",null,
+            ce("p",{style:{margin:0,fontSize:10,color:'#999',fontWeight:700,textTransform:'uppercase',letterSpacing:.4}},k.label),
+            ce("p",{style:{margin:'4px 0 2px',fontSize:26,fontWeight:700,color:'#1A1A1A',lineHeight:1}},k.value),
+            ce("p",{style:{margin:0,fontSize:11,color:k.subC,fontWeight:500}},k.sub)
+          )
+        );
+      })
+    ),
+
+    /* ── KPI CARDS (6 cards) ── */
     ce("div",{style:{display:'grid',gridTemplateColumns:'repeat(6, 1fr)',gap:12}},
       kpis.map(function(k){
         return ce("div",{key:k.label,style:{background:'#fff',border:'0.5px solid #EBEBEB',borderRadius:10,padding:'16px 18px',display:'flex',flexDirection:'column',gap:10}},
@@ -17356,57 +16756,71 @@ function AnalyticsModule() {
       })
     ),
 
-    /* ── MIDDLE ROW: Monthly Trend + Category Bars ── */
+    /* ── MIDDLE ROW: Trend + Category ── */
     ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}},
 
-      /* Monthly ticket trend bar chart */
+      /* Ticket Trend grouped bar */
       ce(Card,null,
-        ce("p",{style:{margin:'0 0 18px',fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0421\u0430\u0440\u044B\u043D \u0442\u0438\u043A\u0435\u0442 trend"),
-        ce("div",{style:{display:'flex',gap:24,alignItems:'flex-end',height:170,paddingBottom:30,position:'relative'}},
-          monthly.map(function(m){
-            return ce("div",{key:m.m,style:{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:6}},
-              ce("div",{style:{display:'flex',gap:6,alignItems:'flex-end',width:'100%',justifyContent:'center',height:120}},
-                ce("div",{style:{width:'35%',background:'#EEEDFE',borderRadius:'6px 6px 0 0',height:Math.round(m.created/maxBar*110)+'px',transition:'height .3s'}}),
-                ce("div",{style:{width:'35%',background:'#D1FAE5',borderRadius:'6px 6px 0 0',height:Math.round(m.resolved/maxBar*110)+'px',transition:'height .3s'}})
+        ce("p",{style:{margin:'0 0 18px',fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0422\u0438\u043A\u0435\u0442\u0438\u0439\u043D \u0442\u0440\u044D\u043D\u0434"),
+        ce("div",{style:{display:'flex',gap:trendData.length>5?8:16,alignItems:'flex-end',paddingBottom:6}},
+          trendData.map(function(m){
+            var total = m.open+m.inprog+m.resolved+m.closed+m.cancelled;
+            return ce("div",{key:m.m,style:{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:8}},
+              ce("div",{style:{display:'flex',gap:2,alignItems:'flex-end',width:'100%',justifyContent:'center',height:130}},
+                statKeys.map(function(sk){
+                  var val = m[sk.key];
+                  return ce("div",{key:sk.key,style:{flex:1,maxWidth:18,background:sk.color,borderRadius:'3px 3px 0 0',height:Math.max(Math.round(val/maxBar*120),val>0?6:0)+'px',transition:'height .3s',position:'relative'}},
+                    val>0 ? ce("span",{style:{position:'absolute',top:-15,left:'50%',transform:'translateX(-50%)',fontSize:9,fontWeight:700,color:sk.color}},val) : null
+                  );
+                })
               ),
-              ce("p",{style:{margin:0,fontSize:11,color:'#999',textAlign:'center'}},m.m),
-              ce("p",{style:{margin:0,fontSize:11,fontWeight:600,color:'#555'}},m.created,"/",m.resolved)
-            );
-          })
-        ),
-        ce("div",{style:{display:'flex',gap:20,justifyContent:'center',marginTop:8}},
-          ce("span",{style:{fontSize:11,color:'#3C3489',display:'flex',alignItems:'center',gap:5}},
-            ce("span",{style:{width:10,height:10,background:'#EEEDFE',borderRadius:2}}),"\u04AE\u04AF\u0441\u0433\u044D\u0441\u044D\u043D"
-          ),
-          ce("span",{style:{fontSize:11,color:'#059669',display:'flex',alignItems:'center',gap:5}},
-            ce("span",{style:{width:10,height:10,background:'#D1FAE5',borderRadius:2}}),"\u0428\u0438\u0439\u0434\u0441\u044D\u043D"
-          )
-        )
-      ),
-
-      /* Category horizontal bars */
-      ce(Card,null,
-        ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:18}},
-          ce("p",{style:{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0410\u043D\u0433\u0438\u043B\u043B\u0430\u0430\u0440"),
-          ce("span",{style:{fontSize:11,color:'#999',background:'#F5F5F5',padding:'4px 10px',borderRadius:6,fontWeight:500}},"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D \u25BF")
-        ),
-        ce("div",{style:{display:'flex',flexDirection:'column',gap:14}},
-          byCat.map(function(c,i){
-            return ce("div",{key:c.cat},
-              ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5}},
-                ce("span",{style:{fontSize:12,color:'#555',fontWeight:500}},c.cat),
-                ce("span",{style:{fontSize:12,fontWeight:700,color:'#1A1A1A'}},c.count," (",c.pct,"%)")
-              ),
-              ce("div",{style:{height:8,background:'#F0F0F0',borderRadius:4,overflow:'hidden'}},
-                ce("div",{style:{height:'100%',width:Math.round(c.count/maxCat*100)+"%",background:catColors[i],borderRadius:4,transition:'width .3s'}})
+              ce("div",{style:{borderTop:'1px solid #E8E8E8',width:'100%',paddingTop:4,textAlign:'center'}},
+                ce("p",{style:{margin:0,fontSize:10,color:'#888'}},m.m),
+                ce("p",{style:{margin:'1px 0 0',fontSize:11,fontWeight:700,color:'#1A1A1A'}},total)
               )
             );
           })
+        ),
+        ce("div",{style:{display:'flex',gap:12,justifyContent:'center',marginTop:12,flexWrap:'wrap'}},
+          statKeys.map(function(sk){
+            return ce("span",{key:sk.key,style:{fontSize:10,color:'#555',display:'flex',alignItems:'center',gap:4}},
+              ce("span",{style:{width:8,height:8,borderRadius:2,background:sk.color}}),sk.label
+            );
+          })
         )
+      ),
+
+      /* Category / Type horizontal bars */
+      ce(Card,null,
+        ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:18}},
+          ce("p",{style:{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0410\u043D\u0433\u0438\u043B\u043B\u0430\u0430\u0440"),
+          ce("div",{style:{display:'flex',gap:4}},
+            [{k:"cat",l:"\u04AE\u0439\u043B\u0447\u0438\u043B\u0433\u044D\u044D"},{k:"type",l:"\u0422\u04E9\u0440\u04E9\u043B"}].map(function(o){
+              return ce("button",{key:o.k,onClick:function(){setCatView(o.k)},style:{padding:'4px 10px',fontSize:11,fontWeight:600,border:catView===o.k?'1px solid #534AB7':'1px solid #E8E8E8',borderRadius:6,cursor:'pointer',background:catView===o.k?'#EEEDFE':'#fff',color:catView===o.k?'#534AB7':'#888',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif"}},o.l);
+            })
+          )
+        ),
+        (function(){
+          var data = catView==="cat" ? byCat : byType;
+          var maxVal = Math.max.apply(null, data.map(function(c){return c.count}));
+          return ce("div",{style:{display:'flex',flexDirection:'column',gap:14}},
+            data.map(function(c,i){
+              return ce("div",{key:c.cat},
+                ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5}},
+                  ce("span",{style:{fontSize:12,color:'#555',fontWeight:500}},c.cat),
+                  ce("span",{style:{fontSize:12,fontWeight:700,color:'#1A1A1A'}},c.count," (",c.pct,"%)")
+                ),
+                ce("div",{style:{height:8,background:'#F0F0F0',borderRadius:4,overflow:'hidden'}},
+                  ce("div",{style:{height:'100%',width:Math.round(c.count/maxVal*100)+"%",background:catColors[i%catColors.length],borderRadius:4,transition:'width .3s'}})
+                )
+              );
+            })
+          );
+        })()
       )
     ),
 
-    /* ── SLA PRIORITY DISTRIBUTION ── */
+    /* ── SLA PRIORITY ── */
     ce(Card,null,
       ce("p",{style:{margin:'0 0 16px',fontSize:14,fontWeight:700,color:'#1A1A1A'}},"SLA \u044D\u0440\u044D\u043C\u0431\u0438\u0439\u043D \u0442\u0430\u0440\u0445\u0430\u043B\u0442 (\u044D\u043D\u044D \u0441\u0430\u0440)"),
       ce("div",{style:{display:'grid',gridTemplateColumns:'repeat(4, 1fr)',gap:14}},
@@ -17420,7 +16834,7 @@ function AnalyticsModule() {
       )
     ),
 
-    /* ── ENGINEERS WORKLOAD ── */
+    /* ── ENGINEERS ── */
     ce(Card,null,
       ce("p",{style:{margin:'0 0 16px',fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0418\u043D\u0436\u0435\u043D\u0435\u0440\u04AF\u04AF\u0434\u0438\u0439\u043D \u0430\u0447\u0430\u0430\u043B\u0430\u043B"),
       ce("div",{style:{display:'flex',flexDirection:'column',gap:10}},
@@ -17445,6 +16859,7 @@ function AnalyticsModule() {
     )
   );
 }
+
 
 
 // ── CANNED RESPONSES (Платформ Админ) ─────────────────────────
@@ -22328,7 +21743,8 @@ function App() {
     const MODULES = {
       dashboard: /*#__PURE__*/React.createElement(DashboardModule, {
         onNavigate: setActive,
-        onNavigateToOrder: navigateToOrder
+        onNavigateToOrder: navigateToOrder,
+        portal: portal
       }),
       services: /*#__PURE__*/React.createElement(ServiceModule, {
         onNavigate: setActive
@@ -22346,7 +21762,8 @@ function App() {
       permissions: /*#__PURE__*/React.createElement(PermissionsModule, null),
       users: /*#__PURE__*/React.createElement(UserModule, null),
       logs: /*#__PURE__*/React.createElement(AuditLogModule, null),
-      "t-list": /*#__PURE__*/React.createElement(MyTicketsModule, null),
+      "t-list": /*#__PURE__*/React.createElement(MyTicketsModule, {onNavigate: setActive}),
+      "t-new": /*#__PURE__*/React.createElement(NewTicketModule, {setTModule: setTModule}),
       "t-analytics": /*#__PURE__*/React.createElement(AnalyticsModule, null),
       "t-canned": /*#__PURE__*/React.createElement(CannedResponsesModule, null),
       "t-sla": /*#__PURE__*/React.createElement(SLAConfigModule, null),
@@ -22354,7 +21771,8 @@ function App() {
     };
     return MODULES[active] || /*#__PURE__*/React.createElement(DashboardModule, {
       onNavigate: setActive,
-      onNavigateToOrder: navigateToOrder
+      onNavigateToOrder: navigateToOrder,
+      portal: portal
     });
   };
   const switchPortal = pid => {
