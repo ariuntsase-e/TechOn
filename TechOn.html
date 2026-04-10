@@ -14708,263 +14708,302 @@ function TicketDetailPage({
   );
 }
 
-// ── TICKET DASHBOARD ─────────────────────────────────────────
+// ── TICKET DASHBOARD ─────────────────────────────────────────────
 function TicketDashboardModule({
   setTModule
 }) {
-  const open = TICKETS.filter(t => t.status === "Нээлттэй").length;
-  const inprog = TICKETS.filter(t => t.status === "Явж байна").length;
-  const resolved = TICKETS.filter(t => t.status === "Шийдэгдсэн").length;
-  const closed = TICKETS.filter(t => t.status === "Хаагдсан").length;
-  const atRisk = TICKETS.filter(t => t.status !== "Хаагдсан" && t.status !== "Шийдэгдсэн");
-  const kpis = [{
-    label: "Нийт тикет",
-    value: TICKETS.length,
-    sub: "Нийт бүртгэгдсэн",
-    subColor: "#667788",
-    icon: "ticket-detailed",
-    iconBg: "#EEEDFE",
-    iconColor: "#534AB7"
-  }, {
-    label: "Нээлттэй",
-    value: open,
-    sub: "Инженер хүлээж байна",
-    subColor: "#3C3489",
-    icon: "exclamation-circle",
-    iconBg: "#EEEDFE",
-    iconColor: "#3C3489"
-  }, {
-    label: "Явж байна",
-    value: inprog,
-    sub: "Идэвхтэй ажиллаж байна",
-    subColor: "#92400E",
-    icon: "arrow-repeat",
-    iconBg: "#FEF3C7",
-    iconColor: "#D97706"
-  }, {
-    label: "Шийдэгдсэн",
-    value: resolved,
-    sub: "Баталгаажуулалт хүлээж байна",
-    subColor: "#065F46",
-    icon: "check-circle",
-    iconBg: "#D1FAE5",
-    iconColor: "#059669"
-  }];
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 20
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start'
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
-    style: {
-      margin: 0,
-      fontSize: 22,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0421\u0430\u0439\u043D \u0443\u0443, \u041E\u044E\u0443\u043D\u0442\u0443\u044F\u0430"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '5px 0 0',
-      fontSize: 13,
-      color: '#666666'
-    }
-  }, "IT \u0414\u044D\u043C\u0436\u043B\u044D\u0433\u0438\u0439\u043D \u0445\u044F\u043D\u0430\u0445 \u0441\u0430\u043C\u0431\u0430\u0440 \xA0\xB7\xA0", resolved > 0 && /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: '#3B6D11',
-      fontWeight: 600
-    }
-  }, resolved, " \u0442\u0438\u043A\u0435\u0442 \u0431\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u043B\u0442 \u0445\u04AF\u043B\u044D\u044D\u0436 \u0431\u0430\u0439\u043D\u0430"))), /*#__PURE__*/React.createElement(Btn, {
-    icon: "plus-lg",
-    onClick: () => setTModule("t-list")
-  }, "\u0422\u0438\u043A\u0435\u0442 \u04AF\u04AF\u0441\u0433\u044D\u0445")), /*#__PURE__*/React.createElement("div", {
-    className: "rg-4"
-  }, kpis.map(k => /*#__PURE__*/React.createElement("div", {
-    key: k.label,
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '16px 18px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)',
-      display: 'flex',
-      gap: 14,
-      alignItems: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 42,
-      height: 42,
-      background: k.iconBg,
-      borderRadius: 8,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: k.icon,
-    s: 19,
-    style: {
-      color: k.iconColor
-    }
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 2px',
-      fontSize: 11,
-      color: '#999999',
-      fontWeight: 600,
-      textTransform: 'uppercase',
-      letterSpacing: .4
-    }
-  }, k.label), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 2px',
-      fontSize: 26,
-      fontWeight: 700,
-      color: '#1A1A1A',
-      lineHeight: 1
-    }
-  }, k.value), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 11,
-      color: k.subColor,
-      fontWeight: 600
-    }
-  }, k.sub))))), /*#__PURE__*/React.createElement("div", {
-    className: "rg-dash"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 14
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0418\u0434\u044D\u0432\u0445\u0442\u044D\u0439 \u0442\u0438\u043A\u0435\u0442\u04AF\u04AF\u0434"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setTModule("t-list"),
-    style: {
-      fontSize: 12,
-      color: '#534AB7',
-      background: 'none',
-      border: 'none',
-      cursor: 'pointer',
-      fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Inter,sans-serif',
-      fontWeight: 600
-    }
-  }, "\u0411\u04AF\u0433\u0434\u0438\u0439\u0433 \u0445\u0430\u0440\u0430\u0445 \u2192")), TICKETS.filter(t => t.status !== "Хаагдсан").slice(0, 5).map((t, i, arr) => /*#__PURE__*/React.createElement("div", {
-    key: t.id,
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 12,
-      padding: '10px 0',
-      borderBottom: i < arr.length - 1 ? '0.5px solid #EBEBEB' : 'none'
-    }
-  }, /*#__PURE__*/React.createElement(PBadge, {
-    priority: t.priority
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1,
-      minWidth: 0
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 13,
-      fontWeight: 600,
-      color: '#1A1A1A',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap'
-    }
-  }, t.title), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '1px 0 0',
-      fontSize: 11,
-      color: '#999999'
-    }
-  }, t.id, " \xB7 SLA: ", t.sla.split(" ")[0])), /*#__PURE__*/React.createElement(TBadge, {
-    status: t.status
-  })))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px',
-      boxShadow: '0 1px 3px rgba(0,0,0,.04)'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 14px',
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D \u043C\u044D\u0434\u044D\u0433\u0434\u043B\u04AF\u04AF\u0434"), TICKET_NOTIFS.slice(0, 4).map((n, i) => /*#__PURE__*/React.createElement("div", {
-    key: n.id,
-    style: {
-      display: 'flex',
-      gap: 10,
-      alignItems: 'flex-start',
-      padding: '9px 0',
-      borderBottom: i < 3 ? '0.5px solid #EBEBEB' : 'none'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      width: 8,
-      height: 8,
-      borderRadius: 69,
-      marginTop: 4,
-      flexShrink: 0,
-      background: {
-        warning: '#D97706',
-        success: '#10B981',
-        info: '#534AB7'
-      }[n.type]
-    }
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 12,
-      fontWeight: 600,
-      color: '#1A1A1A'
-    }
-  }, n.title), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '2px 0 0',
-      fontSize: 11,
-      color: '#666666',
-      lineHeight: 1.4
-    }
-  }, n.msg), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '1px 0 0',
-      fontSize: 10,
-      color: '#999999'
-    }
-  }, n.time)))))));
+  var ce = React.createElement;
+  var useState = React.useState;
+  var _period = useState("all");
+  var period = _period[0];
+  var setPeriod = _period[1];
+
+  /* ── data calc ── */
+  var all = TICKETS;
+  var open = all.filter(function(t){return t.status==="\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439"}).length;
+  var inprog = all.filter(function(t){return t.status==="\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430"}).length;
+  var resolved = all.filter(function(t){return t.status==="\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D"}).length;
+  var closed = all.filter(function(t){return t.status==="\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D"}).length;
+  var cancelled = all.filter(function(t){return t.status==="\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D"}).length;
+  var notClosed = all.length - closed;
+
+  /* category counts */
+  var catMap = {};
+  all.forEach(function(t){catMap[t.category]=(catMap[t.category]||0)+1});
+  var catEntries = Object.entries(catMap).sort(function(a,b){return b[1]-a[1]});
+  var catColors = ["#534AB7","#D97706","#DC2626","#059669","#2563EB","#7C3AED","#EC4899","#06B6D4"];
+
+  /* priority counts */
+  var priMap = {};
+  all.forEach(function(t){priMap[t.priority]=(priMap[t.priority]||0)+1});
+
+  /* type counts */
+  var typeMap = {};
+  all.forEach(function(t){typeMap[t.type||"\u0425\u04AF\u0441\u044D\u043B\u0442"]=(typeMap[t.type||"\u0425\u04AF\u0441\u044D\u043B\u0442"]||0)+1});
+
+  /* team counts */
+  var teamMap = {};
+  all.forEach(function(t){if(t.team) teamMap[t.team]=(teamMap[t.team]||0)+1});
+  var teamEntries = Object.entries(teamMap).sort(function(a,b){return b[1]-a[1]});
+
+  /* engineer counts */
+  var engMap = {};
+  all.forEach(function(t){if(t.assigned) engMap[t.assigned]=(engMap[t.assigned]||0)+1});
+  var engEntries = Object.entries(engMap).sort(function(a,b){return b[1]-a[1]});
+
+  /* status distribution for bar */
+  var statusData = [
+    {label:"\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439",count:open,color:"#534AB7"},
+    {label:"\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",count:inprog,color:"#D97706"},
+    {label:"\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",count:resolved,color:"#059669"},
+    {label:"\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",count:closed,color:"#6B7280"},
+    {label:"\u0426\u0443\u0446\u043B\u0430\u0433\u0434\u0441\u0430\u043D",count:cancelled,color:"#DC2626"}
+  ];
+  var maxStatus = Math.max.apply(null,statusData.map(function(s){return s.count}))||1;
+
+  /* helpers */
+  var Card = function(props){
+    return ce("div",{style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:props.p||'24px 28px',boxShadow:'0 1px 3px rgba(0,0,0,.03)'}},props.children);
+  };
+  var STitle = function(props){
+    return ce("p",{style:{margin:'0 0 16px',fontSize:12,fontWeight:700,color:'#888',textTransform:'uppercase',letterSpacing:.5}},props.children);
+  };
+
+  /* pie chart SVG helper */
+  var PieChart = function(props){
+    var data = props.data; var size = props.size||160; var hole = props.hole||0;
+    var total = data.reduce(function(s,d){return s+d.value},0);
+    if(total===0) return ce("div",{style:{width:size,height:size,display:'flex',alignItems:'center',justifyContent:'center',color:'#CCC',fontSize:12}},"\u0414\u0430\u0442\u0430 \u0431\u0430\u0439\u0445\u0433\u04AF\u0439");
+    var r = size/2; var cx = r; var cy = r;
+    var startAngle = -Math.PI/2;
+    var paths = data.map(function(d,i){
+      var angle = (d.value/total)*2*Math.PI;
+      var endAngle = startAngle + angle;
+      var x1 = cx + r*Math.cos(startAngle);
+      var y1 = cy + r*Math.sin(startAngle);
+      var x2 = cx + r*Math.cos(endAngle);
+      var y2 = cy + r*Math.sin(endAngle);
+      var large = angle > Math.PI ? 1 : 0;
+      var pathD = "M "+cx+" "+cy+" L "+x1+" "+y1+" A "+r+" "+r+" 0 "+large+" 1 "+x2+" "+y2+" Z";
+      startAngle = endAngle;
+      return ce("path",{key:i,d:pathD,fill:d.color,stroke:'#fff',strokeWidth:2});
+    });
+    return ce("svg",{width:size,height:size,viewBox:"0 0 "+size+" "+size},paths,
+      hole>0 && ce("circle",{cx:cx,cy:cy,r:hole,fill:'#fff'})
+    );
+  };
+
+  /* ═══ RETURN ═══ */
+  return ce("div",{style:{display:'flex',flexDirection:'column',gap:24}},
+
+    /* ── HEADER ── */
+    ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+      ce("div",null,
+        ce("h1",{style:{margin:0,fontSize:24,fontWeight:700,color:'#1A1A1A'}},"\u0422\u0438\u043A\u0435\u0442 \u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A"),
+        ce("p",{style:{margin:'4px 0 0',fontSize:13,color:'#888'}},"\u0422\u0430\u0432\u0430\u043D \u0411\u043E\u0433\u0434 \u041D\u0443\u0440\u0430 \u0425\u0425\u041A \u00B7 IT \u0434\u044D\u043C\u0436\u043B\u044D\u0433\u0438\u0439\u043D \u0445\u044F\u043D\u0430\u0445 \u0441\u0430\u043C\u0431\u0430\u0440")
+      ),
+      ce("div",{style:{display:'flex',gap:8}},
+        ce(Btn,{icon:"plus-lg",onClick:function(){setTModule("t-list")}},"\u0422\u0438\u043A\u0435\u0442 \u04AF\u04AF\u0441\u0433\u044D\u0445")
+      )
+    ),
+
+    /* ── KPI CARDS ROW ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:14}},
+      [{label:"\u041D\u0438\u0439\u0442 \u0442\u0438\u043A\u0435\u0442",value:all.length,icon:"ticket-detailed",iconBg:"#EEEDFE",iconColor:"#534AB7",sub:"\u0411\u04AF\u0440\u0442\u0433\u044D\u0433\u0434\u0441\u044D\u043D",subC:"#888"},
+       {label:"\u041D\u044D\u044D\u043B\u0442\u0442\u044D\u0439",value:open,icon:"exclamation-circle",iconBg:"#EEEDFE",iconColor:"#3C3489",sub:"\u0425\u04AF\u043B\u044D\u044D\u0436 \u0431\u0430\u0439\u043D\u0430",subC:"#534AB7"},
+       {label:"\u042F\u0432\u0436 \u0431\u0430\u0439\u043D\u0430",value:inprog,icon:"arrow-repeat",iconBg:"#FEF3C7",iconColor:"#D97706",sub:"\u0418\u0434\u044D\u0432\u0445\u0442\u044D\u0439",subC:"#D97706"},
+       {label:"\u0428\u0438\u0439\u0434\u044D\u0433\u0434\u0441\u044D\u043D",value:resolved,icon:"check-circle",iconBg:"#D1FAE5",iconColor:"#059669",sub:"\u0411\u0430\u0442\u0430\u043B\u0433\u0430\u0430\u0436\u0443\u0443\u043B\u0430\u0445",subC:"#059669"},
+       {label:"\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D",value:closed,icon:"lock",iconBg:"#F3F4F6",iconColor:"#6B7280",sub:"\u0414\u0443\u0443\u0441\u0441\u0430\u043D",subC:"#6B7280"}
+      ].map(function(k){
+        return ce("div",{key:k.label,style:{background:'#fff',border:'0.5px solid #E8E8E8',borderRadius:12,padding:'20px 22px',display:'flex',gap:14,alignItems:'center'}},
+          ce("div",{style:{width:44,height:44,background:k.iconBg,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+            ce(Ic,{n:k.icon,s:20,style:{color:k.iconColor}})
+          ),
+          ce("div",null,
+            ce("p",{style:{margin:0,fontSize:10,color:'#999',fontWeight:700,textTransform:'uppercase',letterSpacing:.4}},k.label),
+            ce("p",{style:{margin:'4px 0 2px',fontSize:28,fontWeight:700,color:'#1A1A1A',lineHeight:1}},k.value),
+            ce("p",{style:{margin:0,fontSize:11,color:k.subC,fontWeight:600}},k.sub)
+          )
+        )
+      })
+    ),
+
+    /* ── CHARTS ROW: Status + Category + Type ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16}},
+
+      /* Status Bar Chart */
+      ce(Card,null,
+        ce(STitle,null,"\u0421\u0442\u0430\u0442\u0443\u0441\u0430\u0430\u0440"),
+        ce("div",{style:{display:'flex',flexDirection:'column',gap:12}},
+          statusData.map(function(s){
+            return ce("div",{key:s.label,style:{display:'flex',alignItems:'center',gap:10}},
+              ce("span",{style:{fontSize:11,fontWeight:600,color:'#555',minWidth:90,textAlign:'right'}},s.label),
+              ce("div",{style:{flex:1,height:24,background:'#F5F5F5',borderRadius:6,overflow:'hidden',position:'relative'}},
+                ce("div",{style:{height:'100%',width:Math.round(s.count/maxStatus*100)+"%",background:s.color,borderRadius:6,transition:'width .3s',minWidth:s.count>0?24:0}})
+              ),
+              ce("span",{style:{fontSize:13,fontWeight:700,color:'#1A1A1A',minWidth:24,textAlign:'right'}},s.count)
+            )
+          })
+        )
+      ),
+
+      /* Category Pie Chart */
+      ce(Card,null,
+        ce(STitle,null,"\u0410\u043D\u0433\u0438\u043B\u0430\u043B\u0430\u0430\u0440"),
+        ce("div",{style:{display:'flex',alignItems:'center',gap:20}},
+          ce(PieChart,{data:catEntries.map(function(e,i){return {value:e[1],color:catColors[i%catColors.length]}}),size:140,hole:0}),
+          ce("div",{style:{display:'flex',flexDirection:'column',gap:6}},
+            catEntries.map(function(e,i){
+              return ce("div",{key:e[0],style:{display:'flex',alignItems:'center',gap:8}},
+                ce("span",{style:{width:10,height:10,borderRadius:3,background:catColors[i%catColors.length],flexShrink:0}}),
+                ce("span",{style:{fontSize:11,color:'#555'}},e[0]),
+                ce("span",{style:{fontSize:11,fontWeight:700,color:'#1A1A1A',marginLeft:4}},e[1])
+              )
+            })
+          )
+        )
+      ),
+
+      /* Type + Priority donut */
+      ce(Card,null,
+        ce(STitle,null,"\u0422\u04E9\u0440\u04E9\u043B & \u042D\u0440\u044D\u043C\u0431\u044D"),
+        ce("div",{style:{display:'flex',gap:24}},
+          /* Type */
+          ce("div",{style:{flex:1,textAlign:'center'}},
+            ce("p",{style:{margin:'0 0 10px',fontSize:11,fontWeight:700,color:'#999'}},"\u0422\u04E9\u0440\u04E9\u043B"),
+            ce(PieChart,{data:Object.entries(typeMap).map(function(e,i){return {value:e[1],color:i===0?"#534AB7":"#D97706"}}),size:100,hole:30}),
+            ce("div",{style:{marginTop:8,display:'flex',flexDirection:'column',gap:4,alignItems:'center'}},
+              Object.entries(typeMap).map(function(e,i){
+                return ce("span",{key:e[0],style:{fontSize:11,color:'#555'}},
+                  ce("span",{style:{display:'inline-block',width:8,height:8,borderRadius:2,background:i===0?"#534AB7":"#D97706",marginRight:4}}),e[0]," ",ce("b",null,e[1])
+                )
+              })
+            )
+          ),
+          /* Priority */
+          ce("div",{style:{flex:1,textAlign:'center'}},
+            ce("p",{style:{margin:'0 0 10px',fontSize:11,fontWeight:700,color:'#999'}},"\u042D\u0440\u044D\u043C\u0431\u044D"),
+            ce(PieChart,{data:[
+              {value:priMap["Critical"]||0,color:"#991B1B"},
+              {value:priMap["High"]||0,color:"#DC2626"},
+              {value:priMap["Medium"]||0,color:"#D97706"},
+              {value:priMap["Low"]||0,color:"#059669"}
+            ],size:100,hole:30}),
+            ce("div",{style:{marginTop:8,display:'flex',flexDirection:'column',gap:4,alignItems:'center'}},
+              [["Critical","#991B1B"],["High","#DC2626"],["Medium","#D97706"],["Low","#059669"]].map(function(p){
+                return ce("span",{key:p[0],style:{fontSize:11,color:'#555'}},
+                  ce("span",{style:{display:'inline-block',width:8,height:8,borderRadius:2,background:p[1],marginRight:4}}),p[0]," ",ce("b",null,priMap[p[0]]||0)
+                )
+              })
+            )
+          )
+        )
+      )
+    ),
+
+    /* ── SECOND ROW: Team Performance + Engineer + SLA Risk ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}},
+
+      /* Team Performance */
+      ce(Card,null,
+        ce(STitle,null,"\u0411\u0410\u0413\u0423\u0423\u0414\u042B\u041D \u0413\u04AE\u0419\u0426\u042D\u0422\u0413\u042D\u041B"),
+        ce("div",{style:{display:'flex',flexDirection:'column',gap:10}},
+          teamEntries.map(function(e,i){
+            var teamColor = catColors[i%catColors.length];
+            return ce("div",{key:e[0],style:{display:'flex',alignItems:'center',gap:12}},
+              ce("div",{style:{width:36,height:36,borderRadius:8,background:teamColor+'18',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+                ce(Ic,{n:"people",s:15,style:{color:teamColor}})
+              ),
+              ce("div",{style:{flex:1}},
+                ce("p",{style:{margin:0,fontSize:13,fontWeight:600,color:'#1A1A1A'}},e[0]),
+                ce("div",{style:{marginTop:4,height:8,background:'#F0F0F0',borderRadius:4,overflow:'hidden'}},
+                  ce("div",{style:{height:'100%',width:Math.round(e[1]/all.length*100)+"%",background:teamColor,borderRadius:4}})
+                )
+              ),
+              ce("span",{style:{fontSize:15,fontWeight:700,color:'#1A1A1A',minWidth:28,textAlign:'right'}},e[1])
+            )
+          })
+        )
+      ),
+
+      /* Engineer Workload */
+      ce(Card,null,
+        ce(STitle,null,"\u0418\u041D\u0416\u0415\u041D\u0415\u0420\u04AE\u04AE\u0414\u0418\u0419\u041D \u0410\u0427\u0410\u0410\u041B\u0410\u041B"),
+        ce("div",{style:{display:'flex',flexDirection:'column',gap:10}},
+          engEntries.map(function(e,i){
+            return ce("div",{key:e[0],style:{display:'flex',alignItems:'center',gap:12}},
+              ce("div",{style:{width:36,height:36,borderRadius:69,background:'#EEEDFE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:13,fontWeight:700,color:'#534AB7'}},e[0].charAt(0)),
+              ce("div",{style:{flex:1}},
+                ce("p",{style:{margin:0,fontSize:13,fontWeight:600,color:'#1A1A1A'}},e[0]),
+                ce("div",{style:{marginTop:4,height:8,background:'#F0F0F0',borderRadius:4,overflow:'hidden'}},
+                  ce("div",{style:{height:'100%',width:Math.round(e[1]/all.length*100)+"%",background:'#534AB7',borderRadius:4}})
+                )
+              ),
+              ce("div",{style:{textAlign:'right'}},
+                ce("span",{style:{fontSize:15,fontWeight:700,color:'#1A1A1A'}},e[1]),
+                ce("p",{style:{margin:0,fontSize:10,color:'#999'}},"\u0442\u0438\u043A\u0435\u0442")
+              )
+            )
+          }),
+          all.filter(function(t){return !t.assigned}).length > 0 && ce("div",{style:{display:'flex',alignItems:'center',gap:12,background:'#FEF3C7',borderRadius:10,padding:'10px 14px',marginTop:4}},
+            ce(Ic,{n:"exclamation-triangle",s:16,style:{color:'#D97706'}}),
+            ce("span",{style:{fontSize:12,fontWeight:600,color:'#92400E'}},all.filter(function(t){return !t.assigned}).length+" \u0442\u0438\u043A\u0435\u0442 \u0445\u0443\u0432\u0430\u0430\u0440\u0438\u043B\u0430\u0430\u0433\u04AF\u0439 \u0431\u0430\u0439\u043D\u0430")
+          )
+        )
+      )
+    ),
+
+    /* ── ACTIVE TICKETS + NOTIFICATIONS ── */
+    ce("div",{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}},
+
+      /* Active Tickets table */
+      ce(Card,{p:'20px 24px'},
+        ce("div",{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}},
+          ce("p",{style:{margin:0,fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0418\u0434\u044D\u0432\u0445\u0442\u044D\u0439 \u0442\u0438\u043A\u0435\u0442\u04AF\u04AF\u0434"),
+          ce("button",{onClick:function(){setTModule("t-list")},style:{fontSize:12,color:'#534AB7',background:'none',border:'none',cursor:'pointer',fontFamily:"-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif",fontWeight:600}},"\u0411\u04AF\u0433\u0434\u0438\u0439\u0433 \u0445\u0430\u0440\u0430\u0445 \u2192")
+        ),
+        ce("table",{style:{width:'100%',borderCollapse:'collapse',fontSize:12}},
+          ce("thead",null,
+            ce("tr",{style:{borderBottom:'1px solid #F0F0F0'}},
+              ce("th",{style:{padding:'8px 10px',textAlign:'left',fontSize:10,fontWeight:700,color:'#999',textTransform:'uppercase'}},"\u2116"),
+              ce("th",{style:{padding:'8px 10px',textAlign:'left',fontSize:10,fontWeight:700,color:'#999',textTransform:'uppercase'}},"\u0413\u0430\u0440\u0447\u0438\u0433"),
+              ce("th",{style:{padding:'8px 10px',textAlign:'center',fontSize:10,fontWeight:700,color:'#999',textTransform:'uppercase'}},"\u042D\u0440\u044D\u043C\u0431\u044D"),
+              ce("th",{style:{padding:'8px 10px',textAlign:'center',fontSize:10,fontWeight:700,color:'#999',textTransform:'uppercase'}},"\u0421\u0442\u0430\u0442\u0443\u0441"),
+              ce("th",{style:{padding:'8px 10px',textAlign:'right',fontSize:10,fontWeight:700,color:'#999',textTransform:'uppercase'}},"SLA")
+            )
+          ),
+          ce("tbody",null,
+            all.filter(function(t){return t.status!=="\u0425\u0430\u0430\u0433\u0434\u0441\u0430\u043D"}).slice(0,6).map(function(t){
+              return ce("tr",{key:t.id,style:{borderBottom:'0.5px solid #F5F5F5'}},
+                ce("td",{style:{padding:'10px 10px',fontFamily:'monospace',fontSize:11,fontWeight:700,color:'#534AB7'}},t.id.split("-").pop()),
+                ce("td",{style:{padding:'10px 10px',maxWidth:200,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontWeight:600,color:'#1A1A1A'}},t.title),
+                ce("td",{style:{padding:'10px 10px',textAlign:'center'}},ce(PBadge,{priority:t.priority})),
+                ce("td",{style:{padding:'10px 10px',textAlign:'center'}},ce(TBadge,{status:t.status})),
+                ce("td",{style:{padding:'10px 10px',textAlign:'right',fontSize:11,color:'#999'}},t.sla.split(" ")[0])
+              )
+            })
+          )
+        )
+      ),
+
+      /* Notifications */
+      ce(Card,{p:'20px 24px'},
+        ce("p",{style:{margin:'0 0 14px',fontSize:14,fontWeight:700,color:'#1A1A1A'}},"\u0421\u04AF\u04AF\u043B\u0438\u0439\u043D \u043C\u044D\u0434\u044D\u0433\u0434\u043B\u04AF\u04AF\u0434"),
+        TICKET_NOTIFS.slice(0,5).map(function(n,i){
+          return ce("div",{key:n.id,style:{display:'flex',gap:10,alignItems:'flex-start',padding:'10px 0',borderBottom:i<4?'0.5px solid #F0F0F0':'none'}},
+            ce("div",{style:{width:28,height:28,borderRadius:8,background:{warning:'#FEF3C7',success:'#D1FAE5',info:'#EEEDFE'}[n.type],display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+              ce(Ic,{n:{warning:"exclamation-triangle",success:"check-circle",info:"info-circle"}[n.type],s:13,style:{color:{warning:'#D97706',success:'#059669',info:'#534AB7'}[n.type]}})
+            ),
+            ce("div",{style:{flex:1}},
+              ce("p",{style:{margin:0,fontSize:12,fontWeight:600,color:'#1A1A1A'}},n.title),
+              ce("p",{style:{margin:'2px 0 0',fontSize:11,color:'#666',lineHeight:1.4}},n.msg),
+              ce("p",{style:{margin:'2px 0 0',fontSize:10,color:'#999'}},n.time)
+            )
+          )
+        })
+      )
+    )
+  );
 }
 
 // ── NEW TICKET FORM ───────────────────────────────────────────
@@ -17320,7 +17359,7 @@ function AnalyticsModule() {
       gap: 0,
       borderBottom: '2px solid #E8ECEF'
     }
-  }, [["overview", "\u0415\u0440\u04E9\u043D\u0445\u0438\u0439"], ["agents", "\u0418\u043D\u0436\u0435\u043D\u0435\u0440 \u0430\u0447\u0430\u0430\u043B\u0430\u043B"], ["ai", "AI \u04AF\u0440 \u0430\u0448\u0438\u0433"], ["sla-trend", "SLA \u0423\u0440\u0441\u0433\u0430\u043B"]].map(function(arr) { var k=arr[0], l=arr[1]; return /*#__PURE__*/React.createElement("button", {
+  }, [["overview", "\u0415\u0440\u04E9\u043D\u0445\u0438\u0439"], ["agents", "\u0418\u043D\u0436\u0435\u043D\u0435\u0440 \u0430\u0447\u0430\u0430\u043B\u0430\u043B"], ["sla-trend", "SLA \u0423\u0440\u0441\u0433\u0430\u043B"]].map(function(arr) { var k=arr[0], l=arr[1]; return /*#__PURE__*/React.createElement("button", {
     key: k,
     onClick: function(){setAtab(k)},
     style: {
@@ -17453,601 +17492,6 @@ function AnalyticsModule() {
     )}))
   ),
 
-  /* ── TAB: AI үр ашиг ── */
-  atab === "ai" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "rg-dash"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 16px',
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0421\u0430\u0440\u044B\u043D \u0442\u0438\u043A\u0435\u0442 trend"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 20,
-      alignItems: 'flex-end',
-      height: 160
-    }
-  }, monthly.map(m => /*#__PURE__*/React.createElement("div", {
-    key: m.m,
-    style: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: 4
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 4,
-      alignItems: 'flex-end',
-      width: '100%',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: '35%',
-      background: '#EEEDFE',
-      borderRadius: '4px 4px 0 0',
-      height: `${m.created / max * 120}px`
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: '35%',
-      background: '#D1FAE5',
-      borderRadius: '4px 4px 0 0',
-      height: `${m.resolved / max * 120}px`
-    }
-  })), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 10,
-      color: '#999999',
-      textAlign: 'center'
-    }
-  }, m.m), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 10,
-      color: '#555555'
-    }
-  }, m.created, "/", m.resolved)))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: 16,
-      justifyContent: 'center',
-      marginTop: 10
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      color: '#3C3489',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 4
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      width: 10,
-      height: 10,
-      background: '#EEEDFE',
-      borderRadius: 2
-    }
-  }), "\u04AE\u04AF\u0441\u0433\u044D\u0441\u044D\u043D"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      color: '#059669',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 4
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      width: 10,
-      height: 10,
-      background: '#D1FAE5',
-      borderRadius: 2
-    }
-  }), "\u0428\u0438\u0439\u0434\u0441\u044D\u043D"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      padding: '20px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 16px',
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0410\u043D\u0433\u0438\u043B\u043B\u0430\u0430\u0440"), byCat.map(c => /*#__PURE__*/React.createElement("div", {
-    key: c.cat,
-    style: {
-      marginBottom: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      marginBottom: 3
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12,
-      color: '#555555'
-    }
-  }, c.cat), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      fontWeight: 600,
-      color: '#1A1A1A'
-    }
-  }, c.count, " (", c.pct, "%)")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: 6,
-      background: '#F5F5F5',
-      borderRadius: 3
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: 6,
-      background: '#534AB7',
-      borderRadius: 3,
-      width: `${c.pct}%`
-    }
-  })))))), /*#__PURE__*/React.createElement("div", {
-    className: "rg-3"
-  }, [{
-    l: "CSAT дундаж",
-    v: "4.5/5",
-    s: "Өмнөх сараас +0.2",
-    sc: "#059669",
-    icon: "star",
-    ib: "#D1FAE5",
-    ic: "#059669"
-  }, {
-    l: "Эхний хариу",
-    v: "22 мин",
-    s: "Зорилт: 30 мин",
-    sc: "#059669",
-    icon: "reply",
-    ib: "#EEEDFE",
-    ic: "#534AB7"
-  }, {
-    l: "\u0422\u0438\u043A\u0435\u0442\u0433\u04AF\u0439 \u0448\u0438\u0439\u0434\u0441\u044D\u043D",
-    v: "38%",
-    s: "KB-аас шийдэгдсэн",
-    sc: "#534AB7",
-    icon: "shield-check",
-    ib: "#EDE9FE",
-    ic: "#7C3AED"
-  }].map(k => /*#__PURE__*/React.createElement("div", {
-    key: k.l,
-    style: {
-      background: '#fff',
-      border: '0.5px solid #EBEBEB',
-      borderRadius: 8,
-      padding: '14px 16px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 11,
-      color: '#999999',
-      fontWeight: 500
-    }
-  }, k.l), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 28,
-      height: 28,
-      borderRadius: 6,
-      background: k.ib,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: k.icon,
-    s: 13,
-    style: {
-      color: k.ic
-    }
-  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 3px',
-      fontSize: 22,
-      fontWeight: 600,
-      color: '#1A1A1A',
-      lineHeight: 1
-    }
-  }, k.v), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 11,
-      color: k.sc,
-      fontWeight: 500
-    }
-  }, k.s)))))), atab === "ai" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "rg-4"
-  }, [{
-    l: "AI ангилалын нарийвчлал",
-    v: "92%",
-    s: "NLP model v2.1",
-    icon: "stars",
-    bg: "#EDE9FE",
-    color: "#7C3AED"
-  }, {
-    l: "Авто-чиглүүлэлт",
-    v: "87%",
-    s: "Зөв team-д оноосон",
-    icon: "signpost-split",
-    bg: "#D1FAE5",
-    color: "#059669"
-  }, {
-    l: "KB Deflection",
-    v: "38%",
-    s: "Тикет үүсгэлгүй шийдсэн",
-    icon: "book",
-    bg: "#EEEDFE",
-    color: "#534AB7"
-  }, {
-    l: "AI хариултын хугацаа",
-    v: "1.2 сек",
-    s: "RAG + pgvector",
-    icon: "lightning",
-    bg: "#FEF3C7",
-    color: "#D97706"
-  }].map(k => /*#__PURE__*/React.createElement("div", {
-    key: k.l,
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 10,
-      padding: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 10,
-      marginBottom: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 36,
-      height: 36,
-      borderRadius: 8,
-      background: k.bg,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: k.icon,
-    s: 16,
-    style: {
-      color: k.color
-    }
-  })), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12,
-      color: '#666666'
-    }
-  }, k.l)), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 24,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, k.v), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '4px 0 0',
-      fontSize: 11,
-      color: '#059669',
-      fontWeight: 600
-    }
-  }, k.s)))), /*#__PURE__*/React.createElement("div", {
-    className: "rg-dash"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 10,
-      padding: 20
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 14px',
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "AI \u0430\u043D\u0433\u0438\u043B\u0430\u043B\u044B\u043D \u043C\u0430\u0442\u0440\u0438\u0446 (Confusion Matrix)"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '120px repeat(4,1fr)',
-      gap: 0,
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 8,
-      overflow: 'hidden'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: 8,
-      background: '#F5F5F5',
-      fontSize: 10,
-      fontWeight: 700,
-      color: '#999999',
-      textAlign: 'center'
-    }
-  }, "\u0411\u043E\u0434\u0438\u0442\\\u0422\u0430\u0430\u043C\u0430\u0433"), ["Компьютер", "Сүлжээ", "Програм", "МАБ"].map(h => /*#__PURE__*/React.createElement("div", {
-    key: h,
-    style: {
-      padding: 8,
-      background: '#F5F5F5',
-      fontSize: 10,
-      fontWeight: 600,
-      color: '#534AB7',
-      textAlign: 'center'
-    }
-  }, h)), [["Компьютер", 45, 2, 1, 0], ["Сүлжээ", 1, 38, 0, 1], ["Програм", 2, 0, 52, 1], ["МАБ", 0, 1, 0, 18]].map(row => /*#__PURE__*/React.createElement(React.Fragment, {
-    key: row[0]
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: 8,
-      background: '#F5F5F5',
-      fontSize: 11,
-      fontWeight: 600,
-      color: '#555555'
-    }
-  }, row[0]), row.slice(1).map((v, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      padding: 8,
-      textAlign: 'center',
-      fontSize: 13,
-      fontWeight: 700,
-      color: row[0] === ["Компьютер", "Сүлжээ", "Програм", "МАБ"][i] ? '#059669' : '#DC2626',
-      background: row[0] === ["Компьютер", "Сүлжээ", "Програм", "МАБ"][i] ? '#F0FDF4' : '#fff'
-    }
-  }, v)))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 10,
-      padding: 20
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 14px',
-      fontSize: 14,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "AI NLP Intent Detection"), [{
-    intent: "ticket_create",
-    label: "Тикет үүсгэх хүсэлт",
-    count: 89,
-    pct: 95,
-    color: "#534AB7"
-  }, {
-    intent: "info_request",
-    label: "Мэдээлэл хүсэлт",
-    count: 56,
-    pct: 92,
-    color: "#059669"
-  }, {
-    intent: "complaint",
-    label: "Гомдол",
-    count: 12,
-    pct: 88,
-    color: "#D97706"
-  }, {
-    intent: "password_reset",
-    label: "Нууц үг сэргээх",
-    count: 34,
-    pct: 97,
-    color: "#7C3AED"
-  }].map(i => /*#__PURE__*/React.createElement("div", {
-    key: i.intent,
-    style: {
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      marginBottom: 4
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12,
-      fontWeight: 600,
-      color: '#555555'
-    }
-  }, i.label), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      fontWeight: 700,
-      color: i.color
-    }
-  }, i.count, " (", i.pct, "%)")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: 6,
-      background: '#F5F5F5',
-      borderRadius: 69,
-      overflow: 'hidden'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: '100%',
-      width: `${i.pct}%`,
-      background: i.color,
-      borderRadius: 69
-    }
-  })))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: '#fff',
-      border: '0.5px solid #E8E8E8',
-      borderRadius: 12,
-      overflow: 'hidden'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: 'linear-gradient(135deg,#1A1A2E 0%,#534AB7 100%)',
-      color: '#fff',
-      padding: '18px 24px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: "stars",
-    s: 18
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 16,
-      fontWeight: 700
-    }
-  }, "FR-46: Intelligent Priority Leveling \u2014 NLP"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 10,
-      background: 'rgba(255,255,255,.2)',
-      padding: '2px 10px',
-      borderRadius: 69
-    }
-  }, "AI Model v2.1")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '6px 0 0',
-      fontSize: 12,
-      opacity: .8
-    }
-  }, "\u0425\u044D\u0440\u044D\u0433\u043B\u044D\u0433\u0447\u0438\u0439\u043D \u0431\u0438\u0447\u0441\u044D\u043D \u0442\u0430\u0439\u043B\u0431\u0430\u0440 \u0434\u0430\u0445\u044C \u0442\u04AF\u043B\u0445\u04AF\u04AF\u0440 \u04AF\u0433\u0441, \u043A\u043E\u043D\u0442\u0435\u043A\u0441\u0442, sentiment-\u0434 \u0442\u0443\u043B\u0433\u0443\u0443\u0440\u043B\u0430\u043D AI \u044D\u0440\u044D\u043C\u0431\u0438\u0439\u0433 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0430\u0430\u0440 \u0441\u0430\u043D\u0430\u043B \u0431\u043E\u043B\u0433\u043E\u043D\u043E. \u0410\u043B\u0434\u0430\u0430\u043D\u044B \u043C\u0430\u0433\u0430\u0434\u043B\u0430\u043B \u2264 5%.")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: '20px 24px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 20
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 12px',
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "\u0410\u0436\u0438\u043B\u043B\u0430\u0445 \u0437\u0430\u0440\u0447\u0438\u043C"), /*#__PURE__*/React.createElement("div", {
-    className: "rg-4"
-  }, [{
-    step: 1,
-    icon: "pencil-square",
-    title: "Текст оруулах",
-    desc: "Хэрэглэгч асуудлаа чөлөөт бичвэрээр тайлбарлана",
-    color: "#534AB7"
-  }, {
-    step: 2,
-    icon: "search",
-    title: "NLP шинжилгээ",
-    desc: "Түлхүүр үгс таних + Sentiment + Entity extraction",
-    color: "#7C3AED"
-  }, {
-    step: 3,
-    icon: "lightning",
-    title: "Эрэмбэ санал болгох",
-    desc: "AI confidence score (0.00–1.00) priority санал болгоно",
-    color: "#D97706"
-  }, {
-    step: 4,
-    icon: "check-circle",
-    title: "Баталгаажуулах",
-    desc: "FR-45: AI-ийн бөглөсөн талбарыг хянаж, засах боломжтой",
-    color: "#059669"
-  }].map(s => /*#__PURE__*/React.createElement("div", {
-    key: s.step,
-    style: {
-      background: '#F8F9FA',
-      borderRadius: 10,
-      padding: 16,
-      textAlign: 'center',
-      border: '0.5px solid #E8E8E8'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 36,
-      height: 36,
-      borderRadius: 69,
-      background: s.color + '18',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0 auto 10px'
-    }
-  }, /*#__PURE__*/React.createElement(Ic, {
-    n: s.icon,
-    s: 16,
-    style: {
-      color: s.color
-    }
-  })), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 4px',
-      fontSize: 12,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, s.step, ". ", s.title), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontSize: 11,
-      color: '#999999'
-    }
-  }, s.desc))))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 12px',
-      fontSize: 13,
-      fontWeight: 700,
-      color: '#1A1A1A'
-    }
-  }, "NLP \u0422\u04AF\u043B\u0445\u04AF\u04AF\u0440 \u04AF\u0433\u0441 \u2192 Priority Mapping"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      borderRadius: 10,
-      border: '0.5px solid #E8E8E8',
-      overflow: 'hidden'
-    }
-  }, /*#__PURE__*/React.createElement("table", {
-    style: {
-      width: '100%',
-      borderCollapse: 'collapse',
-      fontSize: 12
-    }
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
-    style: {
-      background: '#1A1A2E',
       color: '#fff'
     }
   }, /*#__PURE__*/React.createElement("th", {
