@@ -7084,7 +7084,8 @@ function ReportModule({portal}) {
       flexDirection: 'column',
       gap: 18
     }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React.createElement("div", {style: {display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap"}},
+/*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     style: {
       margin: 0,
       fontSize: 20,
@@ -7097,7 +7098,7 @@ function ReportModule({portal}) {
       fontSize: 13,
       color: '#666666'
     }
-  }, "\u041C\u043E\u0434\u0443\u043B\u044C 4: \u0421\u0430\u043D\u0445\u04AF\u04AF\u0433\u0438\u0439\u043D & \u0433\u04AF\u0439\u0446\u044D\u0442\u0433\u044D\u043B\u0438\u0439\u043D \u0442\u0430\u0439\u043B\u0430\u043D (FR-12~15)")), /*#__PURE__*/React.createElement("div", {
+  }, "\u041C\u043E\u0434\u0443\u043B\u044C 4: \u0421\u0430\u043D\u0445\u04AF\u04AF\u0433\u0438\u0439\u043D & \u0433\u04AF\u0439\u0446\u044D\u0442\u0433\u044D\u043B\u0438\u0439\u043D \u0442\u0430\u0439\u043B\u0430\u043D (FR-12~15)")), portal === "admin" && /*#__PURE__*/React.createElement("div", {style: {display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap"}},/*#__PURE__*/React.createElement("button", {onClick: () => { const ifr = document.querySelector("iframe[data-monthly]"); if (ifr && ifr.contentWindow) ifr.contentWindow.postMessage({action: "open-template"}, "*"); }, style: {display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', fontSize: 13, fontWeight: 700, border: '0.5px solid #E8E8E8', background: '#fff', borderRadius: 8, cursor: 'pointer', color: '#1A1A1A', fontFamily: '-apple-system,BlinkMacSystemFont,Inter,sans-serif'}}, "⚙️ Загвар тохируулга"),/*#__PURE__*/React.createElement("button", {onClick: () => { const ifr = document.querySelector("iframe[data-monthly]"); if (ifr && ifr.contentWindow) ifr.contentWindow.postMessage({action: "open-analytics"}, "*"); }, style: {display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', fontSize: 13, fontWeight: 700, border: '0.5px solid #E8E8E8', background: '#fff', borderRadius: 8, cursor: 'pointer', color: '#1A1A1A', fontFamily: '-apple-system,BlinkMacSystemFont,Inter,sans-serif'}}, "📊 Шинжилгээ"),/*#__PURE__*/React.createElement("button", {onClick: () => { const ifr = document.querySelector("iframe[data-monthly]"); if (ifr && ifr.contentWindow) ifr.contentWindow.postMessage({action: "show-wizard"}, "*"); }, style: {display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', fontSize: 13, fontWeight: 700, border: '0.5px solid #534AB7', background: '#534AB7', borderRadius: 8, cursor: 'pointer', color: '#fff', fontFamily: '-apple-system,BlinkMacSystemFont,Inter,sans-serif'}}, "＋ Шинэ тайлан үүсгэх"))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: 0,
@@ -7885,14 +7886,14 @@ function ReportModule({portal}) {
       borderRadius: 69,
       transition: 'width .5s'
     }
-  }))))))), tab === "monthly" && /*#__PURE__*/React.createElement("iframe", {srcDoc: portal === "admin" ? `<!DOCTYPE html>
+  }))))))), tab === "monthly" && /*#__PURE__*/React.createElement("iframe", {"data-monthly": true, srcDoc: portal === "admin" ? `<!DOCTYPE html>
 <html lang="mn">
 <head>
 <meta charset="UTF-8">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #FFFFFF; --panel: #FFFFFF; --border: #E8E8E8; --border-strong: #E8E8E8;
+    --bg: transparent; --panel: #FFFFFF; --border: #E8E8E8; --border-strong: #E8E8E8;
     --text: #1A1A1A; --text-soft: #555555; --text-mute: #999999;
     --primary: #534AB7; --primary-soft: #EEEDFE; --primary-text: #534AB7; --accent: #534AB7;
     --green: #059669; --green-soft: #D1FAE5; --green-text: #065F46;
@@ -7907,12 +7908,11 @@ function ReportModule({portal}) {
   }
   body { padding: 16px 18px 50px; }
 
-  /* === Toolbar (filter + action buttons in one row) === */
+  /* === Toolbar — action buttons on RIGHT === */
   .toolbar {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: flex-end;
     gap: 10px; flex-wrap: wrap; margin-bottom: 14px;
   }
-  .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .toolbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
   /* === Buttons === */
@@ -7996,25 +7996,25 @@ function ReportModule({portal}) {
   .chip.red { background: var(--red-soft); color: var(--red); }
   .chip.gray { background: #F4F6F8; color: #555; }
 
-  /* === KPI cards (Performance tab pattern) === */
-  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
-  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .kpi-grid { grid-template-columns: 1fr; } }
+  /* === KPI cards (Performance tab pattern) — compact for 13" === */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+  @media (max-width: 720px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .kpi-grid { grid-template-columns: 1fr; } }
   .kpi {
     background: #fff; border: 0.5px solid var(--border);
-    border-radius: 8px; padding: 16px;
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    border-radius: 8px; padding: 12px 14px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
   }
   .kpi-content { flex: 1; min-width: 0; }
-  .kpi-label { font-size: 12px; font-weight: 600; color: #666; margin-bottom: 6px; }
-  .kpi-value { font-size: 22px; font-weight: 700; color: #0F172A; margin-bottom: 3px; }
+  .kpi-label { font-size: 11px; font-weight: 600; color: #666; margin-bottom: 4px; }
+  .kpi-value { font-size: 19px; font-weight: 700; color: #0F172A; margin-bottom: 2px; }
   .kpi-value.green { color: var(--green); }
   .kpi-value.red { color: var(--red); }
-  .kpi-sub { font-size: 11px; color: #999; }
+  .kpi-sub { font-size: 10.5px; color: #999; }
   .kpi-icon {
-    width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   /* === Tables === */
@@ -8041,8 +8041,8 @@ function ReportModule({portal}) {
   }
   .icon-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
 
-  .wizard-shell { background: var(--panel); border: 0.5px solid var(--border); border-radius: 8px; padding: 0; display: grid; grid-template-columns: 260px 1fr; min-height: 580px; overflow: hidden; }
-  @media (max-width: 800px) { .wizard-shell { grid-template-columns: 1fr; } }
+  .wizard-shell { background: var(--panel); border: 0.5px solid var(--border); border-radius: 8px; padding: 0; display: grid; grid-template-columns: 220px 1fr; min-height: 560px; overflow: hidden; }
+  @media (max-width: 700px) { .wizard-shell { grid-template-columns: 1fr; } }
   .stepper { background: #FAFAFA; border-right: 0.5px solid var(--border); padding: 18px 14px; }
   .step { display: flex; align-items: flex-start; gap: 10px; padding: 11px 10px; border-radius: 8px; cursor: pointer; color: var(--text-soft); margin-bottom: 2px; }
   .step:hover { background: #fff; }
@@ -8164,32 +8164,35 @@ function ReportModule({portal}) {
     cursor: pointer; font-weight: 700; font-family: inherit;
   }
 
-  .detail-shell { display: grid; grid-template-columns: 220px 1fr 280px; gap: 14px; }
-  @media (max-width: 1200px) { .detail-shell { grid-template-columns: 1fr; } }
-  .toc { background: var(--panel); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 12px; align-self: start; max-height: 700px; overflow: auto; }
-  .toc-title { font-size: 11px; color: var(--text-soft); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; font-weight: 700; }
-  .toc-item { padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--text-soft); display: flex; align-items: center; gap: 6px; }
+  .detail-shell { display: grid; grid-template-columns: 180px 1fr 240px; gap: 12px; }
+  @media (max-width: 1100px) { .detail-shell { grid-template-columns: 160px 1fr 220px; gap: 10px; } }
+  @media (max-width: 900px) { .detail-shell { grid-template-columns: 1fr; } }
+  .toc { background: var(--panel); border: 0.5px solid var(--border); border-radius: 8px; padding: 12px 10px; align-self: start; max-height: 650px; overflow: auto; }
+  .toc-title { font-size: 10.5px; color: var(--text-soft); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; font-weight: 700; }
+  .toc-item { padding: 6px 8px; border-radius: 5px; cursor: pointer; font-size: 11.5px; color: var(--text-soft); display: flex; align-items: center; gap: 4px; }
   .toc-item:hover { background: #FAFBFC; color: var(--text); }
   .toc-item.active { background: var(--primary-soft); color: var(--primary-text); font-weight: 700; }
   .toc-tag { font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-left: auto; font-weight: 700; }
   .toc-tag.auto { background: var(--green-soft); color: var(--green); }
   .toc-tag.manual { background: var(--amber-soft); color: var(--amber); }
   .toc-tag.mixed { background: var(--indigo-soft); color: var(--indigo); }
-  .preview { background: #fff; border: 0.5px solid var(--border); border-radius: 10px; padding: 28px 36px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
-  .preview h1 { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 12px; color: var(--primary); }
-  .preview h2 { font-size: 14px; font-weight: 700; margin-top: 18px; margin-bottom: 8px; color: var(--text); border-bottom: 0.5px solid var(--border); padding-bottom: 4px; }
-  .preview p { margin-bottom: 8px; line-height: 1.6; font-size: 12.5px; }
-  .preview ul { margin-left: 18px; margin-bottom: 10px; font-size: 12.5px; }
-  .preview ul li { margin-bottom: 3px; }
-  .preview table.mini { width: 100%; font-size: 11.5px; margin: 8px 0; border: 0.5px solid var(--border); border-collapse: collapse; }
-  .preview table.mini th, .preview table.mini td { padding: 5px 8px; border: 0.5px solid var(--border); }
+  .preview { background: #fff; border: 0.5px solid var(--border); border-radius: 8px; padding: 18px 22px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+  .preview h1 { font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 10px; color: var(--primary); }
+  .preview h2 { font-size: 13px; font-weight: 700; margin-top: 14px; margin-bottom: 6px; color: var(--text); border-bottom: 0.5px solid var(--border); padding-bottom: 3px; }
+  .preview p { margin-bottom: 6px; line-height: 1.55; font-size: 12px; }
+  .preview ul { margin-left: 16px; margin-bottom: 8px; font-size: 12px; }
+  .preview ul li { margin-bottom: 2px; }
+  .preview table.mini { width: 100%; font-size: 11px; margin: 6px 0; border: 0.5px solid var(--border); border-collapse: collapse; }
+  .preview table.mini th, .preview table.mini td { padding: 4px 6px; border: 0.5px solid var(--border); }
   .preview table.mini th { background: #FAFBFC; }
-  .preview .auto-block { background: #F0FDF4; border-left: 3px solid var(--green); padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 12px; }
-  .preview .manual-block { background: #FFFBEB; border-left: 3px solid var(--amber); padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 12px; position: relative; }
-  .preview .manual-block::before { content: '✏️ Хүний оролцоо'; font-size: 10px; color: var(--amber); font-weight: 700; display: block; margin-bottom: 4px; }
-  .preview .auto-block::before { content: '🤖 Автомат татсан'; font-size: 10px; color: var(--green); font-weight: 700; display: block; margin-bottom: 4px; }
-  .meta-panel { background: var(--panel); border: 0.5px solid var(--border); border-radius: 10px; padding: 16px; align-self: start; }
-  .meta-section { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 0.5px solid var(--border); }
+  .preview .auto-block { background: #F0FDF4; border-left: 3px solid var(--green); padding: 8px 12px; border-radius: 0 5px 5px 0; margin: 6px 0; font-size: 11.5px; }
+  .preview .manual-block { background: #FFFBEB; border-left: 3px solid var(--amber); padding: 8px 12px; border-radius: 0 5px 5px 0; margin: 6px 0; font-size: 11.5px; position: relative; }
+  .preview .manual-block::before { content: '✏️ Хүний оролцоо'; font-size: 9.5px; color: var(--amber); font-weight: 700; display: block; margin-bottom: 3px; }
+  .preview .auto-block::before { content: '🤖 Автомат татсан'; font-size: 9.5px; color: var(--green); font-weight: 700; display: block; margin-bottom: 3px; }
+  .preview .sec { display: none; }
+  .preview .sec.active { display: block; animation: fade .2s ease; }
+  .meta-panel { background: var(--panel); border: 0.5px solid var(--border); border-radius: 8px; padding: 12px; align-self: start; }
+  .meta-section { padding-bottom: 10px; margin-bottom: 10px; border-bottom: 0.5px solid var(--border); }
   .meta-section:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
   .meta-h { font-size: 11px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
   .meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; padding: 3px 0; }
@@ -8318,15 +8321,6 @@ function ReportModule({portal}) {
 </head>
 <body>
 
-<div class="toolbar">
-  <div class="toolbar-left"></div>
-  <div class="toolbar-actions">
-    <button class="btn" onclick="openModal('template')">⚙️ Загвар тохируулга</button>
-    <button class="btn" onclick="openModal('analytics')">📊 Шинжилгээ</button>
-    <button class="btn btn-primary" onclick="showView('wizard')">＋ Шинэ тайлан үүсгэх</button>
-  </div>
-</div>
-
 <div class="view active" id="view-list">
   <div class="kpi-grid">
     <div class="kpi">
@@ -8374,12 +8368,12 @@ function ReportModule({portal}) {
     <table>
       <thead><tr><th style="width: 36px;"><input type="checkbox"/></th><th>Харилцагч</th><th>Сар</th><th>Үйлчилгээний хамрах хүрээ</th><th>Бэлэн байдал</th><th>Төлөв</th><th>Сүүлд засварласан</th><th style="width: 120px;">Үйлдэл</th></tr></thead>
       <tbody>
-        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Таван Богд Холдингс" ХХК</b><div style="font-size: 11px; color: var(--text-soft);">TBH · 19 сервер · 2 локац</div></td><td>2026 / 04</td><td><span class="chip gray">Сервер</span> <span class="chip gray">Сүлжээ</span> <span class="chip gray">IT Support</span> <span class="chip gray">+3</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">96%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 96%;"></div></div></div><div style="font-size: 10.5px; color: var(--text-soft); margin-top: 2px;">Хураангуй: ✏️ хүлээгдэж буй</div></td><td><span class="chip amber">⏳ Засваруудаж буй</span></td><td><div style="font-size: 11.5px;">2026.04.27 14:23</div><div style="font-size: 10.5px; color: var(--text-soft);">Б.Эрдэнэ-Очир</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">✏️</div><div class="icon-btn">📤</div></div></td></tr>
-        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Таван Богд Холдингс" ХХК</b><div style="font-size: 11px; color: var(--text-soft);">TBH · 19 сервер · 2 локац</div></td><td>2026 / 03</td><td><span class="chip gray">Сервер</span> <span class="chip gray">Сүлжээ</span> <span class="chip gray">IT Support</span> <span class="chip gray">+3</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">100%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 100%;"></div></div></div></td><td><span class="chip green">✓ Илгээгдсэн</span></td><td><div style="font-size: 11.5px;">2026.03.28 11:05</div><div style="font-size: 10.5px; color: var(--text-soft);">tbh.ceo@... — нээсэн</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">📋</div><div class="icon-btn">⬇️</div></div></td></tr>
-        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Говь" ХК</b><div style="font-size: 11px; color: var(--text-soft);">Gobi · 14 веб систем · ERP</div></td><td>2026 / 04</td><td><span class="chip gray">Веб</span> <span class="chip gray">ERP</span> <span class="chip gray">МАБ</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">78%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 78%; background: var(--amber);"></div></div></div><div style="font-size: 10.5px; color: var(--text-soft); margin-top: 2px;">2 хэсгийн өгөгдөл хүлээгдэж буй</div></td><td><span class="chip amber">⏳ Боловсруулж буй</span></td><td><div style="font-size: 11.5px;">2026.04.26 16:40</div><div style="font-size: 10.5px; color: var(--text-soft);">Авто. үүсгэгдсэн</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">✏️</div><div class="icon-btn">📤</div></div></td></tr>
-        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Таван Богд Финанс" ББСБ</b><div style="font-size: 11px; color: var(--text-soft);">TBFin · ERP · МАБ</div></td><td>2026 / 04</td><td><span class="chip gray">ERP</span> <span class="chip gray">МАБ</span> <span class="chip gray">Дата</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">100%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 100%;"></div></div></div></td><td><span class="chip green">✓ Гарын үсэгтэй</span></td><td><div style="font-size: 11.5px;">2026.04.25 10:22</div><div style="font-size: 10.5px; color: var(--text-soft);">tbf.cfo — гарын үсэг зурсан</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">📋</div><div class="icon-btn">⬇️</div></div></td></tr>
-        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"ТБ Фүүдс" ХХК</b><div style="font-size: 11px; color: var(--text-soft);">TBFoods · KFC + PH захиалга</div></td><td>2026 / 04</td><td><span class="chip gray">Програм</span> <span class="chip gray">Дата</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">42%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 42%; background: var(--red);"></div></div></div><div style="font-size: 10.5px; color: var(--text-soft); margin-top: 2px;">Хараахан эхлүүлээгүй</div></td><td><span class="chip gray">⏸ Эхлээгүй</span></td><td><div style="font-size: 11.5px;">—</div><div style="font-size: 10.5px; color: var(--text-soft);">2026.04.21-нд авто. эхлэх</div></td><td><div class="row-actions"><div class="icon-btn">▶️</div><div class="icon-btn">⏰</div></div></td></tr>
-        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Их Хан Банк" ХК</b><div style="font-size: 11px; color: var(--text-soft);">Khan · Дата · МАБ</div></td><td>2026 / 04</td><td><span class="chip gray">МАБ</span> <span class="chip gray">Дата</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">100%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 100%;"></div></div></div></td><td><span class="chip green">✓ Илгээгдсэн</span></td><td><div style="font-size: 11.5px;">2026.04.24 09:15</div><div style="font-size: 10.5px; color: var(--text-soft);">PDF · DocuSign</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">📋</div><div class="icon-btn">⬇️</div></div></td></tr>
+        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Таван Богд Холдингс" ХХК</b></td><td>2026 / 04</td><td><span class="chip gray">Сервер</span> <span class="chip gray">Сүлжээ</span> <span class="chip gray">IT Support</span> <span class="chip gray">+3</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">96%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 96%;"></div></div></div><div style="font-size: 10.5px; color: var(--text-soft); margin-top: 2px;">Хураангуй: ✏️ хүлээгдэж буй</div></td><td><span class="chip amber">⏳ Засваруудаж буй</span></td><td><div style="font-size: 11.5px;">2026.04.27 14:23</div><div style="font-size: 10.5px; color: var(--text-soft);">Б.Эрдэнэ-Очир</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">✏️</div><div class="icon-btn">📤</div></div></td></tr>
+        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Таван Богд Холдингс" ХХК</b></td><td>2026 / 03</td><td><span class="chip gray">Сервер</span> <span class="chip gray">Сүлжээ</span> <span class="chip gray">IT Support</span> <span class="chip gray">+3</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">100%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 100%;"></div></div></div></td><td><span class="chip green">✓ Илгээгдсэн</span></td><td><div style="font-size: 11.5px;">2026.03.28 11:05</div><div style="font-size: 10.5px; color: var(--text-soft);">tbh.ceo@... — нээсэн</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">📋</div><div class="icon-btn">⬇️</div></div></td></tr>
+        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Говь" ХК</b></td><td>2026 / 04</td><td><span class="chip gray">Веб</span> <span class="chip gray">ERP</span> <span class="chip gray">МАБ</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">78%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 78%; background: var(--amber);"></div></div></div><div style="font-size: 10.5px; color: var(--text-soft); margin-top: 2px;">2 хэсгийн өгөгдөл хүлээгдэж буй</div></td><td><span class="chip amber">⏳ Боловсруулж буй</span></td><td><div style="font-size: 11.5px;">2026.04.26 16:40</div><div style="font-size: 10.5px; color: var(--text-soft);">Авто. үүсгэгдсэн</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">✏️</div><div class="icon-btn">📤</div></div></td></tr>
+        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Таван Богд Финанс" ББСБ</b></td><td>2026 / 04</td><td><span class="chip gray">ERP</span> <span class="chip gray">МАБ</span> <span class="chip gray">Дата</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">100%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 100%;"></div></div></div></td><td><span class="chip green">✓ Гарын үсэгтэй</span></td><td><div style="font-size: 11.5px;">2026.04.25 10:22</div><div style="font-size: 10.5px; color: var(--text-soft);">tbf.cfo — гарын үсэг зурсан</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">📋</div><div class="icon-btn">⬇️</div></div></td></tr>
+        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"ТБ Фүүдс" ХХК</b></td><td>2026 / 04</td><td><span class="chip gray">Програм</span> <span class="chip gray">Дата</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">42%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 42%; background: var(--red);"></div></div></div><div style="font-size: 10.5px; color: var(--text-soft); margin-top: 2px;">Хараахан эхлүүлээгүй</div></td><td><span class="chip gray">⏸ Эхлээгүй</span></td><td><div style="font-size: 11.5px;">—</div><div style="font-size: 10.5px; color: var(--text-soft);">2026.04.21-нд авто. эхлэх</div></td><td><div class="row-actions"><div class="icon-btn">▶️</div><div class="icon-btn">⏰</div></div></td></tr>
+        <tr class="clickable" onclick="showView('detail')"><td><input type="checkbox"/></td><td><b>"Их Хан Банк" ХК</b></td><td>2026 / 04</td><td><span class="chip gray">МАБ</span> <span class="chip gray">Дата</span></td><td><div style="display: flex; align-items: center; gap: 8px;"><div style="font-weight: 700; font-size: 12px;">100%</div><div class="progress-bar" style="flex: 1; max-width: 80px;"><div class="progress-fill" style="width: 100%;"></div></div></div></td><td><span class="chip green">✓ Илгээгдсэн</span></td><td><div style="font-size: 11.5px;">2026.04.24 09:15</div><div style="font-size: 10.5px; color: var(--text-soft);">PDF · DocuSign</div></td><td><div class="row-actions"><div class="icon-btn">👁️</div><div class="icon-btn">📋</div><div class="icon-btn">⬇️</div></div></td></tr>
       </tbody>
     </table>
   </div>
@@ -8391,7 +8385,7 @@ function ReportModule({portal}) {
 
   <div class="hint-card" style="margin-top: 18px;">
     <div class="hint-icon">💡</div>
-    <div><div class="hint-title">Хэрхэн ажилладаг вэ?</div><div class="hint-text">Сар бүрийн 21-нд систем автоматаар бүх 22 харилцагчид зориулж <b>draft тайлан</b> үүсгэдэг. Серверийн ашиглалт (Zabbix), сүлжээ (PRTG), тикетийн статистик (Helpdesk), ERP-ийн KPI (Odoo), веб uptime (Uptime monitor), МАБ скан (OpenVAS) зэрэг өгөгдлийг auto-татна. Хариуцсан менежер дараа нь "Хураангуй", "Дүгнэлт", "Зөвлөмж" хэсгийг бичээд илгээнэ.</div></div>
+    <div><div class="hint-title">Хэрхэн ажилладаг вэ?</div><div class="hint-text">Сар бүрийн 21-нд систем автоматаар бүх 22 харилцагчид зориулж <b>draft тайлан</b> үүсгэдэг. Серверийн ашиглалт (Zabbix), сүлжээ (PRTG), тикетийн статистик (IT ticket), веб uptime (Uptime monitor) зэрэг өгөгдлийг auto-татна. Хариуцсан менежер дараа нь "Хураангуй", "Дүгнэлт", "Зөвлөмж" хэсгийг бичээд илгээнэ.</div></div>
   </div>
 </div>
 
@@ -8731,41 +8725,38 @@ function ReportModule({portal}) {
         <!-- =================== МАБ ТАЙЛАН UPLOAD =================== -->
         <div style="margin-top: 22px;">
           <div style="font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-            🔐 МАБ-ын тайлан (тусдаа upload)
+            🔐 МАБ-ын тайлан (МАБА upload хийнэ)
             <span style="background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;">EXTERNAL</span>
           </div>
           <div style="font-size: 11.5px; color: var(--text-soft); margin-bottom: 10px;">
-            МАБ-ын тайланг МАБА (Мэдээллийн Аюулгүй Байдлын Алба) тусдаа бэлдэж системд upload хийдэг. Auto-fetch боломжгүй.
+            МАБА (Мэдээллийн Аюулгүй Байдлын Алба) тусдаа бэлдсэн тайлан файлаа доорх талбарт байршуулж оруулна.
           </div>
 
-          <!-- Upload card -->
-          <div style="border: 1px dashed var(--primary); border-radius: 8px; padding: 16px; background: var(--primary-soft);">
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
-              <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 200px;">
-                <div style="width: 42px; height: 42px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">📄</div>
-                <div>
-                  <div style="font-size: 13px; font-weight: 700; color: var(--text);">TBHoldings_МАБ_2026_04.pdf</div>
-                  <div style="font-size: 11px; color: var(--text-soft); margin-top: 2px;">2.4 MB · 14 хуудас · CONFIDENTIAL — INTERNAL USE</div>
-                  <div style="font-size: 11px; color: var(--green); margin-top: 3px; font-weight: 600;">✓ Upload хийсэн: 2026.04.25 11:30 · О.Төгсбаяр (МАБ Менежер)</div>
-                </div>
-              </div>
-              <div style="display: flex; gap: 6px;">
-                <button class="btn" style="font-size: 12px; padding: 6px 12px;">👁️ Үзэх</button>
-                <button class="btn" style="font-size: 12px; padding: 6px 12px;">⬇️ Татах</button>
-                <button class="btn btn-ghost" style="font-size: 12px; padding: 6px 12px;">🔄 Шинэчлэх</button>
-              </div>
+          <!-- Upload zone -->
+          <div id="mab-upload-zone" style="border: 2px dashed var(--primary); border-radius: 10px; padding: 28px 20px; background: var(--primary-soft); text-align: center; cursor: pointer; transition: all .2s;" onmouseover="this.style.background='#E0E7FF'" onmouseout="this.style.background='var(--primary-soft)'" onclick="document.getElementById('mab-file-input').click()">
+            <div style="font-size: 38px; margin-bottom: 6px;">☁️</div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--primary-text); margin-bottom: 4px;">МАБ тайлан файлаа энд чирж оруулна уу</div>
+            <div style="font-size: 12px; color: var(--text-soft); margin-bottom: 12px;">эсвэл доорх товчийг дарж файл сонгоно</div>
+            <button class="btn btn-primary" style="font-size: 12.5px;" onclick="event.stopPropagation(); document.getElementById('mab-file-input').click();">📁 Файл сонгох</button>
+            <input type="file" id="mab-file-input" style="display: none;" accept=".pdf,.docx,.doc"/>
+            <div style="font-size: 10.5px; color: var(--text-mute); margin-top: 12px;">
+              Дэмждэг формат: PDF, Word (.docx) · Хамгийн ихдээ: 25 MB
             </div>
+          </div>
 
-            <div style="margin-top: 14px; padding-top: 12px; border-top: 0.5px solid #C7D2FE; font-size: 11.5px; color: var(--primary-text);">
-              <b>Багтаасан хэсгүүд:</b>
-              <div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px;">
-                <span class="chip" style="font-size: 10.5px;">3.1 Эрсдэлийн үнэлгээ</span>
-                <span class="chip" style="font-size: 10.5px;">3.2 Хандах эрхийн хяналт</span>
-                <span class="chip" style="font-size: 10.5px;">3.3 Эцсийн төхөөрөмжийн МАБ</span>
-                <span class="chip" style="font-size: 10.5px;">3.4 Эмзэг шинжилгээ</span>
-                <span class="chip" style="font-size: 10.5px;">3.5 Зөрчлийн хяналт</span>
-                <span class="chip" style="font-size: 10.5px;">3.6 Cyber Assurance</span>
-              </div>
+          <!-- Upload requirements -->
+          <div style="margin-top: 12px; padding: 12px 14px; background: #FAFAFA; border: 0.5px solid var(--border); border-radius: 8px;">
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">📋 МАБ тайланд багтсан байх ёстой хэсгүүд:</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+              <span class="chip" style="font-size: 10.5px;">3.1 Эрсдэлийн үнэлгээ</span>
+              <span class="chip" style="font-size: 10.5px;">3.2 Хандах эрхийн хяналт</span>
+              <span class="chip" style="font-size: 10.5px;">3.3 Эцсийн төхөөрөмжийн МАБ</span>
+              <span class="chip" style="font-size: 10.5px;">3.4 Эмзэг шинжилгээ</span>
+              <span class="chip" style="font-size: 10.5px;">3.5 Зөрчлийн хяналт</span>
+              <span class="chip" style="font-size: 10.5px;">3.6 Cyber Assurance</span>
+            </div>
+            <div style="font-size: 10.5px; color: var(--text-mute); margin-top: 8px;">
+              Файл нь "CONFIDENTIAL — INTERNAL USE" watermark-тай байх шаардлагатай
             </div>
           </div>
 
@@ -9096,31 +9087,179 @@ function ReportModule({portal}) {
   <div class="detail-shell">
     <div class="toc">
       <div class="toc-title">Тайлангийн бүтэц</div>
-      <div class="toc-item active">1. Ерөнхий мэдээлэл <span class="toc-tag auto">AUTO</span></div>
-      <div class="toc-item">2. Сарын онцлох үйл явдал <span class="toc-tag manual">MANUAL</span></div>
-      <div class="toc-item">3.1 Сервер <span class="toc-tag auto">AUTO</span></div>
-      <div class="toc-item">3.2 Сүлжээ <span class="toc-tag auto">AUTO</span></div>
-      <div class="toc-item">3.3 IT Support <span class="toc-tag mixed">MIX</span></div>
-      <div class="toc-item">3.4 ERP <span class="toc-tag mixed">MIX</span></div>
-      <div class="toc-item">3.5 Веб засвар <span class="toc-tag mixed">MIX</span></div>
-      <div class="toc-item">3.6 МАБ <span class="toc-tag mixed">MIX</span></div>
-      <div class="toc-item">4. Гол эрсдэл <span class="toc-tag manual">MANUAL</span></div>
-      <div class="toc-item">5. Зөвлөмж <span class="toc-tag manual">MANUAL</span></div>
-      <div class="toc-item">6. Нэхэмжлэх дүн <span class="toc-tag auto">AUTO</span></div>
+      <div class="toc-item active" onclick="setSec('s1')" data-sec="s1">1. Ерөнхий мэдээлэл <span class="toc-tag auto">AUTO</span></div>
+      <div class="toc-item" onclick="setSec('s2')" data-sec="s2">2. Сарын онцлох үйл явдал <span class="toc-tag manual">MANUAL</span></div>
+      <div class="toc-item" onclick="setSec('s3-1')" data-sec="s3-1">3.1 Сервер <span class="toc-tag auto">AUTO</span></div>
+      <div class="toc-item" onclick="setSec('s3-2')" data-sec="s3-2">3.2 Сүлжээ <span class="toc-tag auto">AUTO</span></div>
+      <div class="toc-item" onclick="setSec('s3-3')" data-sec="s3-3">3.3 IT Support <span class="toc-tag mixed">MIX</span></div>
+      <div class="toc-item" onclick="setSec('s3-4')" data-sec="s3-4">3.4 ERP <span class="toc-tag mixed">MIX</span></div>
+      <div class="toc-item" onclick="setSec('s3-5')" data-sec="s3-5">3.5 Веб засвар <span class="toc-tag mixed">MIX</span></div>
+      <div class="toc-item" onclick="setSec('s3-6')" data-sec="s3-6">3.6 МАБ <span class="toc-tag mixed">MIX</span></div>
+      <div class="toc-item" onclick="setSec('s4')" data-sec="s4">4. Гол эрсдэл <span class="toc-tag manual">MANUAL</span></div>
+      <div class="toc-item" onclick="setSec('s5')" data-sec="s5">5. Зөвлөмж <span class="toc-tag manual">MANUAL</span></div>
+      <div class="toc-item" onclick="setSec('s6')" data-sec="s6">6. Нэхэмжлэх дүн <span class="toc-tag auto">AUTO</span></div>
       <div style="margin-top: 18px; padding-top: 14px; border-top: 0.5px solid var(--border);"><div class="legend"><span><span class="legend-dot" style="background: #059669;"></span>Авто</span><span><span class="legend-dot" style="background: #D97706;"></span>Хүн</span><span><span class="legend-dot" style="background: #4338CA;"></span>Холимог</span></div></div>
     </div>
     <div class="preview">
       <h1>ҮЙЛЧИЛГЭЭНИЙ ГҮЙЦЭТГЭЛИЙН ТАЙЛАН</h1>
       <p style="text-align: center; color: var(--text-soft); font-size: 12px;">"Таван Богд Холдингс" ХХК · 2026.03.21 – 2026.04.20</p>
-      <h2>1. Тайлангийн ерөнхий мэдээлэл</h2>
-      <div class="auto-block"><table class="mini"><tr><th>Тайлант хугацаа</th><td>2026.03.21 – 2026.04.20</td></tr><tr><th>Харилцагч</th><td>"Таван Богд Холдингс" ХХК (TBH)</td></tr><tr><th>Үйлчилгээний чиглэл</th><td>IT2604, IT2603, IT2601-2, IT2607-3, IT2607-4, IT2605</td></tr><tr><th>Серверийн тоо</th><td>19 сервер</td></tr><tr><th>Тайлан гаргасан</th><td>Б.Эрдэнэ-Очир</td></tr></table></div>
-      <h2>2. Сарын онцлох үйл явдал</h2>
-      <div class="manual-block"><ul><li><b>Серверийн тогтвортой байдал:</b> 19 сервер тасалдалгүй ажилласан (100%). TBT-DIAMOND-DB ба TBT-ECOUPON-DB-ийн дискний ашиглалт өндөр (84.82% / 66.03%).</li><li><b>Сүлжээ:</b> Хаан таун (99.91%) ба UB Galleria (98.98%) хэвийн ажилласан.</li><li><b>IT Support:</b> 244 тикет хүлээн авч 206-г шийдвэрлэв (84.4%).</li><li><b>ERP тайлан:</b> UBP Cash On тайланг Power BI-р хүргэсэн.</li></ul></div>
-      <h2>3.1 IT2604 — Серверийн ашиглалт</h2>
-      <div class="auto-block"><p>4-р сарын байдлаар найдвартай ажиллагаа <b>100%</b>. 19 сервер. Дундаж CPU 12%, RAM 38%, Disk 27%.</p><table class="mini"><thead><tr><th>Server</th><th>CPU</th><th>RAM</th><th>Disk %</th><th>Uptime</th></tr></thead><tbody><tr><td>TBG-ODOO-APP-HUB</td><td>12 vCPU</td><td>23.46 GB</td><td>39.05%</td><td>100%</td></tr><tr><td>TBT-DIAMOND-DB ⚠️</td><td>8 vCPU</td><td>15.61 GB</td><td>84.82%</td><td>100%</td></tr></tbody></table></div>
-      <h2>3.3 IT2601-2 — IT Support</h2>
-      <div class="auto-block"><table class="mini"><tr><td>Нийт</td><td><b>244</b></td></tr><tr><td>Шийдвэрлэсэн</td><td><b style="color: var(--green);">206 (84.4%)</b></td></tr><tr><td>Цуцлагдсан</td><td>38 (15.6%)</td></tr></table></div>
-      <div class="manual-block"><p><b>Менежерийн дүгнэлт:</b> Програм хангамжийн тикетийн өсөлт нь Q1-ийн trend-ээс өндөр (+18%). M365 шинэчлэлийн нөлөө. Хөрөнгийн удирдлагын хэлтэст onsite training санал болгож байна.</p></div>
+
+      <!-- Section 1 -->
+      <div class="sec active" id="sec-s1">
+        <h2>1. Тайлангийн ерөнхий мэдээлэл</h2>
+        <div class="auto-block"><table class="mini"><tr><th>Тайлант хугацаа</th><td>2026.03.21 – 2026.04.20</td></tr><tr><th>Харилцагч</th><td>"Таван Богд Холдингс" ХХК (TBH)</td></tr><tr><th>Үйлчилгээний чиглэл</th><td>IT2604, IT2603, IT2601-2, IT2607-3, IT2607-4, IT2605</td></tr><tr><th>Серверийн тоо</th><td>19 сервер</td></tr><tr><th>Тайлан гаргасан</th><td>Б.Эрдэнэ-Очир</td></tr></table></div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="sec" id="sec-s2">
+        <h2>2. Сарын онцлох үйл явдал</h2>
+        <div class="manual-block"><ul><li><b>Серверийн тогтвортой байдал:</b> 19 сервер тасалдалгүй ажилласан (100%). TBT-DIAMOND-DB ба TBT-ECOUPON-DB-ийн дискний ашиглалт өндөр (84.82% / 66.03%).</li><li><b>Сүлжээ:</b> Хаан таун (99.91%) ба UB Galleria (98.98%) хэвийн ажилласан.</li><li><b>IT Support:</b> 244 тикет хүлээн авч 206-г шийдвэрлэв (84.4%).</li><li><b>ERP тайлан:</b> UBP Cash On тайланг Power BI-р хүргэсэн.</li></ul></div>
+      </div>
+
+      <!-- Section 3.1 — Сервер -->
+      <div class="sec" id="sec-s3-1">
+        <h2>3.1 IT2604 — Серверийн ашиглалт</h2>
+        <div class="auto-block"><p>4-р сарын байдлаар найдвартай ажиллагаа <b>100%</b>. 19 сервер. Дундаж CPU 12%, RAM 38%, Disk 27%.</p>
+          <table class="mini"><thead><tr><th>Server</th><th>CPU</th><th>RAM</th><th>Disk %</th><th>Uptime</th></tr></thead><tbody>
+            <tr><td>TBG-ODOO-APP-HUB</td><td>12 vCPU</td><td>23.46 GB</td><td>39.05%</td><td>100%</td></tr>
+            <tr><td>TBG-ODOO-DB-HUB</td><td>8 vCPU</td><td>15.61 GB</td><td>6.84%</td><td>100%</td></tr>
+            <tr><td>TBT-DIAMOND-DB ⚠️</td><td>8 vCPU</td><td>15.61 GB</td><td>84.82%</td><td>100%</td></tr>
+            <tr><td>TBT-ECOUPON-DB ⚠️</td><td>4 vCPU</td><td>7.75 GB</td><td>66.03%</td><td>100%</td></tr>
+            <tr><td colspan="5" style="text-align:center; color: var(--text-mute); font-size:10.5px;">+ нийт 19 сервер</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <!-- Section 3.2 — Сүлжээ -->
+      <div class="sec" id="sec-s3-2">
+        <h2>3.2 IT2603 — Салбарын сүлжээний тайлан</h2>
+        <div class="auto-block"><p>Сүлжээний тасралтгүй ажиллагаа <b>99.29%</b>. 2 локацын сүлжээний төхөөрөмжийн ашиглалт хэвийн.</p>
+          <table class="mini"><thead><tr><th>Локац</th><th>ICMP ping %</th><th>CPU</th><th>RAM</th><th>Bandwidth (peak)</th></tr></thead><tbody>
+            <tr><td>TBT Khaan Tower Office</td><td>99.91%</td><td>2.13%</td><td>53.34%</td><td>71 Mbps Rx · 45 Mbps Tx</td></tr>
+            <tr><td>TBT UB Galleria</td><td>98.98%</td><td>0.00%</td><td>35.31%</td><td>97 Mbps Rx · 9 Mbps Tx</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <!-- Section 3.3 — IT Support -->
+      <div class="sec" id="sec-s3-3">
+        <h2>3.3 IT2601-2 — IT Support тикет гүйцэтгэлийн тайлан</h2>
+        <div class="auto-block">
+          <table class="mini" style="display: inline-table; width: 48%; margin-right: 2%; vertical-align: top;">
+            <thead><tr><th colspan="2">Тоон үзүүлэлт</th></tr></thead>
+            <tbody>
+              <tr><td>Нийт ирсэн</td><td><b>244</b></td></tr>
+              <tr><td>Шийдвэрлэсэн</td><td><b style="color: var(--green);">206 (84.4%)</b></td></tr>
+              <tr><td>Цуцлагдсан</td><td>38 (15.6%)</td></tr>
+            </tbody>
+          </table>
+          <table class="mini" style="display: inline-table; width: 49%; vertical-align: top;">
+            <thead><tr><th>Тикетийн төрөл</th><th>Тоо</th></tr></thead>
+            <tbody>
+              <tr><td>Програм хангамж</td><td>84 (34.4%)</td></tr>
+              <tr><td>И-мэйл</td><td>45 (18.4%)</td></tr>
+              <tr><td>Компьютер, дагалдах</td><td>34 (13.9%)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="manual-block"><p><b>Менежерийн дүгнэлт:</b> Програм хангамжийн тикетийн өсөлт нь Q1-ийн trend-ээс өндөр (+18%). M365 шинэчлэлийн нөлөө. Хөрөнгийн удирдлагын хэлтэст onsite training санал болгож байна.</p></div>
+      </div>
+
+      <!-- Section 3.4 — ERP -->
+      <div class="sec" id="sec-s3-4">
+        <h2>3.4 IT2607-3 — ERP дэмжлэг үйлчилгээний тайлан</h2>
+        <div class="auto-block">
+          <table class="mini"><tr><th>Нийт ERP тикет</th><td><b>66</b></td></tr>
+            <tr><th>Шийдвэрлэсэн</th><td>62 (94%)</td></tr>
+            <tr><th>SLA нийцэл</th><td style="color: var(--green); font-weight: 700;">100%</td></tr>
+            <tr><th>Гол үйл явдал</th><td>UBP Cash On тайланг Power BI/Tableau-р хүргэсэн</td></tr>
+          </table>
+        </div>
+        <div class="manual-block"><p><b>Менежерийн дүгнэлт:</b> Хөрөнгийн удирдлагын хэлтэст хүргэгдсэн UBP Cash On тайлан удирдлагын мэдээлэлд эерэгээр нөлөөлж буй. Дараа сард 2 шинэ дашборд төлөвлөгдсөн.</p></div>
+      </div>
+
+      <!-- Section 3.5 — Веб засвар -->
+      <div class="sec" id="sec-s3-5">
+        <h2>3.5 IT2607-4 — Siro Танилцуулга вебсайтын засвар</h2>
+        <div class="auto-block">
+          <table class="mini"><tr><th>Систем</th><td>tavanbogd.com</td></tr>
+            <tr><th>Uptime</th><td style="color: var(--green); font-weight: 700;">100%</td></tr>
+            <tr><th>Critical алдаа</th><td>0</td></tr>
+            <tr><th>Support тикет</th><td>0</td></tr>
+          </table>
+        </div>
+        <div class="manual-block"><p><b>Энэ сард хийсэн ажил:</b></p>
+          <ul>
+            <li>SSL гэрчилгээ шинэчилсэн</li>
+            <li>Бүтээгдэхүүний гэрэл зургийн оптимизаци (-30% хэмжээ)</li>
+            <li>Хайлтын функцийн алдаа засварласан</li>
+            <li>Метаданд SEO зориулалттай шинэчлэл</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 3.6 — МАБ -->
+      <div class="sec" id="sec-s3-6">
+        <h2>3.6 IT2605 — МАБ хяналтын тайлан</h2>
+        <div class="auto-block">
+          <table class="mini"><tr><th>Нийцэл түвшин</th><td>SYS-008 — Түвшин 1</td></tr>
+            <tr><th>Эмзэг шинжилгээ</th><td>3 critical · 12 medium · 28 low</td></tr>
+            <tr><th>Нийцлийн оноо</th><td style="color: var(--green); font-weight: 700;">94%</td></tr>
+          </table>
+        </div>
+        <div class="manual-block"><p><b>МАБ багийн тэмдэглэл:</b> Сар бүрийн МАБ дэлгэрэнгүй тайлан тусдаа PDF-ээр upload хийгдсэн (TBHoldings_МАБ_2026_04.pdf, О.Төгсбаяр). 7 дэд хэсэг (3.1-3.7) бүгд багтсан.</p></div>
+      </div>
+
+      <!-- Section 4 — Эрсдэл -->
+      <div class="sec" id="sec-s4">
+        <h2>4. Гол эрсдэл, анхаарал татсан асуудал</h2>
+        <div class="manual-block">
+          <ul>
+            <li>🔴 <b>TBT-DIAMOND-DB Disk 84.82%</b> — 90% босгод ойртсон. Архивын төлөвлөгөө 5-р сарын дотор бэлдэх</li>
+            <li>🟡 <b>TBT-ECOUPON-DB Disk 66.03%</b> — 6 сарын тренд тооцож урьдчилан анхаарах</li>
+            <li>🟡 <b>UB Galleria сүлжээ 98.98%</b> — 99% босгод ойртсон. 5-р сард хяналт чангатгана</li>
+            <li>🟡 <b>Програм тикет +18%</b> — M365 шинэчлэлийн нөлөө, дасан зохицох үе</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 5 — Зөвлөмж -->
+      <div class="sec" id="sec-s5">
+        <h2>5. Зөвлөмж, дараа сарын төлөвлөгөө</h2>
+        <div class="manual-block">
+          <p><b>5-р сард хийх:</b></p>
+          <ul>
+            <li>TBT-DIAMOND-DB-ийн архивыг RPO 30 хоногоор тохируулах</li>
+            <li>Хөрөнгийн удирдлагын хэлтсийн 12 ажилтанд M365 advanced training (2 цаг)</li>
+            <li>SYS-007 Penetration Test 5-р сарын 15-нд төлөвлөгдсөн</li>
+            <li>UB Galleria сүлжээний QoS тохиргоо хянана</li>
+          </ul>
+          <p><b>Урт хугацааны:</b></p>
+          <ul>
+            <li>SYS-002 (Төхөөрөмжийн нэгдсэн удирдлага) нэвтрүүлэлтийг 6-р сард эхлүүлэх санал</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 6 — Нэхэмжлэх -->
+      <div class="sec" id="sec-s6">
+        <h2>6. Тоон гүйцэтгэл ба нэхэмжлэх дүн</h2>
+        <div class="auto-block">
+          <table class="mini"><thead><tr><th>Үйлчилгээний код</th><th>Нэгж</th><th>Тоо</th><th>Дүн (₮, НӨАТ-гүй)</th></tr></thead>
+            <tbody>
+              <tr><td>IT2604 — Сервер</td><td>VPS+Физик</td><td>19</td><td style="text-align: right;">5,605,000</td></tr>
+              <tr><td>IT2603 — Сүлжээ</td><td>Локац/сар</td><td>2</td><td style="text-align: right;">590,000</td></tr>
+              <tr><td>IT2601-2 — Тикет багц</td><td>Багц 5 (151+)</td><td>1</td><td style="text-align: right;">2,455,200</td></tr>
+              <tr><td>IT2607-3 — ERP</td><td>Систем/сар</td><td>1</td><td style="text-align: right;">910,000</td></tr>
+              <tr><td>IT2607-4 — Веб</td><td>Систем/сар</td><td>1</td><td style="text-align: right;">550,000</td></tr>
+              <tr><td>IT2605 — МАБ Түвшин 1</td><td>Компани/сар</td><td>1</td><td style="text-align: right;">1,500,000</td></tr>
+              <tr style="background: #FAFAFA; font-weight: 700;"><td colspan="3">НИЙТ (НӨАТ-гүй)</td><td style="text-align: right;">11,610,200₮</td></tr>
+              <tr><td colspan="3">НӨАТ 10%</td><td style="text-align: right;">1,161,020₮</td></tr>
+              <tr style="background: #EEEDFE; font-weight: 700; color: var(--primary-text);"><td colspan="3">НИЙТ (НӨАТ-тэй)</td><td style="text-align: right;">12,771,220₮</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div class="meta-panel">
       <div class="meta-section"><div class="meta-h">Тайлангийн төлөв</div><div style="text-align: center; padding: 8px 0;"><span class="chip amber" style="font-size: 12px; padding: 4px 10px;">⏳ Засваруудаж буй</span><div style="font-size: 11px; color: var(--text-soft); margin-top: 6px;">96% бүрэн</div></div></div>
@@ -9437,6 +9576,15 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// === postMessage listener — parent portal-аас ирэх товч click-ийг хүлээн авна ===
+window.addEventListener('message', function(e) {
+  var action = e.data && e.data.action;
+  if (!action) return;
+  if (action === 'open-template') openModal('template');
+  else if (action === 'open-analytics') openModal('analytics');
+  else if (action === 'show-wizard') showView('wizard');
+});
+
 // === Wizard step navigation ===
 var currentStep = 3;
 var stepStatuses = {
@@ -9479,6 +9627,19 @@ function setServiceCard(el) {
   if (cb) cb.textContent = el.classList.contains('checked') ? '✓' : '';
 }
 document.querySelectorAll('.service-card:not(.disabled)').forEach(c => c.addEventListener('click', function() { setServiceCard(this); }));
+
+// === Detail TOC navigation — section харуулагч ===
+function setSec(name) {
+  document.querySelectorAll('.toc-item[data-sec]').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.preview .sec').forEach(s => s.classList.remove('active'));
+  var t = document.querySelector('.toc-item[data-sec="' + name + '"]');
+  var s = document.getElementById('sec-' + name);
+  if (t) t.classList.add('active');
+  if (s) s.classList.add('active');
+  // preview-ийг top-руу скролл
+  var pv = document.querySelector('.preview');
+  if (pv) pv.scrollTop = 0;
+}
 <\/script>
 </body>
 </html>
@@ -9489,7 +9650,7 @@ document.querySelectorAll('.service-card:not(.disabled)').forEach(c => c.addEven
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #FFFFFF; --panel: #FFFFFF; --border: #E8E8E8;
+    --bg: transparent; --panel: #FFFFFF; --border: #E8E8E8;
     --text: #1A1A1A; --text-soft: #555555; --text-mute: #999999;
     --primary: #534AB7; --primary-soft: #EEEDFE; --primary-text: #534AB7; --accent: #534AB7;
     --green: #059669; --green-soft: #D1FAE5; --green-text: #065F46;
@@ -9595,8 +9756,9 @@ document.querySelectorAll('.service-card:not(.disabled)').forEach(c => c.addEven
   .icon-btn { width: 28px; height: 28px; border-radius: 6px; border: 0.5px solid var(--border); background: #fff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; color: #666; }
   .icon-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
 
-  .detail-shell { display: grid; grid-template-columns: 220px 1fr 280px; gap: 14px; }
-  @media (max-width: 1200px) { .detail-shell { grid-template-columns: 1fr; } }
+  .detail-shell { display: grid; grid-template-columns: 180px 1fr 240px; gap: 12px; }
+  @media (max-width: 1100px) { .detail-shell { grid-template-columns: 160px 1fr 220px; gap: 10px; } }
+  @media (max-width: 900px) { .detail-shell { grid-template-columns: 1fr; } }
   .toc { background: var(--panel); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 12px; align-self: start; max-height: 700px; overflow: auto; }
   .toc-title { font-size: 11px; color: var(--text-soft); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; font-weight: 700; }
   .toc-item { padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--text-soft); display: flex; align-items: center; gap: 6px; }
@@ -9859,7 +10021,7 @@ function showView(name) {
 <\/script>
 </body>
 </html>
-`,style: {width: "100%", height: "calc(100vh - 180px)", minHeight: 720, border: "none", background: "#fff", display: "block", marginTop: -10}}), actPopup && /*#__PURE__*/React.createElement(ActPopup, {
+`,style: {width: "100%", height: "calc(100vh - 180px)", minHeight: 720, border: "none", background: "transparent", display: "block", marginTop: -10}}), actPopup && /*#__PURE__*/React.createElement(ActPopup, {
     pd: actPopup
   }));
 }
@@ -23761,6 +23923,10 @@ const NAV_GROUPS_CLIENT = [{
     label: "Тикет",
     icon: "ticket-detailed"
   }, {
+    key: "t-task",
+    label: "Таск илгээх",
+    icon: "send"
+  }, {
     key: "t-kb",
     label: "Мэдлэгийн сан",
     icon: "book",
@@ -23816,6 +23982,10 @@ const NAV_GROUPS_ADMIN = [{
     key: "t-list",
     label: "Тикет",
     icon: "ticket-detailed"
+  }, {
+    key: "t-task",
+    label: "Таск илгээх",
+    icon: "send"
   }, {
     key: "t-analytics",
     label: "\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A",
@@ -23919,7 +24089,932 @@ function App() {
       "t-analytics": /*#__PURE__*/React.createElement(AnalyticsModule, null),
       "t-canned": /*#__PURE__*/React.createElement(CannedResponsesModule, null),
       "t-sla": /*#__PURE__*/React.createElement(SLAConfigModule, null),
-      "t-kb": /*#__PURE__*/React.createElement(KnowledgeBaseModule, {portal: portal})
+      "t-task": /*#__PURE__*/React.createElement("iframe", {srcDoc: `<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: transparent; --panel: #FFFFFF; --border: #E8E8E8;
+    --text: #1A1A1A; --text-soft: #555555; --text-mute: #999999;
+    --primary: #534AB7; --primary-soft: #EEEDFE; --primary-text: #534AB7;
+    --green: #059669; --green-soft: #D1FAE5; --green-text: #065F46;
+    --amber: #D97706; --amber-soft: #FEF3C7; --amber-text: #92400E;
+    --red: #DC2626; --red-soft: #FEE2E2;
+    --indigo: #4338CA; --indigo-soft: #E0E7FF;
+    --filter-bg: #F5F5F5; --hover-bg: #F4F6F8;
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.45; }
+  body { padding: 0 18px 50px; }
+
+  .toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; font-size: 13px; font-weight: 700; border: 0.5px solid var(--border); background: #fff; border-radius: 8px; cursor: pointer; color: var(--text); font-family: inherit; }
+  .btn:hover { background: #FAFAFA; border-color: #D6D8DC; }
+  .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-primary:hover { background: #4338CA; border-color: #4338CA; }
+  .btn-ghost { border-color: transparent; background: transparent; color: var(--text-soft); padding: 6px 10px; font-weight: 600; }
+
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-soft); cursor: pointer; padding: 8px 16px; border-radius: 8px; font-weight: 600; border: 0.5px solid var(--border); background: #fff; font-family: inherit; }
+  .back-btn:hover { background: #FAFAFA; border-color: #D6D8DC; }
+
+  .view { display: none; }
+  .view.active { display: block; animation: fade .2s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* === KPI === */
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  @media (max-width: 720px) { .kpi-grid { grid-template-columns: 1fr; } }
+  .kpi { background: #fff; border: 0.5px solid var(--border); border-radius: 8px; padding: 12px 14px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .kpi-content { flex: 1; min-width: 0; }
+  .kpi-label { font-size: 11px; font-weight: 600; color: #666; margin-bottom: 4px; }
+  .kpi-value { font-size: 19px; font-weight: 700; color: #0F172A; margin-bottom: 2px; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.amber { color: var(--amber); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-sub { font-size: 10.5px; color: #999; }
+  .kpi-icon { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+  /* === Filters === */
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .filter-group { display: flex; align-items: center; gap: 6px; }
+  .filter-label { color: #555; font-weight: 600; font-size: 13px; }
+  select, input[type="text"], input[type="search"] { padding: 8px 12px; font-size: 13px; font-family: inherit; background: var(--filter-bg); border: 0.5px solid var(--border); border-radius: 8px; outline: none; color: var(--text); }
+  select:focus, input:focus { border-color: var(--primary); background: #fff; }
+  .search-input { min-width: 220px; padding-left: 32px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 10px center; }
+
+  /* === Chips === */
+  .chip { background: var(--primary-soft); color: var(--primary-text); padding: 3px 10px; border-radius: 69px; font-size: 12px; font-weight: 700; display: inline-block; white-space: nowrap; }
+  .chip.green { background: var(--green-soft); color: var(--green-text); }
+  .chip.amber { background: var(--amber-soft); color: var(--amber-text); }
+  .chip.red { background: var(--red-soft); color: var(--red); }
+  .chip.gray { background: #F4F6F8; color: #555; }
+  .chip.indigo { background: var(--indigo-soft); color: var(--indigo); }
+
+  /* === Table === */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; background: #fff; border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden; }
+  thead th { background: #FAFAFA; color: #666; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; padding: 12px 14px; text-align: left; border-bottom: 0.5px solid var(--border); }
+  tbody td { padding: 11px 14px; border-bottom: 0.5px solid #F1F1F1; color: var(--text); font-size: 13px; vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--hover-bg); }
+  tbody tr.clickable { cursor: pointer; }
+  .row-actions { display: flex; gap: 6px; }
+  .icon-btn { width: 28px; height: 28px; border-radius: 6px; border: 0.5px solid var(--border); background: #fff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; color: #666; }
+  .icon-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #6366F1, #4338CA); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 10px; flex-shrink: 0; }
+  .avatar.lg { width: 48px; height: 48px; font-size: 18px; }
+  .user-cell { display: flex; align-items: center; gap: 8px; }
+  .user-cell .name { font-weight: 600; }
+  .user-cell .sub { font-size: 11px; color: var(--text-soft); margin-top: 1px; }
+
+  /* === Detail (ticket-style) === */
+  .detail-shell { display: grid; grid-template-columns: 1fr 380px; gap: 18px; align-items: start; }
+  @media (max-width: 1100px) { .detail-shell { grid-template-columns: 1fr 320px; gap: 14px; } }
+  @media (max-width: 900px) { .detail-shell { grid-template-columns: 1fr; } }
+
+  .detail-header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .detail-id { font-size: 20px; font-weight: 700; color: var(--text); }
+
+  .card { background: #fff; border: 0.5px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
+  .card-h { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 12px; }
+
+  .task-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 12px; }
+  .task-desc { background: #F9FAFB; padding: 14px 16px; border-radius: 8px; font-size: 13px; color: #444; line-height: 1.7; margin-bottom: 12px; }
+
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 700px) { .meta-grid { grid-template-columns: 1fr 1fr; } }
+  .meta-tile { background: #F5F5F5; border-radius: 8px; padding: 10px 12px; }
+  .meta-tile-label { font-size: 9.5px; color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 4px; }
+  .meta-tile-value { font-size: 12.5px; font-weight: 600; color: var(--text); }
+
+  .person-row { display: flex; align-items: center; gap: 12px; }
+  .person-row .info { flex: 1; }
+  .person-row .info .name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .person-row .info .role { font-size: 11.5px; color: #888; margin-top: 1px; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  @media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-pill { display: flex; align-items: center; gap: 8px; background: #F9FAFB; padding: 8px 12px; border-radius: 6px; font-size: 11.5px; color: #555; }
+
+  .team-card { display: flex; align-items: center; gap: 10px; background: #F0EFFF; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+  .team-card .icon { width: 36px; height: 36px; border-radius: 8px; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .team-card .info .label { font-size: 13px; font-weight: 700; color: var(--text); }
+  .team-card .info .sub { font-size: 11px; color: #666; margin-top: 1px; }
+
+  .assignee-card { display: flex; align-items: center; gap: 10px; background: #F9FAFB; border-radius: 8px; padding: 12px 14px; }
+  .assignee-card .icon { width: 36px; height: 36px; border-radius: 50%; background: #DBEAFE; color: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .assignee-card .info .label { font-size: 10.5px; color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+  .assignee-card .info .name { font-size: 13.5px; font-weight: 700; color: var(--text); margin-top: 2px; }
+
+  .file-row { display: flex; align-items: center; gap: 10px; background: #F9FAFB; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all .15s; margin-bottom: 8px; }
+  .file-row:hover { background: #F0F0F0; }
+  .file-row .icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .file-row .info { flex: 1; }
+  .file-row .info .name { font-size: 12.5px; font-weight: 600; color: var(--text); }
+  .file-row .info .meta { font-size: 11px; color: #999; margin-top: 1px; }
+
+  /* === Comments (thread style) === */
+  .comments-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+  .comment { display: flex; gap: 10px; }
+  .comment-body { flex: 1; }
+  .comment-bubble { background: #F9FAFB; border-radius: 10px; padding: 10px 14px; }
+  .comment-bubble.mine { background: var(--primary-soft); }
+  .comment-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 11.5px; }
+  .comment-head .name { font-weight: 700; color: var(--text); }
+  .comment-head .when { color: var(--text-mute); }
+  .comment-text { font-size: 12.5px; line-height: 1.6; color: var(--text); }
+
+  .comment-input { display: flex; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 0.5px solid var(--border); }
+  .comment-input textarea { flex: 1; border: 0.5px solid var(--border); outline: none; resize: vertical; min-height: 60px; font-family: inherit; font-size: 12.5px; padding: 10px 12px; border-radius: 8px; background: #fff; }
+  .comment-input textarea:focus { border-color: var(--primary); }
+
+  /* === Activity timeline === */
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: #E8E8E8; }
+  .timeline-item { position: relative; padding-bottom: 14px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before { content: ''; position: absolute; left: -19px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--primary); }
+  .timeline-item.green::before { background: var(--green); box-shadow: 0 0 0 1px var(--green); }
+  .timeline-item.amber::before { background: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+  .timeline-item.gray::before { background: #999; box-shadow: 0 0 0 1px #999; }
+  .timeline-text { font-size: 12.5px; font-weight: 600; color: var(--text); }
+  .timeline-meta { font-size: 11px; color: var(--text-mute); margin-top: 2px; }
+
+  /* === New Task Form === */
+  .form-shell { background: #fff; border: 0.5px solid var(--border); border-radius: 10px; padding: 22px 26px; max-width: 820px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-row { margin-bottom: 14px; }
+  .form-label { font-size: 12px; color: #555; margin-bottom: 6px; font-weight: 600; display: block; }
+  .form-label .req { color: var(--red); }
+  .form-input, .form-select, .form-textarea { width: 100%; padding: 9px 12px; font-size: 13px; font-family: inherit; background: var(--filter-bg); border: 0.5px solid var(--border); border-radius: 8px; color: var(--text); outline: none; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); background: #fff; }
+  .form-textarea { min-height: 120px; resize: vertical; }
+  .form-help { font-size: 11px; color: var(--text-mute); margin-top: 4px; }
+
+  .priority-row { display: flex; gap: 8px; }
+  .priority-opt { flex: 1; padding: 10px 12px; border: 0.5px solid var(--border); border-radius: 8px; cursor: pointer; text-align: center; background: #fff; transition: all .15s; font-size: 12.5px; }
+  .priority-opt:hover { border-color: var(--primary); }
+  .priority-opt.active { border-color: var(--primary); background: var(--primary-soft); color: var(--primary-text); font-weight: 700; }
+  .priority-opt.urgent.active { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+  .priority-opt.high.active { border-color: var(--amber); background: var(--amber-soft); color: var(--amber-text); }
+  .priority-opt.medium.active { border-color: var(--primary); background: var(--primary-soft); color: var(--primary-text); }
+  .priority-opt.low.active { border-color: var(--green); background: var(--green-soft); color: var(--green-text); }
+
+  .upload-zone { border: 2px dashed var(--border); border-radius: 8px; padding: 24px 18px; background: #FAFAFA; text-align: center; cursor: pointer; transition: all .15s; }
+  .upload-zone:hover { border-color: var(--primary); background: var(--primary-soft); }
+  .upload-zone .icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-zone .title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .upload-zone .sub { font-size: 11.5px; color: var(--text-soft); }
+
+  .form-footer { border-top: 0.5px solid var(--border); padding-top: 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+
+  /* === Status options === */
+  .status-options { display: flex; flex-direction: column; gap: 6px; }
+  .status-opt {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border: 0.5px solid var(--border); border-radius: 8px;
+    cursor: pointer; background: #fff; transition: all .15s;
+    font-size: 12.5px; font-weight: 600;
+  }
+  .status-opt:hover { background: #FAFAFA; border-color: #D6D8DC; }
+  .status-opt.active { border-color: var(--primary); background: var(--primary-soft); }
+  .status-opt input[type="radio"] { display: none; }
+  .status-opt .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .status-opt .status-label { flex: 1; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ============ VIEW 1: LIST ============ -->
+<div class="view active" id="view-list">
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="showView('new')">＋ Шинэ таск үүсгэх</button>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-content">
+        <div class="kpi-label">Нийт таск (4-р сар)</div>
+        <div class="kpi-value">87</div>
+        <div class="kpi-sub">+12 өнгөрсөн сараас</div>
+      </div>
+      <div class="kpi-icon" style="background: #EEEDFE; color: #534AB7;">📋</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-content">
+        <div class="kpi-label">Шийдвэрлэгдэж буй</div>
+        <div class="kpi-value amber">23</div>
+        <div class="kpi-sub">26%</div>
+      </div>
+      <div class="kpi-icon" style="background: #FEF3C7; color: #D97706;">⏳</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-content">
+        <div class="kpi-label">Дууссан</div>
+        <div class="kpi-value green">58</div>
+        <div class="kpi-sub">66.7%</div>
+      </div>
+      <div class="kpi-icon" style="background: #D1FAE5; color: #059669;">✓</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <input type="search" class="search-input" placeholder="Таск, дугаар, гарчиг хайх..."/>
+    <div class="filter-group">
+      <span class="filter-label">Үйлчилгээ:</span>
+      <select>
+        <option>Бүх үйлчилгээ</option>
+        <option>Серверийн ашиглалт</option>
+        <option>Сүлжээний дэд бүтэц</option>
+        <option>IT Support тикет</option>
+        <option>ERP дэмжлэг</option>
+        <option>Веб засвар (Siro)</option>
+        <option>МАБ хяналт</option>
+        <option>Дата менежмент</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Компани:</span>
+      <select>
+        <option>Бүх компани (22)</option>
+        <option>"Таван Богд Холдингс" ХХК</option>
+        <option>"Говь" ХК</option>
+        <option>"Таван Богд Финанс" ББСБ</option>
+        <option>"Их Хан Банк" ХК</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Хариуцагч:</span>
+      <select>
+        <option>Бүх</option>
+        <option>Б.Эрдэнэ-Очир</option>
+        <option>О.Төгсбаяр</option>
+        <option>Х.Намуун</option>
+        <option>Г.Анхбаяр</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Статус:</span>
+      <select>
+        <option>Бүх</option>
+        <option>Шинэ</option>
+        <option>Хүлээж авсан</option>
+        <option>Шийдвэрлэж буй</option>
+        <option>Дууссан</option>
+        <option>Цуцлагдсан</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Эрэмбэ:</span>
+      <select>
+        <option>Бүх</option>
+        <option>🔴 Яаралтай</option>
+        <option>🟠 Өндөр</option>
+        <option>🔵 Дунд</option>
+        <option>🟢 Бага</option>
+      </select>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 90px;">Таск №</th>
+        <th>Гарчиг</th>
+        <th style="width: 180px;">Үйлчилгээ</th>
+        <th style="width: 180px;">Үүсгэгч / Компани</th>
+        <th style="width: 160px;">Хариуцагч</th>
+        <th style="width: 90px;">Эрэмбэ</th>
+        <th style="width: 130px;">Статус</th>
+        <th style="width: 110px;">Үүсгэсэн огноо</th>
+        <th style="width: 80px;">Үйлдэл</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="clickable" onclick="showView('detail')">
+        <td><b>TSK-2026-0087</b></td>
+        <td><b>Серверийн disk space critical level-д хүрсэн</b></td>
+        <td>Серверийн ашиглалт</td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar">ДМ</div>
+            <div><div class="name">Д.Мөнхбат</div><div class="sub">"ТБ Холдингс" ХХК</div></div>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar">БЭ</div>
+            <div><div class="name">Б.Эрдэнэ-Очир</div><div class="sub">IT Service Manager</div></div>
+          </div>
+        </td>
+        <td><span class="chip red">🔴 Яаралтай</span></td>
+        <td><span class="chip amber">⏳ Шийдвэрлэж буй</span></td>
+        <td>2026.04.27<div style="font-size: 10.5px; color: var(--text-soft);">14:23</div></td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn">👁️</div>
+            <div class="icon-btn">✏️</div>
+          </div>
+        </td>
+      </tr>
+      <tr class="clickable" onclick="showView('detail')">
+        <td><b>TSK-2026-0086</b></td>
+        <td><b>M365 шинэ ажилтнуудад лиценз нэмэх</b></td>
+        <td>Лицензийн үйлчилгээ</td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar" style="background: linear-gradient(135deg, #F59E0B, #B45309);">АХ</div>
+            <div><div class="name">А.Хулан</div><div class="sub">"ТБ Холдингс" ХХК</div></div>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar">ОТ</div>
+            <div><div class="name">О.Төгсбаяр</div><div class="sub">МАБ Менежер</div></div>
+          </div>
+        </td>
+        <td><span class="chip amber">🟠 Өндөр</span></td>
+        <td><span class="chip green">✓ Дууссан</span></td>
+        <td>2026.04.26<div style="font-size: 10.5px; color: var(--text-soft);">10:15</div></td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn">👁️</div>
+            <div class="icon-btn">📋</div>
+          </div>
+        </td>
+      </tr>
+      <tr class="clickable" onclick="showView('detail')">
+        <td><b>TSK-2026-0085</b></td>
+        <td><b>UB Galleria сүлжээний удаашрал шалгах</b></td>
+        <td>Сүлжээний дэд бүтэц</td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar" style="background: linear-gradient(135deg, #10B981, #047857);">УБ</div>
+            <div><div class="name">У.Болор</div><div class="sub">"Говь" ХК</div></div>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar">ХН</div>
+            <div><div class="name">Х.Намуун</div><div class="sub">Сүлжээний инженер</div></div>
+          </div>
+        </td>
+        <td><span class="chip indigo">🔵 Дунд</span></td>
+        <td><span class="chip indigo">🆕 Шинэ</span></td>
+        <td>2026.04.27<div style="font-size: 10.5px; color: var(--text-soft);">09:42</div></td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn">👁️</div>
+            <div class="icon-btn">▶️</div>
+          </div>
+        </td>
+      </tr>
+      <tr class="clickable" onclick="showView('detail')">
+        <td><b>TSK-2026-0084</b></td>
+        <td><b>UBP Cash On тайланд шинэ filter нэмэх</b></td>
+        <td>Дата менежмент</td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar" style="background: linear-gradient(135deg, #6366F1, #312E81);">БЭ</div>
+            <div><div class="name">Б.Энхтуяа</div><div class="sub">"ТБ Финанс" ББСБ</div></div>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar" style="background: linear-gradient(135deg, #EC4899, #DB2777);">ХН</div>
+            <div><div class="name">Х.Намуун</div><div class="sub">Дата Менежер</div></div>
+          </div>
+        </td>
+        <td><span class="chip green">🟢 Бага</span></td>
+        <td><span class="chip amber">⏳ Шийдвэрлэж буй</span></td>
+        <td>2026.04.25<div style="font-size: 10.5px; color: var(--text-soft);">16:08</div></td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn">👁️</div>
+            <div class="icon-btn">✏️</div>
+          </div>
+        </td>
+      </tr>
+      <tr class="clickable" onclick="showView('detail')">
+        <td><b>TSK-2026-0083</b></td>
+        <td><b>Siro вэб дээр SSL гэрчилгээ шинэчлэх</b></td>
+        <td>Веб засвар (Siro)</td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar">ДМ</div>
+            <div><div class="name">Д.Мөнхбат</div><div class="sub">"ТБ Холдингс" ХХК</div></div>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar" style="background: linear-gradient(135deg, #F59E0B, #B45309);">ГА</div>
+            <div><div class="name">Г.Анхбаяр</div><div class="sub">Веб хөгжүүлэгч</div></div>
+          </div>
+        </td>
+        <td><span class="chip amber">🟠 Өндөр</span></td>
+        <td><span class="chip green">✓ Дууссан</span></td>
+        <td>2026.04.22<div style="font-size: 10.5px; color: var(--text-soft);">11:30</div></td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn">👁️</div>
+            <div class="icon-btn">📋</div>
+          </div>
+        </td>
+      </tr>
+      <tr class="clickable" onclick="showView('detail')">
+        <td><b>TSK-2026-0082</b></td>
+        <td><b>Penetration test хийлгэх — KFC.mn</b></td>
+        <td>МАБ хяналт</td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">ТБ</div>
+            <div><div class="name">Т.Баярмаа</div><div class="sub">"ТБ Фүүдс" ХХК</div></div>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <div class="avatar">ОТ</div>
+            <div><div class="name">О.Төгсбаяр</div><div class="sub">МАБ Менежер</div></div>
+          </div>
+        </td>
+        <td><span class="chip amber">🟠 Өндөр</span></td>
+        <td><span class="chip indigo">🆕 Шинэ</span></td>
+        <td>2026.04.27<div style="font-size: 10.5px; color: var(--text-soft);">15:50</div></td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn">👁️</div>
+            <div class="icon-btn">▶️</div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-soft);">
+    <div>Нийт 87 таскаас 6 харагдаж буй</div>
+    <div style="display: flex; gap: 6px;">
+      <button class="btn btn-ghost">‹ Өмнөх</button>
+      <button class="btn">1</button>
+      <button class="btn btn-ghost">2</button>
+      <button class="btn btn-ghost">3</button>
+      <button class="btn btn-ghost">...</button>
+      <button class="btn btn-ghost">15</button>
+      <button class="btn btn-ghost">Дараах ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 2: DETAIL (Ticket-style) ============ -->
+<div class="view" id="view-detail">
+  <!-- Header -->
+  <div class="detail-header">
+    <button class="back-btn" onclick="showView('list')">← Буцах</button>
+    <span class="detail-id">TSK-2026-0087</span>
+    <span class="chip amber">⏳ Шийдвэрлэж буй</span>
+    <span class="chip red">🔴 Яаралтай</span>
+  </div>
+
+  <div class="detail-shell">
+    <!-- ════ LEFT COLUMN ════ -->
+    <div>
+
+      <!-- Card 1: Таскын мэдээлэл -->
+      <div class="card">
+        <div class="card-h">ТАСКЫН МЭДЭЭЛЭЛ</div>
+        <div class="task-title">Серверийн disk space critical level-д хүрсэн</div>
+        <div class="task-desc">
+          TBT-DIAMOND-DB серверийн disk usage 84.82%-д хүрсэн. Хяналтын системээс автоматаар alert ирлээ. Дотроо том хэмжээний archive log файлууд хуримтлагдсан байна. Архивлах эсвэл идэвхгүй болсон log-уудыг устгах шаардлагатай.<br><br>
+          Хэрэв 90% давсан тохиолдолд DB үйл ажиллагаа удаашрах эрсдэлтэй. Энэ нь Diamond үйлчилгээний хэрэглэгчдэд шууд нөлөөлнө.<br><br>
+          <b>Хүсэлт:</b> 2026.04.30-аас өмнө шийдвэрлэж RPO 30 хоногоор архивыг тохируулж өгнө үү.
+        </div>
+        <div class="meta-grid">
+          <div class="meta-tile">
+            <div class="meta-tile-label">Үйлчилгээ</div>
+            <div class="meta-tile-value">Серверийн ашиглалт</div>
+          </div>
+          <div class="meta-tile">
+            <div class="meta-tile-label">Гэрээ</div>
+            <div class="meta-tile-value">GR-2026-TBH-001</div>
+          </div>
+          <div class="meta-tile">
+            <div class="meta-tile-label">Эрэмбэ</div>
+            <div class="meta-tile-value" style="color: var(--red);">🔴 Яаралтай</div>
+          </div>
+          <div class="meta-tile" style="cursor: pointer; position: relative;" onclick="document.getElementById('deadline-edit').style.display='block'; document.getElementById('deadline-view').style.display='none';" id="deadline-view">
+            <div class="meta-tile-label">Эцсийн хугацаа <span style="color: var(--primary); font-weight: 700;">✎ Засах</span></div>
+            <div class="meta-tile-value" style="color: var(--amber);" id="deadline-display">2026.04.30 18:00</div>
+          </div>
+          <div class="meta-tile" style="display: none; grid-column: span 1;" id="deadline-edit">
+            <div class="meta-tile-label">Эцсийн хугацаа засах</div>
+            <input type="datetime-local" class="form-input" id="deadline-input" value="2026-04-30T18:00" style="font-size: 12px; padding: 6px 8px; margin-top: 4px;"/>
+            <div style="display: flex; gap: 4px; margin-top: 6px;">
+              <button class="btn" style="flex: 1; padding: 4px 8px; font-size: 11px; justify-content: center;" onclick="event.stopPropagation(); document.getElementById('deadline-edit').style.display='none'; document.getElementById('deadline-view').style.display='block';">Цуц.</button>
+              <button class="btn btn-primary" style="flex: 1; padding: 4px 8px; font-size: 11px; justify-content: center;" onclick="event.stopPropagation(); saveDeadline()">💾</button>
+            </div>
+          </div>
+          <div class="meta-tile">
+            <div class="meta-tile-label">Үлдсэн хугацаа</div>
+            <div class="meta-tile-value" id="remaining-display">2 хоног · 3 цаг</div>
+          </div>
+          <div class="meta-tile">
+            <div class="meta-tile-label">Үүсгэсэн</div>
+            <div class="meta-tile-value">2026.04.27 14:23</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Хавсаргадсан файл -->
+      <div class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div class="card-h" style="margin-bottom: 0;">ХАВСАРГАДСАН ФАЙЛ</div>
+          <span style="font-size: 11px; color: #999; font-weight: 600;">3 файл</span>
+        </div>
+        <div class="file-row">
+          <div class="icon" style="background: #EDE9FE; color: #7C3AED;">🖼️</div>
+          <div class="info"><div class="name">Disk_usage_chart_2026_04.png</div><div class="meta">2.1 MB · Сүүлийн 30 хоногийн trend</div></div>
+          <span style="color: #888;">⬇</span>
+        </div>
+        <div class="file-row">
+          <div class="icon" style="background: #DBEAFE; color: #2563EB;">📄</div>
+          <div class="info"><div class="name">Zabbix_alert_log.txt</div><div class="meta">156 KB · Alert лог</div></div>
+          <span style="color: #888;">⬇</span>
+        </div>
+        <div class="file-row">
+          <div class="icon" style="background: #EDE9FE; color: #7C3AED;">🖼️</div>
+          <div class="info"><div class="name">Server_screenshot.jpg</div><div class="meta">820 KB · Disk хэсгийн screenshot</div></div>
+          <span style="color: #888;">⬇</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Сэтгэгдэл -->
+      <div class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+          <div class="card-h" style="margin-bottom: 0;">СЭТГЭГДЭЛ</div>
+          <span style="font-size: 11px; color: #999; font-weight: 600;">3 коммент</span>
+        </div>
+        <div class="comments-list">
+          <div class="comment">
+            <div class="avatar">БЭ</div>
+            <div class="comment-body">
+              <div class="comment-bubble">
+                <div class="comment-head"><span class="name">Б.Эрдэнэ-Очир</span><span class="when">· 2026.04.27 14:30</span></div>
+                <div class="comment-text">Хүлээн авлаа. Эхлээд хэмжээ үнэлж, дараа нь архивлах төлөвлөгөө гаргана. 30 минутын дотор хариу мэдэгдэнэ.</div>
+              </div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="avatar" style="background: linear-gradient(135deg, #10B981, #047857);">ДМ</div>
+            <div class="comment-body">
+              <div class="comment-bubble">
+                <div class="comment-head"><span class="name">Д.Мөнхбат</span><span class="when">· 2026.04.27 14:45</span></div>
+                <div class="comment-text">Баярлалаа. Эхлээд DB-г унтраалгүйгээр шийдэх боломжтой эсэхийг шалгаарай. Хэрэв downtime шаардлагатай бол шөнийн цагт төлөвлөе.</div>
+              </div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="avatar">БЭ</div>
+            <div class="comment-body">
+              <div class="comment-bubble">
+                <div class="comment-head"><span class="name">Б.Эрдэнэ-Очир</span><span class="when">· 2026.04.27 15:12</span></div>
+                <div class="comment-text">Шалгасан — online хэлбэрээр архивлах боломжтой. Одоогоор VACUUM FULL ажиллуулж байна. 20 минутын дараа дуусна. Disk usage 70%-д буцаагдана.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comment-input">
+          <div class="avatar" style="background: linear-gradient(135deg, #6366F1, #4338CA);">ТА</div>
+          <textarea placeholder="Сэтгэгдэл, тэмдэглэл бичих..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+          <button class="btn btn-ghost">📎 Файл оруулах</button>
+          <button class="btn btn-primary">💬 Илгээх</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ RIGHT COLUMN: Үүсгэгч + Хариуцагч + Activity Log + Actions ════ -->
+    <div>
+      <!-- Үүсгэсэн ажилтан -->
+      <div class="card">
+        <div class="card-h">ҮҮСГЭСЭН АЖИЛТАН</div>
+        <div class="person-row">
+          <div class="avatar lg" style="background: linear-gradient(135deg, #10B981, #047857);">ДМ</div>
+          <div class="info">
+            <div class="name">Д.Мөнхбат</div>
+            <div class="role">"ТБ Холдингс" ХХК</div>
+            <div class="role" style="font-size: 10.5px; margin-top: 1px;">IT хариуцсан</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 12px;">
+          <div class="contact-pill">📧 it.tbh@tavanbogd.com</div>
+          <div class="contact-pill">📞 9911-2233</div>
+        </div>
+      </div>
+
+      <!-- Хариуцах ажилтан -->
+      <div class="card">
+        <div class="card-h">ХАРИУЦАХ АЖИЛТАН</div>
+        <div id="assignee-view">
+          <div class="person-row">
+            <div class="avatar lg" id="assignee-avatar" style="background: linear-gradient(135deg, #6366F1, #4338CA);">БЭ</div>
+            <div class="info">
+              <div class="name" id="assignee-name">Б.Эрдэнэ-Очир</div>
+              <div class="role">"Таван Богд Нура" ХХК</div>
+              <div class="role" id="assignee-role" style="font-size: 10.5px; margin-top: 1px;">IT Service Manager</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 12px;">
+            <div class="contact-pill" id="assignee-email">📧 erdene-ochir@tavanbogd.com</div>
+            <div class="contact-pill" id="assignee-phone">📞 9911-7788</div>
+          </div>
+          <button class="btn btn-ghost" style="font-size: 11.5px; padding: 6px 8px; margin-top: 8px;" onclick="document.getElementById('assignee-edit').style.display='block'; document.getElementById('assignee-view').style.display='none';">🔄 Өөрчлөх</button>
+        </div>
+        <div id="assignee-edit" style="display: none;">
+          <label style="font-size: 11.5px; color: #555; font-weight: 600; display: block; margin-bottom: 6px;">Шинэ хариуцагч сонгох:</label>
+          <select class="form-select" id="assignee-select" onchange="updateAssignee(this)">
+            <option value="be" selected>Б.Эрдэнэ-Очир — IT Service Manager</option>
+            <option value="ot">О.Төгсбаяр — МАБ Менежер</option>
+            <option value="hn">Х.Намуун — Дата Менежер</option>
+            <option value="ga">Г.Анхбаяр — Програм Менежер</option>
+            <option value="ds">Д.Сэлэнгэ — Сүлжээний инженер</option>
+          </select>
+          <div style="display: flex; gap: 6px; margin-top: 10px;">
+            <button class="btn" style="flex: 1; justify-content: center; font-size: 12px;" onclick="document.getElementById('assignee-edit').style.display='none'; document.getElementById('assignee-view').style.display='block';">Цуцлах</button>
+            <button class="btn btn-primary" style="flex: 1; justify-content: center; font-size: 12px;" onclick="saveAssignee()">💾 Хадгалах</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status select & save -->
+      <div class="card">
+        <div class="card-h">ҮЙЛДЭЛ — СТАТУС СОНГОХ</div>
+        <div class="status-options">
+          <label class="status-opt">
+            <input type="radio" name="task-status" value="new"/>
+            <span class="status-dot" style="background: #534AB7;"></span>
+            <span class="status-label">🆕 Шинэ</span>
+          </label>
+          <label class="status-opt active">
+            <input type="radio" name="task-status" value="in-progress" checked/>
+            <span class="status-dot" style="background: #D97706;"></span>
+            <span class="status-label">⏳ Хийж буй</span>
+          </label>
+          <label class="status-opt">
+            <input type="radio" name="task-status" value="waiting"/>
+            <span class="status-dot" style="background: #6366F1;"></span>
+            <span class="status-label">🕐 Хүлээгдэж буй</span>
+          </label>
+          <label class="status-opt">
+            <input type="radio" name="task-status" value="paused"/>
+            <span class="status-dot" style="background: #999;"></span>
+            <span class="status-label">⏸ Түр зогсоосон</span>
+          </label>
+          <label class="status-opt">
+            <input type="radio" name="task-status" value="cancelled"/>
+            <span class="status-dot" style="background: #DC2626;"></span>
+            <span class="status-label">✕ Цуцалсан</span>
+          </label>
+          <label class="status-opt">
+            <input type="radio" name="task-status" value="done"/>
+            <span class="status-dot" style="background: #059669;"></span>
+            <span class="status-label">✓ Дууссан</span>
+          </label>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 12px;">💾 Хадгалах</button>
+      </div>
+
+      <!-- Activity timeline -->
+      <div class="card">
+        <div class="card-h">ҮЙЛ ЯВЦ (ACTIVITY LOG)</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-text">Таск үүссэн</div>
+            <div class="timeline-meta">Д.Мөнхбат · 2026.04.27 14:23</div>
+          </div>
+          <div class="timeline-item green">
+            <div class="timeline-text">Хариуцагч томилогдсон</div>
+            <div class="timeline-meta">Б.Эрдэнэ-Очир · Авто. 2026.04.27 14:25</div>
+          </div>
+          <div class="timeline-item amber">
+            <div class="timeline-text">"Шийдвэрлэж буй" статус болсон</div>
+            <div class="timeline-meta">Б.Эрдэнэ-Очир · 2026.04.27 14:30</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-text">Сэтгэгдэл нэмсэн</div>
+            <div class="timeline-meta">Б.Эрдэнэ-Очир · 14:30</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-text">Сэтгэгдэл нэмсэн</div>
+            <div class="timeline-meta">Д.Мөнхбат · 14:45</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-text">Сэтгэгдэл нэмсэн</div>
+            <div class="timeline-meta">Б.Эрдэнэ-Очир · 15:12</div>
+          </div>
+          <div class="timeline-item gray">
+            <div class="timeline-text">Эцсийн хугацаанд 2 хоног · 3 цаг үлдсэн</div>
+            <div class="timeline-meta">2026.04.30 18:00 хүртэл</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 3: NEW TASK ============ -->
+<div class="view" id="view-new">
+  <button class="back-btn" onclick="showView('list')" style="margin-bottom: 14px;">← Жагсаалт руу буцах</button>
+
+  <div class="form-shell">
+    <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">＋ Шинэ таск үүсгэх</h2>
+    <p style="font-size: 12.5px; color: var(--text-soft); margin-bottom: 18px;">Доорх 7 талбарыг бөглөж таскаа илгээнэ үү. Бүгд заавал.</p>
+
+    <div class="form-row">
+      <label class="form-label">1. Үйлчилгээ <span class="req">*</span></label>
+      <select class="form-select">
+        <option>— Үйлчилгээ сонгох —</option>
+        <option>Серверийн ашиглалт</option>
+        <option>Сүлжээний дэд бүтэц</option>
+        <option>IT Support тикет</option>
+        <option>ERP дэмжлэг</option>
+        <option>Веб засвар (Siro)</option>
+        <option>МАБ хяналт</option>
+        <option>Дата менежмент</option>
+        <option>Лицензийн үйлчилгээ</option>
+        <option>Ухаалаг төхөөрөмж</option>
+      </select>
+      <div class="form-help">Гэрээгээр хамрах хүрээнд багтсан үйлчилгээ автоматаар санал болгоно</div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-row">
+        <label class="form-label">2. Компани <span class="req">*</span></label>
+        <select class="form-select">
+          <option>— Компани сонгох —</option>
+          <option>"Таван Богд Холдингс" ХХК</option>
+          <option>"Говь" ХК</option>
+          <option>"Таван Богд Финанс" ББСБ</option>
+          <option>"Их Хан Банк" ХК</option>
+          <option>"ТБ Фүүдс" ХХК</option>
+          <option>"JUU FOODS" ХХК</option>
+          <option>+16 бусад харилцагч</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">3. Хариуцагч <span class="req">*</span></label>
+        <select class="form-select">
+          <option>— Авто. (үйлчилгээ-ээс хамаарч) —</option>
+          <option>Б.Эрдэнэ-Очир — IT Service Manager</option>
+          <option>О.Төгсбаяр — МАБ Менежер</option>
+          <option>Х.Намуун — Дата Менежер</option>
+          <option>Г.Анхбаяр — Програм Менежер</option>
+          <option>Д.Сэлэнгэ — Сүлжээний инженер</option>
+        </select>
+        <div class="form-help">Үйлчилгээний хариуцсан баг авто. сонгогдоно</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">4. Гарчиг <span class="req">*</span></label>
+      <input type="text" class="form-input" placeholder="Жишээ: Серверийн disk space critical level-д хүрсэн"/>
+      <div class="form-help">Товч, тодорхой гарчиг (60 тэмдэгтээс ихгүй)</div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">5. Дэлгэрэнгүй тайлбар <span class="req">*</span></label>
+      <textarea class="form-textarea" placeholder="Юу болсон, ямар үйлчилгээтэй холбоотой, ямар нөлөөлөл байгаа, эцсийн хүсэлт... зэргийг тайлбарлаж бичнэ үү."></textarea>
+      <div class="form-help">Тоо, цаг хугацаа, серверийн нэр, алдааны код зэргийг тодорхой бичнэ үү</div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">6. Хавсралт <span class="req">*</span></label>
+      <div class="upload-zone" onclick="document.getElementById('file-input').click();">
+        <div class="icon">📎</div>
+        <div class="title">Файл оруулах</div>
+        <div class="sub">PNG, JPG, PDF, DOCX, XLSX, TXT, LOG · Хамгийн ихдээ 25 MB / нэг файл</div>
+        <input type="file" id="file-input" multiple style="display: none;"/>
+      </div>
+      <div class="form-help">Screenshot, лог файл, диаграм зэргийг хавсаргавал илүү хурдан шийдвэрлэгдэнэ</div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">7. Эрэмбэ <span class="req">*</span></label>
+      <div class="priority-row">
+        <div class="priority-opt urgent" onclick="setPriority(this, 'urgent')">🔴 Яаралтай</div>
+        <div class="priority-opt high" onclick="setPriority(this, 'high')">🟠 Өндөр</div>
+        <div class="priority-opt medium active" onclick="setPriority(this, 'medium')">🔵 Дунд</div>
+        <div class="priority-opt low" onclick="setPriority(this, 'low')">🟢 Бага</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">8. Эцсийн хугацаа <span class="req">*</span></label>
+      <input type="datetime-local" class="form-input" value="2026-04-30T18:00"/>
+      <div class="form-help">Хариуцагч энэ хугацаанаас өмнө шийдвэрлэх ёстой</div>
+    </div>
+
+    <div class="form-footer">
+      <button class="btn" onclick="showView('list')">Цуцлах</button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn">💾 Draft хадгалах</button>
+        <button class="btn btn-primary">📤 Илгээх</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setPriority(el, level) {
+  document.querySelectorAll('.priority-opt').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+}
+
+window.addEventListener('message', function(e) {
+  var action = e.data && e.data.action;
+  if (action === 'new-task') showView('new');
+});
+
+// Status option active state
+document.querySelectorAll('.status-opt').forEach(function(el) {
+  el.addEventListener('click', function() {
+    document.querySelectorAll('.status-opt').forEach(function(o) { o.classList.remove('active'); });
+    el.classList.add('active');
+    var input = el.querySelector('input[type="radio"]');
+    if (input) input.checked = true;
+  });
+});
+
+// === Хариуцагч өөрчлөх ===
+var ASSIGNEES = {
+  'be': {name: 'Б.Эрдэнэ-Очир', role: 'IT Service Manager', email: 'erdene-ochir@tavanbogd.com', phone: '9911-7788', initials: 'БЭ', color: 'linear-gradient(135deg, #6366F1, #4338CA)'},
+  'ot': {name: 'О.Төгсбаяр', role: 'МАБ Менежер', email: 'togsbayar@tavanbogd.com', phone: '9922-3344', initials: 'ОТ', color: 'linear-gradient(135deg, #10B981, #047857)'},
+  'hn': {name: 'Х.Намуун', role: 'Дата Менежер', email: 'namuun@tavanbogd.com', phone: '9933-4455', initials: 'ХН', color: 'linear-gradient(135deg, #EC4899, #DB2777)'},
+  'ga': {name: 'Г.Анхбаяр', role: 'Програм Менежер', email: 'ankhbayar@tavanbogd.com', phone: '9944-5566', initials: 'ГА', color: 'linear-gradient(135deg, #F59E0B, #B45309)'},
+  'ds': {name: 'Д.Сэлэнгэ', role: 'Сүлжээний инженер', email: 'selenge@tavanbogd.com', phone: '9955-6677', initials: 'ДС', color: 'linear-gradient(135deg, #06B6D4, #0E7490)'}
+};
+
+function updateAssignee(sel) {
+  // Just preview — actual save on button click
+}
+
+function saveAssignee() {
+  var key = document.getElementById('assignee-select').value;
+  var p = ASSIGNEES[key];
+  if (!p) return;
+  document.getElementById('assignee-name').textContent = p.name;
+  document.getElementById('assignee-role').textContent = p.role;
+  document.getElementById('assignee-email').textContent = '📧 ' + p.email;
+  document.getElementById('assignee-phone').textContent = '📞 ' + p.phone;
+  var av = document.getElementById('assignee-avatar');
+  av.textContent = p.initials;
+  av.style.background = p.color;
+  document.getElementById('assignee-edit').style.display = 'none';
+  document.getElementById('assignee-view').style.display = 'block';
+  // Activity log-д бичих
+  addActivity('Хариуцагчийг ' + p.name + ' болгож өөрчилсөн', 'amber');
+}
+
+// === Эцсийн хугацаа өөрчлөх ===
+function saveDeadline() {
+  var val = document.getElementById('deadline-input').value;
+  if (!val) return;
+  // Format display: 2026-04-30T18:00 → 2026.04.30 18:00
+  var formatted = val.replace('T', ' ').replace(/-/g, '.');
+  document.getElementById('deadline-display').textContent = formatted;
+  // Calc remaining
+  var d = new Date(val);
+  var now = new Date('2026-04-27T15:00');
+  var diffMs = d - now;
+  var days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var remaining = (days >= 0 ? days + ' хоног · ' + hours + ' цаг' : 'Хугацаа өнгөрсөн');
+  document.getElementById('remaining-display').textContent = remaining;
+  document.getElementById('deadline-edit').style.display = 'none';
+  document.getElementById('deadline-view').style.display = 'block';
+  addActivity('Эцсийн хугацааг ' + formatted + ' болгож өөрчилсөн', 'amber');
+}
+
+function addActivity(text, color) {
+  var timeline = document.querySelector('.timeline');
+  if (!timeline) return;
+  var item = document.createElement('div');
+  item.className = 'timeline-item ' + (color || '');
+  var now = new Date();
+  var t = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+  item.innerHTML = '<div class="timeline-text">' + text + '</div><div class="timeline-meta">Б.Эрдэнэ-Очир · 2026.04.27 ' + t + '</div>';
+  timeline.appendChild(item);
+}
+<\/script>
+</body>
+</html>
+`,style: {width: "100%", height: "calc(100vh - 180px)", minHeight: 720, border: "none", background: "transparent", display: "block", marginTop: -10}}),"t-kb": /*#__PURE__*/React.createElement(KnowledgeBaseModule, {portal: portal})
     };
     return MODULES[active] || /*#__PURE__*/React.createElement(DashboardModule, {
       onNavigate: setActive,
